@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
+        final TextView textView = root.findViewById(R.id.text_distance);
 //        homeViewModel.getText().observe(this, new Observer<String>() {
 //            @Override
 //            public void onChanged(@Nullable String s) {
@@ -55,9 +55,11 @@ public class HomeFragment extends Fragment {
         movieList.add(movie);
         movie = new CardViewModel("Coco",R.drawable.sri_lanka_main);
         movieList.add(movie);
-        movie = new CardViewModel("Justice League ",R.drawable.sri_lanka_main);
+        movie = new CardViewModel("Justice League ",R.drawable.train_101_200x200);
         movieList.add(movie);
         movie = new CardViewModel("Thor: Ragnarok",R.drawable.sri_lanka_main);
+        movieList.add(movie);
+        movie = new CardViewModel("Thor: Last",R.drawable.train_101_200x200);
         movieList.add(movie);
         recyclerViewAdapter.notifyDataSetChanged();
     }

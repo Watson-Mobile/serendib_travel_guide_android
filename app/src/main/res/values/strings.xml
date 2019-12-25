@@ -5,4 +5,13 @@
     <string name="title_notifications">Notifications</string>
 
     <string name="demo_card_text">Card Text</string>
+
+    <string name="demo_card_para">
+        Cdd the word "Detail" to every reference to an id, in order to differentiate
+    it from list_item ids. For example, change the ImageView ID from sportsImage to
+    sportsImageDetail, as well as any references to this ID for
+    relative placement such layout_below.
+    </string>
+
+
 </resources>
