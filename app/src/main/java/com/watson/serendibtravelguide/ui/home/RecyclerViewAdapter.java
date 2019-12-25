@@ -59,7 +59,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //            detailIntent.putExtra("title", currentSport.getTitle());
 //            detailIntent.putExtra("image_resource", currentSport.getImageResource());
             detailIntent.putExtra("title","SIGIRIYA");
-            detailIntent.putExtra("description","SIGIRIYA is a famous place");
+            detailIntent.putExtra("description","Add the word Detail to every " +
+                    "reference to an id, in order to differentiateit from list_item ids. " +
+                    "For example, change the ImageView ID from sportsImage to sportsImageDetail, " +
+                    "as well as any references to this ID for relative placement such " +
+                    "layout_below.");
 //            detailIntent.putExtra("image_resource",image);
             itemView.getContext().startActivity(detailIntent);
 
