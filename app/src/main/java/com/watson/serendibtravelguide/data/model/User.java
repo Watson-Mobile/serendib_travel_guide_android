@@ -2,8 +2,7 @@ package com.watson.serendibtravelguide.data.model;
 
 import java.util.ArrayList;
 
-public class user {
-
+public class User {
 
     private String userId;
     private String firstname;
@@ -11,11 +10,23 @@ public class user {
     private String username;
     private String email;
     private String userType;
-    private int telephone_number;
+    private long telephone_number;
     private String nic_num;
     private ArrayList<String> guide_locations;
     private String password;
 
+    public User(String userId, String firstname, String lastname, String username, String email, String userType, long telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+        this.userId = userId;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.email = email;
+        this.userType = userType;
+        this.telephone_number = telephone_number;
+        this.nic_num = nic_num;
+        this.guide_locations = guide_locations;
+        this.password = password;
+    }
 
     public String getUserId() {
         return userId;
@@ -65,11 +76,11 @@ public class user {
         this.userType = userType;
     }
 
-    public int getTelephone_number() {
+    public long getTelephone_number() {
         return telephone_number;
     }
 
-    public void setTelephone_number(int telephone_number) {
+    public void setTelephone_number(long telephone_number) {
         this.telephone_number = telephone_number;
     }
 

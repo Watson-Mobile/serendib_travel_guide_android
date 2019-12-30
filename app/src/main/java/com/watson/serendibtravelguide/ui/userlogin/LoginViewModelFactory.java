@@ -1,18 +1,13 @@
-package com.watson.serendibtravelguide.ui.login.ui.login;
+package com.watson.serendibtravelguide.ui.userlogin;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
 
-import com.watson.serendibtravelguide.ui.login.data.LoginDataSource;
-import com.watson.serendibtravelguide.ui.login.data.LoginRepository;
+import com.watson.serendibtravelguide.data.LoginDataSource;
+import com.watson.serendibtravelguide.data.LoginRepository;
 
-/**
- * ViewModel provider factory to instantiate LoginViewModel.
- * Required given LoginViewModel has a non-empty constructor
- */
-public class LoginViewModelFactory implements ViewModelProvider.Factory {
-
+public class LoginViewModelFactory implements ViewModelProvider.Factory{
     @NonNull
     @Override
     @SuppressWarnings("unchecked")

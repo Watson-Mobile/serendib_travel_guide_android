@@ -1,13 +1,10 @@
-package com.watson.serendibtravelguide.ui.login.ui.login;
+package com.watson.serendibtravelguide.ui.userlogin;
 
-/**
- * Class exposing authenticated user details to the UI.
- */
-class LoggedInUserView {
+public class LoggedUserView {
     private String displayName;
     //... other data fields that may be accessible to the UI
 
-    LoggedInUserView(String displayName) {
+    LoggedUserView(String displayName) {
         this.displayName = displayName;
     }
 

@@ -1,19 +1,17 @@
-package com.watson.serendibtravelguide.ui.login.ui.login;
+package com.watson.serendibtravelguide.ui.userlogin;
+
+import android.util.Patterns;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
-import com.watson.serendibtravelguide.ui.login.data.LoginRepository;
-import com.watson.serendibtravelguide.ui.login.data.Result;
-import com.watson.serendibtravelguide.ui.login.data.model.LoggedInUser;
-//import com.watson.serendibtravelguide.ui.login.R;
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.data.LoginRepository;
+import com.watson.serendibtravelguide.data.Result;
+import com.watson.serendibtravelguide.data.model.User;
 
 public class LoginViewModel extends ViewModel {
-
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
@@ -32,11 +30,11 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
+        Result<User> result = loginRepository.login(username, password);
 
         if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+            User data = ((Result.Success<User>) result).getData();
+            loginResult.setValue(new LoginResult(new LoggedUserView(data.getUsername())));
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }

@@ -1,11 +1,8 @@
-package com.watson.serendibtravelguide.ui.login.ui.login;
+package com.watson.serendibtravelguide.ui.userlogin;
 
 import androidx.annotation.Nullable;
 
-/**
- * Data validation state of the login form.
- */
-class LoginFormState {
+public class LoginFormState {
     @Nullable
     private Integer usernameError;
     @Nullable
