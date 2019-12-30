@@ -22,4 +22,7 @@
     <string name="nic_no">"NIC Number"</string>
     <string name="reg_pwd">"Password"</string>
     <string name="con_reg_pwd">"Confirm Password"</string>
+    <string name="action_next">"Next"</string>
+    <string name="action_registerTraveller">"Regsiter as Traveller"</string>
+    <string name="action_registerLocalGuide">"Register as Local Guide"</string>
 </resources>
