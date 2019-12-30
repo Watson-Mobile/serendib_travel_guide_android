@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.watson.serendibtravelguide.ui.Register.RegisterTravellerActivity;
 import com.watson.serendibtravelguide.ui.userlogin.LoginActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
     public void goToLoginPage(View view)
     {
         Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+
+    }
+
+    public void goToRegisterPage(View view)
+    {
+        Intent intent = new Intent(this, RegisterTravellerActivity.class);
         startActivity(intent);
 
     }
