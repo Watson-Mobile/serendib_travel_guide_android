@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">SerendibTravelGuide</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_dashboard">Search</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_add_new">Add New Place</string>
 
     <string name="demo_card_text">Card Text</string>
 
@@ -13,8 +14,7 @@
     relative placement such layout_below.
     </string>
 
-    <string name="search_label">Search</string>
-    <string name="search_hint">Search Place</string>
+    <string name="google_maps_key">AIzaSyD11iqwl4dM1oIWB0QG8qp53hx3hz8CMkU</string>
 
 
 </resources>
