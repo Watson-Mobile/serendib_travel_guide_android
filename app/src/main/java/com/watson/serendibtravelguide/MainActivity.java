@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.watson.serendibtravelguide.ui.Register.MainRegisterActivity;
+import com.watson.serendibtravelguide.ui.Register.MapTestActivity;
+import com.watson.serendibtravelguide.ui.Register.MapsActivity;
 import com.watson.serendibtravelguide.ui.Register.RegisterTravellerActivity;
 import com.watson.serendibtravelguide.ui.userlogin.LoginActivity;
 
@@ -46,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
     public void goToRegisterPage(View view)
     {
         Intent intent = new Intent(this,MainRegisterActivity.class);
+        startActivity(intent);
+
+    }
+
+    public void goMapPage(View view)
+    {
+        Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
 
     }

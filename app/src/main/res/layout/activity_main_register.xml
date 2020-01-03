@@ -15,7 +15,6 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="96dp"
         android:layout_marginEnd="30dp"
-        android:enabled="false"
         android:background="@drawable/btn_custom"
         android:text="@string/action_registerTraveller"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +26,7 @@
         android:fontFamily="sans-serif"
         android:textColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
-        android:onClick="goToTravellerRegisterPage"
+
         />
     <Button
         android:id="@+id/RegisterLocalGuide"
@@ -37,7 +36,6 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="30dp"
-        android:enabled="false"
         android:background="@drawable/btn_custom"
         android:text="@string/action_registerLocalGuide"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +46,7 @@
         android:layout_marginRight="20dp"
         android:fontFamily="sans-serif"
         android:textColor="@android:color/white"
-        android:onClick="goToLocalGuideRegisterPage"
+
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,6 +23,10 @@
     <string name="reg_pwd">"Password"</string>
     <string name="con_reg_pwd">"Confirm Password"</string>
     <string name="action_next">"Next"</string>
-    <string name="action_registerTraveller">"Regsiter as Traveller"</string>
+    <string name="action_registerTraveller">"Register as Traveller"</string>
     <string name="action_registerLocalGuide">"Register as Local Guide"</string>
+    <string name="title_activity_maps">Map</string>
+<!--    <string name="google_maps_api_key">AIzaSyB2tJ8pDaNO6l3wo2XJRtXdzmCnEfdtVW8</string>-->
+    <string name="action_addLocations">Add Location</string>
+    <string name="google_maps_api_key">AIzaSyAd_MAlvB03spY4wQMCOLEYF7abzodQBZ4</string>
 </resources>
