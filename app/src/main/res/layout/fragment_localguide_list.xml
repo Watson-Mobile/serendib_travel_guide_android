@@ -9,7 +9,6 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/no_space"
     android:layout_marginRight="@dimen/no_space"
-    android:background="@color/colorPrimaryDark"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.places.LocalGuideFragment"
     tools:listitem="@layout/fragment_localguide" />
