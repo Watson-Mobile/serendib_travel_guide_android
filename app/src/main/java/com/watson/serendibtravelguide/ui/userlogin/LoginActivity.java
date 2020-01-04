@@ -7,9 +7,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -20,12 +22,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.data.model.User;
+import com.watson.serendibtravelguide.data.model.UserResponse;
+import com.watson.serendibtravelguide.rest.UserApiService;
+import com.watson.serendibtravelguide.ui.home.HomeActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class LoginActivity extends AppCompatActivity {
 
 
     private LoginViewModel loginViewModel;
+    public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
+    private static Retrofit retrofit = null;
+    private LoginActivity loginActivity = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +132,9 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
+
+                connectAndGetLoginData();
+
             }
         });
     }
@@ -124,5 +147,47 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    public void connectAndGetLoginData() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL_AWS)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        UserApiService userApiService = retrofit.create(UserApiService.class);
+
+        List<User> placesOut = new ArrayList<>();
+
+        Call<UserResponse> call = userApiService.getMockLoginSuccess();
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                List<User> userData = response.body().getData();
+
+                /* remove this part after API correctly added*/
+                if (userData!=null){
+                    //assume login is success
+                    //change activity (LoginActivity => HomeActivity)
+                    Intent intent = new Intent(loginActivity, HomeActivity.class);
+                    //killing all other activities
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    startActivity(intent);
+                }
+
+
+//                Log.d(TAG, "Login Response: " + userData.size());
+//                Log.d("message","Incoming:" + response.body().getMessage());
+
+
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable throwable) {
+                Log.e(TAG, throwable.toString());
+            }
+        });
     }
 }

@@ -15,4 +15,8 @@ public interface UserApiService {
     @GET("all_user")
     Call<UserResponse> getAllUsers();
 
+
+    @GET("all_place")
+    Call<UserResponse> getMockLoginSuccess();
+
 }
