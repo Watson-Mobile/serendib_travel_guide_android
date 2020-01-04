@@ -3,6 +3,39 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Search</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">SIGN IN</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Invalid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="register_failed">"Register failed"</string>
+    <string name="register_success">"Register successful"</string>
+    <string name="password">"Password"</string>
+    <string name="e_mail">"Email"</string>
+    <string name="firstname">"First Name"</string>
+    <string name="lastname">"Last Name"</string>
+    <string name="username">"Username"</string>
+    <string name="tel_no">"Mobile Number"</string>
+    <string name="nic_no">"NIC Number"</string>
+    <string name="reg_pwd">"Password"</string>
+    <string name="con_reg_pwd">"Confirm Password"</string>
+    <string name="action_next">"Next"</string>
+    <string name="action_registerTraveller">"Register as Traveller"</string>
+    <string name="action_registerLocalGuide">"Register as Local Guide"</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="invalid_confirm_password">Invalid Confirm password</string>
+<!--    <string name="google_maps_api_key">AIzaSyB2tJ8pDaNO6l3wo2XJRtXdzmCnEfdtVW8</string>-->
+    <string name="action_addLocations">Add Location</string>
+    <string name="invalid_firstname">Invalid first name</string>
+    <string name="invalid_lastname">Invalid last name</string>
+    <string name="invalid_NIC">Invalid NIC number</string>
+    <string name="invalid_telephone_number">Invalid telephone number</string>
+    <string name="google_maps_api_key">AIzaSyAd_MAlvB03spY4wQMCOLEYF7abzodQBZ4</string>
     <string name="title_add_new">Add New Place</string>
 
     <string name="name_of_place">Title</string>
@@ -20,6 +53,7 @@
     relative placement such layout_below.
     </string>
 
+    <string name="google_maps_key">AIzaSyD11iqwl4dM1oIWB0QG8qp53hx3hz8CMkU</string>
 
     <string name="search_label">Search</string>
 
