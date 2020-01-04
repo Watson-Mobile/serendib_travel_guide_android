@@ -39,6 +39,12 @@
     <string name="google_maps_api_key">AIzaSyAd_MAlvB03spY4wQMCOLEYF7abzodQBZ4</string>
     <string name="title_add_new">Add New Place</string>
 
+    <string name="name_of_place">Title</string>
+    <string name="description_place">Description</string>
+    <string name="type_place">Type</string>
+    <string name="sample_string">Sample String</string>
+
+
     <string name="demo_card_text">Card Text</string>
 
     <string name="demo_card_para">
@@ -48,11 +54,13 @@
     relative placement such layout_below.
     </string>
 
-<!--    <string name="google_maps_key">AIzaSyD11iqwl4dM1oIWB0QG8qp53hx3hz8CMkU</string>-->
+    <string name="google_maps_key">AIzaSyD11iqwl4dM1oIWB0QG8qp53hx3hz8CMkU</string>
 
     <string name="search_label">Search</string>
 
     <string name="search_hint">Search Places</string>
 
     <string name="settings_description">settings_description</string>
+
+
 </resources>

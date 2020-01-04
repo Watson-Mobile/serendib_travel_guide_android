@@ -8,33 +8,44 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <!-- top toolbar -->
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/relLayout1">-->
-
-<!--            <include layout="@layout/layout_top_tabs"/>-->
-
-<!--        </RelativeLayout>-->
-
-        <!-- Middle section (body) -->
-        <RelativeLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/app_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+            app:titleTextColor="@color/colorOnPrimary" />
+
+
+        <RelativeLayout
             android:id="@+id/relLayout2"
-            android:layout_below="@+id/relLayout1">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <include layout="@layout/layout_center_viewpager"/>
-
-
+            <include layout="@layout/layout_center_viewpager" />
         </RelativeLayout>
 
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+<!--           <ListView-->
+<!--               android:id="@+id/light"-->
+<!--               android:layout_width="match_parent"-->
+<!--               android:layout_height="match_parent">-->
+
+<!--           </ListView>-->
+<!--        </RelativeLayout>-->
+
         <!-- bottom navigation -->
-        <include layout="@layout/layout_bottom_navigation_view"/>
+        <include layout="@layout/layout_bottom_navigation_view" />
 
 
     </RelativeLayout>

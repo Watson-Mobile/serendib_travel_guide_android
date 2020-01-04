@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.ui.addPlace.AddPlaceFragment;
 import com.watson.serendibtravelguide.ui.dashboard.DashboardFragment;
 import com.watson.serendibtravelguide.ui.home.HomeActivity;
 import com.watson.serendibtravelguide.ui.home.HomeFragment;
@@ -50,7 +51,7 @@ public class BottomNavigationViewHelper {
         transaction.commit();
     }
 
-    static void replaceFragment(Activity activity, Fragment fragment, int id, boolean add_to_backstack) {
+    public static void replaceFragment(Activity activity, Fragment fragment, int id, boolean add_to_backstack) {
         Fragment check_Fragment = getFragmentManager(activity).findFragmentByTag(fragment.getClass().getName());
         if (check_Fragment == null) {
             transaction = getTransaction(activity)
@@ -94,8 +95,11 @@ public class BottomNavigationViewHelper {
 
 
                                 break;
-                            case R.id.nav_notifications:
+                            case R.id.nav_add_place:
                                 //add activity
+                                Log.d(TAG, "Case Add");
+                                AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
+                                replaceFragment(activity, addPlaceFragment,R.id.relLayout2,true);
 
                                 break;
                         }
