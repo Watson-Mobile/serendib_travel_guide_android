@@ -2,11 +2,11 @@ package com.watson.serendibtravelguide.ui.home;
 
 public class CardViewModel {
     private String title;
-    private int image;
+    private String image;
     private String distance;
     private String type;
 
-    public CardViewModel(String title, int image, String distance, String type) {
+    public CardViewModel(String title, String image, String distance, String type) {
         this.title = title;
         this.image = image;
         this.distance = distance;
@@ -21,11 +21,11 @@ public class CardViewModel {
         this.title = title;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

@@ -14,11 +14,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.dummy.DummyContent;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
+
+import static com.watson.serendibtravelguide.config.Config.BASE_URL_IMG;
 
 public class DetailedDestination extends AppCompatActivity implements LocalGuideFragment.OnListFragmentInteractionListener {
 
@@ -39,9 +43,10 @@ public class DetailedDestination extends AppCompatActivity implements LocalGuide
 
         placeTitle.setText(getIntent().getStringExtra("title"));
         description.setText(getIntent().getStringExtra("description"));
+        Glide.with(mContext).load(BASE_URL_IMG+getIntent().getStringExtra("imagePath"))
+                .apply(new RequestOptions().override(200, 300))
+                .into(detailImage);
 
-//        Glide.with(this).load(getIntent().getIntExtra("image_resource",0))
-//                .into(detailImage);
 
         findGuides.setOnClickListener(new View.OnClickListener() {
             @Override

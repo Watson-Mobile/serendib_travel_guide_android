@@ -7,10 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,8 +63,8 @@ public class HomeFragment extends Fragment {
 
         movieList = new ArrayList<>();
         movieList1 = new ArrayList<>();
-        recyclerView = root.findViewById(R.id.recyclerView);
-        recyclerViewAdapter = new RecyclerViewAdapter(movieList);
+        recyclerView = root.findViewById(R.id.recyclerView_home);
+        recyclerViewAdapter = new RecyclerViewAdapter(movieList,this.getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -135,7 +133,7 @@ public class HomeFragment extends Fragment {
                 Log.d("message","Incoming:" + response.body().getMessage());
 
                 for (Place place: places) {
-                    movieList.add(new CardViewModel(place.getName(), R.drawable.sri_lanka_main,"12",
+                    movieList.add(new CardViewModel(place.getName(), place.getImagePaths().get(0),"12",
                             place.getType().get(0)));
                 }
 
