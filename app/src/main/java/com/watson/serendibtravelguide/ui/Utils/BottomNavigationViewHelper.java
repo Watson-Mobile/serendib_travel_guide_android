@@ -51,7 +51,7 @@ public class BottomNavigationViewHelper {
         transaction.commit();
     }
 
-    static void replaceFragment(Activity activity, Fragment fragment, int id, boolean add_to_backstack) {
+    public static void replaceFragment(Activity activity, Fragment fragment, int id, boolean add_to_backstack) {
         Fragment check_Fragment = getFragmentManager(activity).findFragmentByTag(fragment.getClass().getName());
         if (check_Fragment == null) {
             transaction = getTransaction(activity)
