@@ -17,8 +17,9 @@ import android.widget.ListView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
+import com.watson.serendibtravelguide.ui.places.LocalGuideFragment;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements LocalGuideFragment.OnListFragmentInteractionListener{
     private static final String TAG = "HomeActivity";
     private Context mContext = HomeActivity.this;
 
@@ -42,7 +43,12 @@ public class HomeActivity extends AppCompatActivity {
     private void setupBottomNavigationView(){
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationView bottomNavigationViewEx = (BottomNavigationView) findViewById(R.id.bottomNavBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(mContext, bottomNavigationViewEx);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx, this);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Object dummy){
+
     }
 
     @Override

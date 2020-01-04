@@ -5,16 +5,27 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.FragmentNavigator;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.dummy.DummyContent;
+import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 
 public class DetailedDestination extends AppCompatActivity implements LocalGuideFragment.OnListFragmentInteractionListener {
+
+    private static final int ACTIVITY_NUM = 1;
+    private static final String TAG = "DetailedPlaceActivity";
+    private Context mContext = DetailedDestination.this;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +65,8 @@ public class DetailedDestination extends AppCompatActivity implements LocalGuide
 
         });
 
+//        setupBottomNavigationView();
+
     }
 
 
@@ -61,5 +74,18 @@ public class DetailedDestination extends AppCompatActivity implements LocalGuide
     @Override
     public void onListFragmentInteraction(Object dummy){
 
+    }
+
+    /**
+     * BottomNavigationView setup
+     */
+    private void setupBottomNavigationView(){
+        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationView bottomNavigationViewEx = (BottomNavigationView) findViewById(R.id.bottomNavBar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx,this);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
     }
 }
