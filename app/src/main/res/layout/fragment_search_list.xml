@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/search_results_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </ListView>
-
-</RelativeLayout>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_result_list"
+    android:tag="list_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/no_space"
+    android:layout_marginRight="@dimen/no_space"
+    app:layoutManager="LinearLayoutManager"
+    tools:context=".ui.search.SearchListFragment"
+    tools:listitem="@layout/fragment_search_list_item" />

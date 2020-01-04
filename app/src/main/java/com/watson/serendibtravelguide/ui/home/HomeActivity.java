@@ -63,9 +63,9 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
             public boolean onQueryTextSubmit(String query) {
                 Log.d(TAG, "query submitted............");
                 Log.d(TAG,query);
-                searchListView =(ListView) findViewById(R.id.search_results_list);
-                adapter = new ArrayAdapter<String>(mContext,android.R.layout.simple_list_item_1,test_search_results);
-                searchListView.setAdapter(adapter);
+//                searchListView =(ListView) findViewById(R.id.light);
+//                adapter = new ArrayAdapter<String>(mContext,android.R.layout.simple_list_item_1,test_search_results);
+//                searchListView.setAdapter(adapter);
                 return false;
             }
 
