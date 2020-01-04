@@ -5,29 +5,27 @@ import android.widget.TextView;
 import androidx.lifecycle.ViewModel;
 
 public class SearchViewModel extends ViewModel {
-    private TextView cardTitle;
-    private TextView cardTag;
+    private String cardTitle;
+    private String cardTag;
 
-    public SearchViewModel(TextView cardTitle, TextView cardTag) {
+    public SearchViewModel(String cardTitle, String cardTag) {
         this.cardTitle = cardTitle;
         this.cardTag = cardTag;
     }
 
-    public TextView getCardTitle() {
+    public String getCardTitle() {
         return cardTitle;
     }
 
-    public void setCardTitle(TextView cardTitle) {
+    public void setCardTitle(String cardTitle) {
         this.cardTitle = cardTitle;
     }
 
-    public TextView getCardTag() {
+    public String getCardTag() {
         return cardTag;
     }
 
-    public void setCardTag(TextView cardTag) {
+    public void setCardTag(String cardTag) {
         this.cardTag = cardTag;
     }
-
-
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,10 +19,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 import com.watson.serendibtravelguide.ui.places.LocalGuideFragment;
+import com.watson.serendibtravelguide.ui.search.SearchListFragment;
 
 public class HomeActivity extends AppCompatActivity implements LocalGuideFragment.OnListFragmentInteractionListener{
     private static final String TAG = "HomeActivity";
     private Context mContext = HomeActivity.this;
+    private Activity homeActivity = this;
 
     private ListView searchListView;
     ArrayAdapter<String> adapter;
@@ -63,9 +66,13 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
             public boolean onQueryTextSubmit(String query) {
                 Log.d(TAG, "query submitted............");
                 Log.d(TAG,query);
+                SearchListFragment searchListFragment = new SearchListFragment();
+                BottomNavigationViewHelper.replaceFragment(homeActivity, searchListFragment,R.id.relLayout2,true);
+
 //                searchListView =(ListView) findViewById(R.id.light);
 //                adapter = new ArrayAdapter<String>(mContext,android.R.layout.simple_list_item_1,test_search_results);
 //                searchListView.setAdapter(adapter);
+
                 return false;
             }
 
