@@ -37,19 +37,28 @@ public class RegisterViewModel extends ViewModel {
 
         if (result instanceof Result.Success) {
             User data = ((Result.Success<User>) result).getData();
-            registerResult.setValue(new RegisterResult(new RegisteredUserView(data.getUsername())));
+            registerResult.setValue(new RegisterResult(R.string.register_success));
         } else {
-            registerResult.setValue(new RegisterResult(R.string.login_failed));
+            registerResult.setValue(new RegisterResult(R.string.register_failed));
         }
     }
 
-    public void registerDataChanged(String username, String password) {
-        if (!isUserNameValid(username)) {
-            registerFormState.setValue(new RegisterFormState(R.string.invalid_username, null));
-        } else if (!isPasswordValid(password)) {
-            registerFormState.setValue(new RegisterFormState(null, R.string.invalid_password));
-        } else {
-            registerFormState.setValue(new RegisterFormState(true));
+    public void registerDataChanged(String firstname,String lastname, String username, String NICNumber,long telephone_number,String password, String confirm_password) {
+        if (!isFirstnameValid(firstname)){
+            registerFormState.setValue(new RegisterFormState(R.string.invalid_firstname,null,null,null,null,null,null));
+        }else if(!isLastnameValid(lastname)) {
+            registerFormState.setValue(new RegisterFormState(null,R.string.invalid_lastname,null,null,null,null,null));
+        } else if (!isUserNameValid(username)) {
+            registerFormState.setValue(new RegisterFormState(null,null,R.string.invalid_username,null,null,null,null));
+        } else if(!isNICNumValid(NICNumber)){
+            registerFormState.setValue(new RegisterFormState(null,null,null,R.string.invalid_NIC,null,null,null));
+        }else if(!isTelephoneNumberValid(telephone_number)){
+            registerFormState.setValue(new RegisterFormState(null,null,null,null,R.string.invalid_telephone_number,null,null));
+        }else if(!isPasswordValid(password)){
+            registerFormState.setValue(new RegisterFormState(null,null,null,null,null,R.string.invalid_password,null));
+        }else if(isConfirmPassowrdValid(confirm_password, password)){
+            registerFormState.setValue(new RegisterFormState(null,null,null,null,null,null,R.string.invalid_confirm_password));
+
         }
     }
 
@@ -76,6 +85,18 @@ public class RegisterViewModel extends ViewModel {
         return password != null && password.trim().length() > 5;
     }
 
+    //cofirm password validation
+    private boolean isConfirmPassowrdValid(String confirm_password, String password){
+        if(confirm_password == null){
+            return false;
+        }
+        if(confirm_password != password){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     // validate firstname
     private boolean isFirstnameValid(String firstname) {
         if (firstname == null) {
@@ -90,6 +111,38 @@ public class RegisterViewModel extends ViewModel {
             return false;
         }
         return !lastname.trim().isEmpty();
+    }
+
+    private boolean isNICNumValid(String nic_num){
+        if(nic_num == null){
+            return false;
+        }else if(nic_num.trim().length() == 10){
+            if(nic_num.trim().substring(0,10).matches("\\d+")){
+                if(nic_num.trim().substring(10) == "v" ||  nic_num.trim().substring(10) == "V"){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+
+    }
+
+    private boolean isTelephoneNumberValid(long telephone_number){
+        if(Long.toString(telephone_number).isEmpty()){
+            return false;
+        }
+
+        if(Long.toString(telephone_number).trim().length()!=10){
+            return false;
+        }else{
+            return true;
+        }
     }
 
 

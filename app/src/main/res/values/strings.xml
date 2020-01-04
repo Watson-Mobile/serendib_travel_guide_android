@@ -10,9 +10,11 @@
     <string name="action_register">Register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_username">Invalid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="register_failed">"Register failed"</string>
+    <string name="register_success">"Register successful"</string>
     <string name="password">"Password"</string>
     <string name="e_mail">"Email"</string>
     <string name="firstname">"First Name"</string>
@@ -26,7 +28,12 @@
     <string name="action_registerTraveller">"Register as Traveller"</string>
     <string name="action_registerLocalGuide">"Register as Local Guide"</string>
     <string name="title_activity_maps">Map</string>
+    <string name="invalid_confirm_password">Invalid Confirm password</string>
 <!--    <string name="google_maps_api_key">AIzaSyB2tJ8pDaNO6l3wo2XJRtXdzmCnEfdtVW8</string>-->
     <string name="action_addLocations">Add Location</string>
+    <string name="invalid_firstname">Invalid first name</string>
+    <string name="invalid_lastname">Invalid last name</string>
+    <string name="invalid_NIC">Invalid NIC number</string>
+    <string name="invalid_telephone_number">Invalid telephone number</string>
     <string name="google_maps_api_key">AIzaSyAd_MAlvB03spY4wQMCOLEYF7abzodQBZ4</string>
 </resources>
