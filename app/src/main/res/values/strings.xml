@@ -5,6 +5,12 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_add_new">Add New Place</string>
 
+    <string name="name_of_place">Title</string>
+    <string name="description_place">Description</string>
+    <string name="type_place">Type</string>
+    <string name="sample_string">Sample String</string>
+
+
     <string name="demo_card_text">Card Text</string>
 
     <string name="demo_card_para">
