@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SerendibTravelGuide</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_dashboard">Search</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
@@ -36,4 +36,22 @@
     <string name="invalid_NIC">Invalid NIC number</string>
     <string name="invalid_telephone_number">Invalid telephone number</string>
     <string name="google_maps_api_key">AIzaSyAd_MAlvB03spY4wQMCOLEYF7abzodQBZ4</string>
+    <string name="title_add_new">Add New Place</string>
+
+    <string name="demo_card_text">Card Text</string>
+
+    <string name="demo_card_para">
+        Cdd the word "Detail" to every reference to an id, in order to differentiate
+    it from list_item ids. For example, change the ImageView ID from sportsImage to
+    sportsImageDetail, as well as any references to this ID for
+    relative placement such layout_below.
+    </string>
+
+<!--    <string name="google_maps_key">AIzaSyD11iqwl4dM1oIWB0QG8qp53hx3hz8CMkU</string>-->
+
+    <string name="search_label">Search</string>
+
+    <string name="search_hint">Search Places</string>
+
+    <string name="settings_description">settings_description</string>
 </resources>
