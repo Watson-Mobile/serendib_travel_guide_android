@@ -1,7 +1,6 @@
 package com.watson.serendibtravelguide.ui.Utils;
 
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,87 +18,90 @@ import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.ui.dashboard.DashboardFragment;
 import com.watson.serendibtravelguide.ui.home.HomeActivity;
 import com.watson.serendibtravelguide.ui.home.HomeFragment;
-import com.watson.serendibtravelguide.ui.places.DetailedDestination;
-
-public class BottomNavigationViewHelper extends AppCompatActivity {
-    private static final String TAG = "BottomNavigationViewHel";
+import com.watson.serendibtravelguide.ui.places.LocalGuideFragment;
+import com.watson.serendibtravelguide.ui.search.SearchActivity;
 
 
-    public static void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
-//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavBar);
-        Log.d(TAG, "setupBottomNavigationView: Setting up BottomNavigationView");
-//        bottomNavigationView.setItemHorizontalTranslationEnabled(true);
+public class BottomNavigationViewHelper {
+    private static final String TAG = "NavViewHelper";
+    private static FragmentTransaction transaction;
 
 
-//        bottomNavigationView.setOnNavigationItemSelectedListener(
-//                new BottomNavigationView.OnNavigationItemSelectedListener() {
-//                    @Override
-//                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                        switch (item.getItemId()) {
-//                            case R.id.nav_home:
-//                                //launch home activity
-//                                break;
-//                            case R.id.nav_search:
-//                                    // search activity
-//                                break;
-//                            case R.id.nav_notifications:
-//                                //add activity
-//
-//                                break;
-//                        }
-//                        return true;
-//                    }
-//
-//                });
+    private static FragmentTransaction getTransaction(Activity activity){
+        return getFragmentManager(activity).beginTransaction();
     }
 
-
-    public static void enableNavigation(final Context context, BottomNavigationView view){
-        view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
-                switch (item.getItemId()){
-
-                    case R.id.nav_home:
-                        Log.d(TAG, "Case Home Bottom");
-//                        Intent intent1 = new Intent(context, HomeActivity.class);//ACTIVITY_NUM = 0
-//                        context.startActivity(intent1);
-                        fragment = new HomeFragment();
-//                        loadFragment(fragment);
-                        break;
-
-                    case R.id.nav_search:
-                        Log.d(TAG, "Case Search Bottom");
-                        fragment = new DashboardFragment();
-//                        loadFragment(fragment);
-                        break;
-
-                    case R.id.nav_notifications:
-                        Log.d(TAG, "Case Notification Bottom");
-//                        Intent intent3 = new Intent(context, ShareActivity.class);//ACTIVITY_NUM = 2
-//                        context.startActivity(intent3);
-                        break;
-
-                    case R.id.nav_add_place:
-                        Log.d(TAG, "Case Add Bottom");
-//                        Intent intent4 = new Intent(context, LikesActivity.class);//ACTIVITY_NUM = 3
-//                        context.startActivity(intent4);
-                        break;
-                }
-
-
-                return false;
-            }
-        });
+    private static FragmentManager getFragmentManager(Activity activity){
+        return ((AppCompatActivity)activity).getSupportFragmentManager();
     }
 
-    private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.relLayout2, fragment);
-        transaction.addToBackStack(null);
+    /**
+     * Add Fragment to the given ID
+     * @param activity
+     * @param fragment
+     * @param id
+     * @param add_to_backstack
+     */
+    static void addFragment(Activity activity, Fragment fragment, int id, boolean add_to_backstack){
+        transaction = getTransaction(activity);
+        transaction.add(id,fragment,fragment.getClass().getName());
+        if (add_to_backstack)
+            transaction.addToBackStack(fragment.getClass().getName());
         transaction.commit();
+    }
+
+    static void replaceFragment(Activity activity, Fragment fragment, int id, boolean add_to_backstack) {
+        Fragment check_Fragment = getFragmentManager(activity).findFragmentByTag(fragment.getClass().getName());
+        if (check_Fragment == null) {
+            transaction = getTransaction(activity)
+                    .replace(id,fragment,fragment.getClass().getName());
+            if (add_to_backstack)
+                transaction.addToBackStack(fragment.getClass().getName());
+            transaction.commit();
+        }
+        else{
+            transaction = getTransaction(activity);
+            transaction.replace(id,check_Fragment,check_Fragment.getClass().getName())
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+
+    public static void setupBottomNavigationView(BottomNavigationView bottomNavigationView, Activity activity) {
+//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavBar);
+        Log.d(TAG, "Setting up BottomNavigationView");
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.nav_home:
+                                //launch home activity
+                                Log.d(TAG, "Case Home");
+                                HomeFragment homeFragment = new HomeFragment();
+                                addFragment(activity, homeFragment,R.id.relLayout2,true);
+//                                Intent intent1 = new Intent(context, HomeActivity.class);
+
+//                                context.startActivity(intent1);
+                                break;
+                            case R.id.nav_search:
+                                    // search activity
+                                Log.d(TAG, "Case Search");
+                                DashboardFragment dashboardFrag = new DashboardFragment();
+                                replaceFragment(activity, dashboardFrag,R.id.relLayout2,true);
+
+
+                                break;
+                            case R.id.nav_notifications:
+                                //add activity
+
+                                break;
+                        }
+                        return true;
+                    }
+
+                });
     }
 }

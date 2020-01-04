@@ -12,14 +12,14 @@
 
 
         <!-- top toolbar -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relLayout1">
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/relLayout1">-->
 
-            <include layout="@layout/layout_top_tabs"/>
+<!--            <include layout="@layout/layout_top_tabs"/>-->
 
-        </RelativeLayout>
+<!--        </RelativeLayout>-->
 
         <!-- Middle section (body) -->
         <RelativeLayout

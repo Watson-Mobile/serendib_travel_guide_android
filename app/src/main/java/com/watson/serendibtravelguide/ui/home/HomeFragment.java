@@ -71,6 +71,8 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
+
+
 //        connectAndGetApiData();
         connectAndGetApiDataAWS();
 //        prepareMovie();
