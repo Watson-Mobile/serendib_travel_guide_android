@@ -23,6 +23,10 @@ public class SearchListFragment extends Fragment {
     RecyclerView recyclerView;
     RecycleViewAdapterSearch searchAdapter;
 
+    public SearchListFragment(){
+
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class SearchViewModel extends ViewModel {
     private String cardTitle;
     private String cardTag;
+   // private String
 
     public SearchViewModel(String cardTitle, String cardTag) {
         this.cardTitle = cardTitle;
