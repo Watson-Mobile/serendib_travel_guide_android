@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.watson.serendibtravelguide.config.Config;
 import com.watson.serendibtravelguide.ui.home.HomeActivity;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_DISTANCE;
 import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_TIME;
 
@@ -50,6 +52,7 @@ public class AddPlaceFragment extends Fragment {
             String longitude = "Longitude: " + location.getLongitude();
             String latitude = "Latitude: " + location.getLatitude();
             String s = longitude + "\n" + latitude;
+            Log.d(TAG, "location String : "+s);
             sampleText.setHint(s);
         }
 

@@ -13,12 +13,29 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/place_autocomplete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <fragment
+                android:id="@+id/place_autocomplete"
+                android:layout_marginLeft="0dp"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                />
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/btn_custom"
+                android:text="@string/action_addLocations"/>
+
+        </LinearLayout>
+
 
     <fragment
         android:id="@+id/map"
@@ -28,18 +45,18 @@
 
 
     <Button
-        android:id="@+id/addLocations"
+        android:id="@+id/RegisterGuide"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginRight="25dp"
         android:background="@drawable/btn_custom"
         android:fontFamily="sans-serif"
-        android:text="@string/action_addLocations"
+        android:text="@string/action_register"
         android:textColor="@android:color/white"
         />
 

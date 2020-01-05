@@ -38,12 +38,12 @@ public class LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<User> login(String username, String password) {
-        // handle login
-        Result<User> result = dataSource.login(username, password);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<User>) result).getData());
-        }
-        return result;
-    }
+//    public Result<User> login(String username, String password) {
+//        // handle login
+//        Result<User> result = dataSource.login(username, password);
+//        if (result instanceof Result.Success) {
+//            setLoggedInUser(((Result.Success<User>) result).getData());
+//        }
+//        return result;
+//    }
 }

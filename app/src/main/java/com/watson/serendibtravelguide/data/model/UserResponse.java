@@ -13,7 +13,7 @@ public class UserResponse {
 
     @SerializedName("data")
     @Expose
-    private List<User> data;
+    private User data;
 
     @SerializedName("status")
     @Expose
@@ -36,11 +36,11 @@ public class UserResponse {
         this.success = success;
     }
 
-    public List<User> getData() {
+    public User getData() {
         return data;
     }
 
-    public void setData(List<User> data) {
+    public void setData(User data) {
         this.data = data;
     }
 

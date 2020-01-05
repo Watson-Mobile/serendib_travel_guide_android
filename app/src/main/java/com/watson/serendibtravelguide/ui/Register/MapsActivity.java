@@ -2,6 +2,7 @@ package com.watson.serendibtravelguide.ui.Register;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,15 +18,40 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private PlaceAutocompleteFragment placeAutoComplete;
+    private String firstname;
+    private String lastname;
+    private String username;
+    private String email;
+    private String NICNumber;
+    private ArrayList<String> telNumber;
+    private String password;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
+
+        Intent currentIntent = getIntent();
+        firstname = currentIntent.getStringExtra("firstname");
+        lastname = currentIntent.getStringExtra("lastname");
+        username = currentIntent.getStringExtra("username");
+        email = currentIntent.getStringExtra("email");
+        NICNumber = currentIntent.getStringExtra("NICNumber");
+        telNumber = currentIntent.getStringArrayListExtra("telNumber");
+        password = currentIntent.getStringExtra("password");
+
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         placeAutoComplete = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete);
