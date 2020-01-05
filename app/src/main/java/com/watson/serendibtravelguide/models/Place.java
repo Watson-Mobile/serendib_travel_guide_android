@@ -34,14 +34,19 @@ public class Place {
     @Expose
     private String id;
 
+    @SerializedName("image")
+    @Expose
+    private List<String> imagePaths = new ArrayList<String>();
+
     public Place(List<String> otherNames, List<String> type, String name, Point location, String description,
-                 String id) {
+                 String id, List<String> imagePaths) {
         this.otherNames = otherNames;
         this.type = type;
         this.name = name;
         this.location = location;
         this.description = description;
         this.id = id;
+        this.imagePaths = imagePaths;
     }
 
     public List<String> getOtherNames() {
@@ -90,5 +95,13 @@ public class Place {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public List<String> getImagePaths() {
+        return imagePaths;
+    }
+
+    public void setImagePaths(List<String> imagePaths) {
+        this.imagePaths = imagePaths;
     }
 }
