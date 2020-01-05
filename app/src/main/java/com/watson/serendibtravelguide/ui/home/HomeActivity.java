@@ -3,6 +3,9 @@ package com.watson.serendibtravelguide.ui.home;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -19,13 +22,12 @@ import com.watson.serendibtravelguide.ui.search.SearchListFragment;
 
 public class HomeActivity extends AppCompatActivity implements LocalGuideFragment.OnListFragmentInteractionListener {
     private static final String TAG = "HomeActivity";
-    private Context mContext = HomeActivity.this;
+    private static SearchListFragment searchListFragment;
+    private HomeFragment homeFragment;
     private Activity homeActivity = this;
 
     private MenuItem searchMenuItem;
     private SearchView searchView;
-    private SearchListFragment searchListFragment;
-    private HomeFragment homeFragment;
 
 
     @Override
@@ -63,9 +65,14 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if(searchListFragment!=null){
+                    Log.d(TAG,"Fragment removed......................");
+                    getSupportFragmentManager().beginTransaction().remove(searchListFragment).commit();
+                }
                 Log.d(TAG, "query submitted............");
                 Log.d(TAG,query);
-                searchListFragment = new SearchListFragment();
+                searchListFragment = new SearchListFragment(query);
+
                 BottomNavigationViewHelper.replaceFragment(homeActivity, searchListFragment,R.id.relLayout2,false);
 
                 return false;
@@ -109,5 +116,6 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
 
         return true;
     }
+
 
 }
