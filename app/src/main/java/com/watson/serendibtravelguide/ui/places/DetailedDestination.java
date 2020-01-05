@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.dummy.DummyContent;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
@@ -37,6 +39,8 @@ public class DetailedDestination extends AppCompatActivity implements
     private Context mContext = DetailedDestination.this;
     private MapView mMapView;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private Point located_point;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,8 @@ public class DetailedDestination extends AppCompatActivity implements
 
         placeTitle.setText(getIntent().getStringExtra("title"));
         description.setText(getIntent().getStringExtra("description"));
+        located_point = (Point) getIntent().getSerializableExtra("location_point");
+        title = getIntent().getStringExtra("title");
         Glide.with(mContext).load(BASE_URL_IMG+getIntent().getStringExtra("imagePath"))
                 .apply(new RequestOptions().override(200, 300))
                 .into(detailImage);
@@ -149,11 +155,14 @@ public class DetailedDestination extends AppCompatActivity implements
 
     @Override
     public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        map.addMarker(new MarkerOptions().position(
+                new LatLng(0, 0)).title("Marker"));
         map.setMyLocationEnabled(true);
-//        map.addMarker(new MarkerOptions().position(new LatLng(lastCordinates[0], lastCordinates[1])).title("New Toilet"));
-//        map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lastCordinates[0], lastCordinates[1])));
-//        map.animateCamera(CameraUpdateFactory.zoomTo(17));
+        map.addMarker(new MarkerOptions().position(
+                new LatLng(located_point.latitude(), located_point.longitude())).title(title));
+        map.moveCamera(CameraUpdateFactory.newLatLng(
+                new LatLng(located_point.latitude(), located_point.latitude())));
+        map.animateCamera(CameraUpdateFactory.zoomTo(8));
     }
 
     @Override
