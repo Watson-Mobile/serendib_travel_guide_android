@@ -27,6 +27,7 @@ import com.watson.serendibtravelguide.data.model.UserResponse;
 import com.watson.serendibtravelguide.rest.UserApiService;
 import com.watson.serendibtravelguide.ui.home.HomeActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
     private LoginActivity loginActivity = this;
+
+    public static User loggedUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,11 +119,16 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
+
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                    loginViewModel.login(usernameEditText.getText().toString(),
-//                            passwordEditText.getText().toString());
+                    try {
+                        loginViewModel.login(usernameEditText.getText().toString(),
+                                passwordEditText.getText().toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return false;
             }
@@ -129,12 +137,20 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                loginViewModel.login(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                try {
+                    if (loginViewModel.login(usernameEditText.getText().toString(),
+                            passwordEditText.getText().toString())) {
 
-                connectAndGetLoginData();
+                        Intent intent = new Intent(loginActivity, HomeActivity.class);
+                        //killing all other activities
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
 
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

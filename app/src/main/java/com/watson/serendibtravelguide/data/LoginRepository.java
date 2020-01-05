@@ -1,6 +1,9 @@
 package com.watson.serendibtravelguide.data;
 
 import com.watson.serendibtravelguide.data.model.User;
+
+import java.io.IOException;
+
 public class LoginRepository {
 
     private static volatile LoginRepository instance;
@@ -38,12 +41,12 @@ public class LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-//    public Result<User> login(String username, String password) {
-//        // handle login
-//        Result<User> result = dataSource.login(username, password);
-//        if (result instanceof Result.Success) {
-//            setLoggedInUser(((Result.Success<User>) result).getData());
-//        }
-//        return result;
-//    }
+    public Result<User> login(String username, String password) throws IOException {
+        // handle login
+        Result<User> result = dataSource.login(username, password);
+        if (result instanceof Result.Success) {
+            setLoggedInUser(((Result.Success<User>) result).getData());
+        }
+        return result;
+    }
 }
