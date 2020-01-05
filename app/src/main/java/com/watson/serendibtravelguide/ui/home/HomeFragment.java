@@ -1,18 +1,26 @@
 package com.watson.serendibtravelguide.ui.home;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.BuildConfig;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.models.MovieItem;
@@ -31,7 +39,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.content.Context.LOCATION_SERVICE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_DISTANCE;
+import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_TIME;
 
 
 public class HomeFragment extends Fragment {
@@ -48,6 +59,40 @@ public class HomeFragment extends Fragment {
 
     private List<CardViewModel> movieList;
     private static List<Place> movieList1;
+
+
+    private LocationManager mLocationManager;
+    private Point currentLocation;
+
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //your code here
+            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();
+            String longitude = "Longitude: " + location.getLongitude();
+            String latitude = "Latitude: " + location.getLatitude();
+            String s = longitude + "\n" + latitude;
+            Log.d(TAG, "location String : "+s);
+
+            currentLocation = Point.fromLngLat(location.getLatitude(),location.getLongitude());
+            Log.d(TAG, "Current Point : "+currentLocation);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,11 +114,24 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-
-
-//        connectAndGetApiData();
         connectAndGetApiDataAWS();
-//        prepareMovie();
+
+
+        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+
+        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.getActivity(),
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        }
+
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
         return root;
     }

@@ -48,7 +48,7 @@ public class AddPlaceFragment extends Fragment {
         @Override
         public void onLocationChanged(final Location location) {
             //your code here
-            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();   // Toast not showing
+            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();
             String longitude = "Longitude: " + location.getLongitude();
             String latitude = "Latitude: " + location.getLatitude();
             String s = longitude + "\n" + latitude;
@@ -95,25 +95,6 @@ public class AddPlaceFragment extends Fragment {
 
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
-        /*
-
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
-        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            return;
-        }
-
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME,
-                MIN_DISTANCE, this);
-         */
-
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +107,6 @@ public class AddPlaceFragment extends Fragment {
 
         return root;
     }
-
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
