@@ -10,6 +10,7 @@ import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.data.RegisterRepository;
 import com.watson.serendibtravelguide.data.Result;
 import com.watson.serendibtravelguide.data.model.User;
+import com.watson.serendibtravelguide.ui.userlogin.LoginFormState;
 
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class RegisterViewModel extends ViewModel {
         return registerResult;
     }
 
-    public void register(String firstname, String lastname, String username, String email, String userType, long telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+    public void register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
         // can be launched in a separate asynchronous job
         Result<User> result = registerRepository.register(firstname,lastname, username, email,userType,telephone_number,nic_num,guide_locations,password);
 
@@ -43,7 +44,7 @@ public class RegisterViewModel extends ViewModel {
         }
     }
 
-    public void registerDataChanged(String firstname,String lastname, String username, String email, String NICNumber,long telephone_number,String password, String confirm_password) {
+    public void registerDataChanged(String firstname,String lastname, String username, String email, String NICNumber,String telephone_number,String password, String confirm_password) {
         if (!isFirstnameValid(firstname)) {
             registerFormState.setValue(new RegisterFormState(R.string.invalid_firstname, null, null, null, null, null, null, null));
         } else if (!isLastnameValid(lastname)) {
@@ -60,7 +61,8 @@ public class RegisterViewModel extends ViewModel {
             registerFormState.setValue(new RegisterFormState(null,null,null,null,null,R.string.invalid_password,null,null));
         }else if(isConfirmPassowrdValid(confirm_password, password)){
             registerFormState.setValue(new RegisterFormState(null,null,null,null,null,null,null,R.string.invalid_confirm_password));
-
+        }else{
+            registerFormState.setValue(new RegisterFormState(true));
         }
     }
 
@@ -143,12 +145,12 @@ public class RegisterViewModel extends ViewModel {
 
     }
 
-    private boolean isTelephoneNumberValid(long telephone_number){
-        if(Long.toString(telephone_number).isEmpty()){
+    private boolean isTelephoneNumberValid(String telephone_number){
+        if(telephone_number.isEmpty()){
             return false;
         }
 
-        if(Long.toString(telephone_number).trim().length()!=10){
+        if(telephone_number.trim().length()!=10){
             return false;
         }else{
             return true;

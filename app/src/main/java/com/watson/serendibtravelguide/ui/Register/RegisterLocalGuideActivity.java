@@ -27,26 +27,19 @@ import com.watson.serendibtravelguide.ui.userlogin.LoginResult;
 import com.watson.serendibtravelguide.ui.userlogin.LoginViewModel;
 import com.watson.serendibtravelguide.ui.userlogin.LoginViewModelFactory;
 
+import java.util.ArrayList;
+
 public class RegisterLocalGuideActivity extends AppCompatActivity {
 
     Button btn_nextPage;
+
+    Bundle extras;
 
     RegisterViewModel registerViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_local_guide);
-        btn_nextPage = (Button)findViewById(R.id.Next);
-        btn_nextPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterLocalGuideActivity.this, MapsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        registerViewModel = ViewModelProviders.of(this, new RegisterViewModelFactory())
-                .get(RegisterViewModel.class);
 
         final EditText firstnameEditText = findViewById(R.id.firstname);
         final EditText lastnameEditText = findViewById(R.id.lastname);
@@ -58,6 +51,33 @@ public class RegisterLocalGuideActivity extends AppCompatActivity {
         final EditText confirm_passwordEditText = findViewById(R.id.register_con_pwd);
         final Button nextButton = findViewById(R.id.Next);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+
+        extras = new Bundle();
+        btn_nextPage = (Button)findViewById(R.id.Next);
+        btn_nextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                extras.putString("firstname",firstnameEditText.getText().toString());
+                extras.putString("lastname",lastnameEditText.getText().toString());
+                extras.putString("username",usernameEditText.getText().toString());
+                extras.putString("email",emailEditText.getText().toString());
+                extras.putString("NICNumber",nic_numberEditText.getText().toString());
+                ArrayList<String> tel_nums = new ArrayList<>();
+                tel_nums.add(telephone_numberEditText.getText().toString());
+                extras.putStringArrayList("telNumber",tel_nums);
+                extras.putString("password",passwordEditText.getText().toString());
+                Intent intent = new Intent(RegisterLocalGuideActivity.this, MapsActivity.class);
+                intent.putExtras(extras);
+                startActivity(intent);
+            }
+        });
+
+        registerViewModel = ViewModelProviders.of(this, new RegisterViewModelFactory())
+                .get(RegisterViewModel.class);
+
+
+
+
 
         registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
             @Override
@@ -127,7 +147,7 @@ public class RegisterLocalGuideActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                registerViewModel.registerDataChanged(firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),emailEditText.getText().toString(),nic_numberEditText.getText().toString(), Long.parseLong(telephone_numberEditText.getText().toString()),
+                registerViewModel.registerDataChanged(firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),emailEditText.getText().toString(),nic_numberEditText.getText().toString(), telephone_numberEditText.getText().toString(),
                         passwordEditText.getText().toString(),confirm_passwordEditText.getText().toString());
             }
         };

@@ -31,7 +31,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="invalid_confirm_password">Invalid Confirm password</string>
 <!--    <string name="google_maps_api_key">AIzaSyB2tJ8pDaNO6l3wo2XJRtXdzmCnEfdtVW8</string>-->
-    <string name="action_addLocations">Add Location</string>
+    <string name="action_addLocations">Add</string>
     <string name="invalid_firstname">Invalid first name</string>
     <string name="invalid_lastname">Invalid last name</string>
     <string name="invalid_NIC">Invalid NIC number</string>

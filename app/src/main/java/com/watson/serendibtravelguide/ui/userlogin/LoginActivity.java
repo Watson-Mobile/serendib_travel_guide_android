@@ -20,12 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.data.Result;
+import com.watson.serendibtravelguide.data.model.User;
 
 
 public class LoginActivity extends AppCompatActivity {
 
 
     private LoginViewModel loginViewModel;
+    public static User loggedUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,10 +122,16 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Welcome " + loggedUser.getFirstname() + " " +loggedUser.getLastname(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        if(loggedUser.getEmail()==null){
+            Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getApplicationContext(),"Welcome " + loggedUser.getFirstname() + " " +loggedUser.getLastname(),Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

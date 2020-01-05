@@ -1,21 +1,48 @@
 package com.watson.serendibtravelguide.data.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 public class User {
 
+    @SerializedName("userId")
+    @Expose
     private String userId;
+    @SerializedName("firstname")
+    @Expose
     private String firstname;
+    @SerializedName("lastname")
+    @Expose
     private String lastname;
+    @SerializedName("username")
+    @Expose
     private String username;
+    @SerializedName("email")
+    @Expose
     private String email;
+    @SerializedName("userType")
+    @Expose
     private String userType;
-    private long telephone_number;
+    @SerializedName("telephone_number")
+    @Expose
+    private ArrayList<String> telephone_number;
+    @SerializedName("nic_num")
+    @Expose
     private String nic_num;
+    @SerializedName("guide_locations")
+    @Expose
     private ArrayList<String> guide_locations;
+    @SerializedName("password")
+    @Expose
     private String password;
 
-    public User(String userId, String firstname, String lastname, String username, String email, String userType, long telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+    public User(){
+
+    }
+
+    public User(String userId, String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
         this.userId = userId;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -76,11 +103,11 @@ public class User {
         this.userType = userType;
     }
 
-    public long getTelephone_number() {
+    public ArrayList<String> getTelephone_number() {
         return telephone_number;
     }
 
-    public void setTelephone_number(long telephone_number) {
+    public void setTelephone_number(ArrayList<String> telephone_number) {
         this.telephone_number = telephone_number;
     }
 

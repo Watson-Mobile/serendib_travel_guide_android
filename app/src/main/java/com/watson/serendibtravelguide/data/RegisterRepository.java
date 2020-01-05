@@ -40,7 +40,7 @@ public class RegisterRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<User> register(String firstname, String lastname, String username, String email, String userType, long telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+    public Result<User> register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
         // handle login
         Result<User> result = dataSource.register(firstname,lastname, username, email,userType,telephone_number,nic_num,guide_locations,password);
         if (result instanceof Result.Success) {
