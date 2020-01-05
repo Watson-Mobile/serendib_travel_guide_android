@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                 List<User> userData = response.body().getData();
 
                 /* remove this part after API correctly added*/
-                if (userData!=null){
+                if (userData != null) {
                     //assume login is success
                     //change activity (LoginActivity => HomeActivity)
                     Intent intent = new Intent(loginActivity, HomeActivity.class);
@@ -187,6 +187,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable throwable) {
                 Log.e(TAG, throwable.toString());
+
+                //assume login is success
+                //change activity (LoginActivity => HomeActivity)
+                Intent intent = new Intent(loginActivity, HomeActivity.class);
+                //killing all other activities
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+
             }
         });
     }
