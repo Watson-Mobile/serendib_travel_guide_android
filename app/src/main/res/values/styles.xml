@@ -36,4 +36,11 @@
 
     </style>
 
+    <style name="chipTextappearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/colorBackground</item>
+
+    </style>
+
 </resources>
