@@ -2,8 +2,6 @@ package com.watson.serendibtravelguide.ui.Utils;
 
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -16,11 +14,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.ui.addPlace.AddPlaceFragment;
-import com.watson.serendibtravelguide.ui.dashboard.DashboardFragment;
-import com.watson.serendibtravelguide.ui.home.HomeActivity;
+import com.watson.serendibtravelguide.ui.dashboard.ProfileFragment;
 import com.watson.serendibtravelguide.ui.home.HomeFragment;
-import com.watson.serendibtravelguide.ui.places.LocalGuideFragment;
-import com.watson.serendibtravelguide.ui.search.SearchActivity;
+import com.watson.serendibtravelguide.ui.notifications.NotificationsFragment;
 
 
 public class BottomNavigationViewHelper {
@@ -28,24 +24,25 @@ public class BottomNavigationViewHelper {
     private static FragmentTransaction transaction;
 
 
-    private static FragmentTransaction getTransaction(Activity activity){
+    private static FragmentTransaction getTransaction(Activity activity) {
         return getFragmentManager(activity).beginTransaction();
     }
 
-    private static FragmentManager getFragmentManager(Activity activity){
-        return ((AppCompatActivity)activity).getSupportFragmentManager();
+    private static FragmentManager getFragmentManager(Activity activity) {
+        return ((AppCompatActivity) activity).getSupportFragmentManager();
     }
 
     /**
      * Add Fragment to the given ID
+     *
      * @param activity
      * @param fragment
      * @param id
      * @param add_to_backstack
      */
-    static void addFragment(Activity activity, Fragment fragment, int id, boolean add_to_backstack){
+    static void addFragment(Activity activity, Fragment fragment, int id, boolean add_to_backstack) {
         transaction = getTransaction(activity);
-        transaction.add(id,fragment,fragment.getClass().getName());
+        transaction.add(id, fragment, fragment.getClass().getName());
         if (add_to_backstack)
             transaction.addToBackStack(fragment.getClass().getName());
         transaction.commit();
@@ -55,14 +52,13 @@ public class BottomNavigationViewHelper {
         Fragment check_Fragment = getFragmentManager(activity).findFragmentByTag(fragment.getClass().getName());
         if (check_Fragment == null) {
             transaction = getTransaction(activity)
-                    .replace(id,fragment,fragment.getClass().getName());
+                    .replace(id, fragment, fragment.getClass().getName());
             if (add_to_backstack)
                 transaction.addToBackStack(fragment.getClass().getName());
             transaction.commit();
-        }
-        else{
+        } else {
             transaction = getTransaction(activity);
-            transaction.replace(id,check_Fragment,check_Fragment.getClass().getName())
+            transaction.replace(id, check_Fragment, check_Fragment.getClass().getName())
                     .addToBackStack(null)
                     .commit();
         }
@@ -82,16 +78,16 @@ public class BottomNavigationViewHelper {
                                 //launch home activity
                                 Log.d(TAG, "Case Home");
                                 HomeFragment homeFragment = new HomeFragment();
-                                addFragment(activity, homeFragment,R.id.relLayout2,false);
+                                addFragment(activity, homeFragment, R.id.relLayout2, false);
 //                                Intent intent1 = new Intent(context, HomeActivity.class);
 
 //                                context.startActivity(intent1);
                                 break;
                             case R.id.nav_search:
-                                    // search activity
+                                // add place activity
                                 Log.d(TAG, "Case Search");
-                                DashboardFragment dashboardFrag = new DashboardFragment();
-                                replaceFragment(activity, dashboardFrag,R.id.relLayout2,false);
+                                ProfileFragment dashboardFrag = new ProfileFragment();
+                                replaceFragment(activity, dashboardFrag, R.id.relLayout2, false);
 
 
                                 break;
@@ -99,7 +95,15 @@ public class BottomNavigationViewHelper {
                                 //add activity
                                 Log.d(TAG, "Case Add");
                                 AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
-                                replaceFragment(activity, addPlaceFragment,R.id.relLayout2,false);
+                                replaceFragment(activity, addPlaceFragment, R.id.relLayout2, false);
+
+                                break;
+
+                            case R.id.nav_notifications:
+                                //add activity
+                                Log.d(TAG, "Case Notification");
+                                NotificationsFragment notificationsFragment = new NotificationsFragment("nature");
+                                replaceFragment(activity, notificationsFragment, R.id.relLayout2, false);
 
                                 break;
                         }

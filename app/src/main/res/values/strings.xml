@@ -62,6 +62,8 @@
 
     <string name="search_results">Search Results...</string>
 
+    <string name="notification_title">Notifications</string>
+
     <string name="settings_description">settings_description</string>
     <string name="search_item_image">Search Item Image</string>
 

@@ -29,6 +29,7 @@ import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.dummy.DummyContent;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.watson.serendibtravelguide.config.Config.BASE_URL_IMG;
 
 public class DetailedDestination extends AppCompatActivity implements
@@ -59,6 +60,8 @@ public class DetailedDestination extends AppCompatActivity implements
         Glide.with(mContext).load(BASE_URL_IMG+getIntent().getStringExtra("imagePath"))
                 .apply(new RequestOptions().override(200, 300))
                 .into(detailImage);
+
+        Log.d(TAG, "location String : "+ located_point.latitude());
 
 
         findGuides.setOnClickListener(new View.OnClickListener() {
@@ -159,9 +162,9 @@ public class DetailedDestination extends AppCompatActivity implements
                 new LatLng(0, 0)).title("Marker"));
         map.setMyLocationEnabled(true);
         map.addMarker(new MarkerOptions().position(
-                new LatLng(located_point.longitude(), located_point.latitude())).title(title));
+                new LatLng(located_point.latitude(), located_point.longitude())).title(title));
         map.moveCamera(CameraUpdateFactory.newLatLng(
-                new LatLng(located_point.longitude(), located_point.latitude())));
+                new LatLng(located_point.latitude(), located_point.longitude())));
         map.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
