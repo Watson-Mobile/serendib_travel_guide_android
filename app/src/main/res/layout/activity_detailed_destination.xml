@@ -37,7 +37,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frame_detailed" />
+            app:layout_constraintTop_toBottomOf="@+id/frame_guide" />
 
         <FrameLayout
             android:id="@+id/frame_detailed"
@@ -87,22 +87,40 @@
                 android:textStyle="normal"
                 app:layout_constraintStart_toEndOf="@+id/title_detailed" />
 
-            <TextView
-                android:id="@+id/txt_link_guides"
+<!--            <TextView-->
+<!--                android:id="@+id/txt_link_guides"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_gravity="bottom"-->
+<!--                android:layout_marginTop="400dp"-->
+<!--                android:clickable="true"-->
+<!--                android:fontFamily="sans-serif-smallcaps"-->
+<!--                android:padding="@dimen/activity_horizontal_margin"-->
+<!--                android:text="find a guide"-->
+<!--                android:textAlignment="gravity"-->
+<!--                android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textStyle="italic"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/txt_detailed_description" />-->
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/frame_guide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:paddingTop="@dimen/card_spacing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frame_detailed">
+            <Button
+                android:id="@+id/findguide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="350dp"
-                android:clickable="true"
-                android:fontFamily="sans-serif-smallcaps"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:text="find a guide"
-                android:textAlignment="gravity"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/black"
-                android:textStyle="italic"
-                app:layout_constraintStart_toEndOf="@+id/txt_detailed_description" />
+                android:text="find a guide">
+
+            </Button>
 
         </FrameLayout>
 

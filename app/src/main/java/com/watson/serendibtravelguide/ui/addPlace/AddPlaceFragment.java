@@ -231,8 +231,10 @@ public class AddPlaceFragment extends Fragment {
         get_my_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationEditText_lat.setText(df.format(String.valueOf(current_location_lat)));
-                locationEditText_long.setText(df.format(String.valueOf(current_location_long)));
+                double roundOff_lat = Math.round(current_location_lat * 100.0) / 100.0;
+                double roundOff_long = Math.round(current_location_long * 100.0) / 100.0;
+                locationEditText_lat.setText(String.valueOf(roundOff_lat));
+                locationEditText_long.setText(String.valueOf(roundOff_long));
             }
 
 

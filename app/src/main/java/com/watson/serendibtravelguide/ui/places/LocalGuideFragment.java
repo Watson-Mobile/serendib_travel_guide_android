@@ -53,6 +53,7 @@ public class LocalGuideFragment extends Fragment {
     private static Retrofit retrofit = null;
     private MyLocalGuideRecyclerViewAdapter recyclerViewAdapter;
 
+
     List<User> placesOut;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the

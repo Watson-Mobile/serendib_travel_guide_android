@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,7 +53,11 @@ public class DetailedDestination extends AppCompatActivity implements
         TextView placeTitle = (TextView)findViewById(R.id.title_detailed);
         TextView description = (TextView)findViewById(R.id.txt_detailed_description);
         ImageView detailImage = (ImageView)findViewById(R.id.image_detailed);
-        TextView findGuides = (TextView)findViewById(R.id.txt_link_guides);
+        //TextView findGuides = (TextView)findViewById(R.id.txt_link_guides);
+        Button findGuides = (Button)findViewById(R.id.findguide);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+
 
         placeTitle.setText(getIntent().getStringExtra("title"));
         description.setText(getIntent().getStringExtra("description"));
@@ -74,6 +80,9 @@ public class DetailedDestination extends AppCompatActivity implements
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_detailed , fragment);
                 transaction.commit();
+                FrameLayout layout = (FrameLayout)findViewById(R.id.frame_guide);
+                layout.setVisibility(View.GONE);
+
 
 //                FragmentManager manager = getFragmentManager();
 //                FragmentTransaction transaction = manager.beginTransaction();
