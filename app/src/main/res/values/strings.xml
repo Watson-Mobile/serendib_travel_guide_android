@@ -45,7 +45,7 @@
     <string name="description_place">Description</string>
     <string name="type_place">Type</string>
     <string name="other_name">Other Names</string>
-    <string name="get_my_location">Get My Location</string>
+    <string name="get_my_location">Locate</string>
     <string name="place_type">Place Type</string>
     <string name="action_take_phot">Upload Photo</string>
     <string name="invalid_placename">Invalid Place Name</string>
