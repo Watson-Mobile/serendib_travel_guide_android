@@ -7,7 +7,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -47,12 +49,16 @@ public class LoginActivity extends AppCompatActivity {
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
     private LoginActivity loginActivity = this;
+    private SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
 
     public static User loggedUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPref = getSharedPreferences("serandib_travel_guide_user", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
         setContentView(R.layout.activity_login2);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -139,9 +145,26 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 try {
-                    if (loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString())) {
+                    User userLoggedIn = loginViewModel.login(usernameEditText.getText().toString(),
+                            passwordEditText.getText().toString());
+                    if (userLoggedIn != null) {
 
+                        editor.putBoolean("userLogged", true);
+                        editor.putString("firstName", userLoggedIn.getFirstname());
+                        editor.putString("lastName", userLoggedIn.getLastname());
+                        editor.putString("email", userLoggedIn.getEmail());
+                        editor.putString("username", userLoggedIn.getUsername());
+                        editor.putString("userId", userLoggedIn.getUserId());
+                        editor.putString("userType", userLoggedIn.getUserType());
+                        if (userLoggedIn.getUserType() == "Local_Assistent") {
+                            editor.putString("telephoneNumber", userLoggedIn.getTelephone_number().get(0));
+                            editor.putString("nicNumber", userLoggedIn.getNic_num());
+                            editor.putFloat("logitude", 79.899963F);
+                            editor.putFloat("langitude", 6.797072F);
+                        }
+                        editor.commit();
+
+                        loggedUser = userLoggedIn;
                         Intent intent = new Intent(loginActivity, HomeActivity.class);
                         //killing all other activities
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

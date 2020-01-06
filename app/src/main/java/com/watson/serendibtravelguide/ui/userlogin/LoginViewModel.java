@@ -30,17 +30,17 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public boolean login(String username, String password) throws IOException {
+    public User login(String username, String password) throws IOException {
         // can be launched in a separate asynchronous job
         Result<User> result = loginRepository.login(username, password);
 
         if (result instanceof Result.Success) {
             User data = ((Result.Success<User>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedUserView(data.getUsername())));
-            return true;
+            return data;
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
-            return false;
+            return null;
         }
     }
 
