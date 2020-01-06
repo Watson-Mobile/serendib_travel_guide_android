@@ -70,7 +70,7 @@ public class NotificationsFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
+        final TextView textView = root.findViewById(R.id.notification_title);
 
         longitude = sharedPref.getFloat("latitude",79);
         latitude = sharedPref.getFloat("longitude",6);
@@ -78,7 +78,7 @@ public class NotificationsFragment extends Fragment {
         Log.d("Nofification","latitude: "+latitude);
         Log.d("Notification","longitude: "+longitude);
 
-        notificationsViewModel.getText().observe(this, new Observer<String>() {
+//        notificationsViewModel.getText().observe(this, new Observer<String>() {
         searchResultsTextView = root.findViewById(R.id.notification_title);
         recyclerView = root.findViewById(R.id.notification_list);
         searchAdapter = new RecycleViewAdapterNotification(searchViewList, this.getContext());
@@ -130,6 +130,7 @@ public class NotificationsFragment extends Fragment {
             }
         });
     }
+
 
 
 
