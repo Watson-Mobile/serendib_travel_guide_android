@@ -40,13 +40,45 @@ public class NotificationsFragment extends Fragment {
     private float longitude;
     private SharedPreferences sharedPref;
 
+    private static final String TAG = "SearchListFragment";
+    private static Retrofit retrofit = null;
+    private String userId;
+    private List<Place> searchPlaceList = new ArrayList<>();
+    private List<SearchViewModel> searchViewList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private RecycleViewAdapterNotification searchAdapter;
+    private TextView searchResultsTextView;
+
+    public NotificationsFragment(String userId) {
+        this.userId = userId;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         sharedPref = getContext().getSharedPreferences("serandib_travel_guide_user",Context.MODE_PRIVATE);
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.serverIp)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        Log.d(TAG, "From search fragment, query received: " + userId);
+        this.queryPlaces(userId);
+
+
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        final TextView textView = root.findViewById(R.id.notification_title);
+
+        longitude = sharedPref.getFloat("latitude",79);
+        latitude = sharedPref.getFloat("longitude",6);
+
+        Log.d("Nofification","latitude: "+latitude);
+        Log.d("Notification","longitude: "+longitude);
+
+//        notificationsViewModel.getText().observe(this, new Observer<String>() {
         searchResultsTextView = root.findViewById(R.id.notification_title);
         recyclerView = root.findViewById(R.id.notification_list);
         searchAdapter = new RecycleViewAdapterNotification(searchViewList, this.getContext());
@@ -63,15 +95,6 @@ public class NotificationsFragment extends Fragment {
         Call<PlaceResponse> searchCall = placeApiService.searchPlaces(query);
 
         searchCall.enqueue(new Callback<PlaceResponse>() {
-        final TextView textView = root.findViewById(R.id.text_notifications);
-
-        longitude = sharedPref.getFloat("latitude",79);
-        latitude = sharedPref.getFloat("longitude",6);
-
-        Log.d("Nofification","latitude: "+latitude);
-        Log.d("Notification","longitude: "+longitude);
-
-        notificationsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
                 List<Place> searchPlaces = response.body().getData();
@@ -107,6 +130,7 @@ public class NotificationsFragment extends Fragment {
             }
         });
     }
+
 
 
 
