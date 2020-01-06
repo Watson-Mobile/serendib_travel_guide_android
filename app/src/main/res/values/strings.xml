@@ -39,6 +39,7 @@
 <!--    <string name="google_maps_api_key">AIzaSyAd_MAlvB03spY4wQMCOLEYF7abzodQBZ4</string>-->
     <string name="google_maps_api_key">AIzaSyDflkvLylyshUs_Qs-7U_9gvWbqgWReijE</string>
     <string name="title_add_new">Add New Place</string>
+    <string name="action_add_newplaces">Add New Place</string>
 
     <string name="name_of_place">Place Name</string>
     <string name="description_place">Description</string>

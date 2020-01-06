@@ -37,16 +37,17 @@ public class AddPlaceViewModel extends ViewModel {
         return placeResult;
     }
 
-    public void addPlace(Place newPlace) throws IOException {
+    public boolean addPlace(Place newPlace) throws IOException {
         // can be launched in a separate asynchronous job
         Result<Place> result = placeRepository.addPlace(newPlace);
 
         if (result instanceof Result.Success) {
             Place data = ((Result.Success<Place>) result).getData();
+            return true;
             //placeResult.setValue(new PlaceResult(new LoggedUserView(data.getUsername())));
 
         } else {
-            placeResult.setValue(new PlaceResult());
+           return false;
 
         }
     }
