@@ -57,8 +57,8 @@ public class HomeFragment extends Fragment {
 
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
 
-    private List<CardViewModel> movieList;
-    private static List<Place> movieList1;
+    private List<CardViewModel> placeList;
+    private static List<Place> placeList1;
 
 
     private LocationManager mLocationManager;
@@ -72,10 +72,10 @@ public class HomeFragment extends Fragment {
             String longitude = "Longitude: " + location.getLongitude();
             String latitude = "Latitude: " + location.getLatitude();
             String s = longitude + "\n" + latitude;
-            Log.d(TAG, "location String : "+s);
+            Log.d(TAG, "location String : " + s);
 
-            currentLocation = Point.fromLngLat(location.getLatitude(),location.getLongitude());
-            Log.d(TAG, "Current Point : "+currentLocation);
+            currentLocation = Point.fromLngLat(location.getLatitude(), location.getLongitude());
+            Log.d(TAG, "Current Point : " + currentLocation);
         }
 
         @Override
@@ -96,9 +96,10 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        currentLocation = Point.fromLngLat( 79.899963,6.797072);
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.card_text_distance);
+        final TextView textView = root.findViewById(R.id.item_chip_distance);
 //        homeViewModel.getText().observe(this, new Observer<String>() {
 //            @Override
 //            public void onChanged(@Nullable String s) {
@@ -106,10 +107,10 @@ public class HomeFragment extends Fragment {
 //            }
 //        });
 
-        movieList = new ArrayList<>();
-        movieList1 = new ArrayList<>();
+        placeList = new ArrayList<>();
+        placeList1 = new ArrayList<>();
         recyclerView = root.findViewById(R.id.recyclerView_home);
-        recyclerViewAdapter = new RecyclerViewAdapter(movieList,this.getContext());
+        recyclerViewAdapter = new RecyclerViewAdapter(placeList, this.getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -152,7 +153,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 List<MovieItem> movies = response.body().getResults();
-//                movieList = response.body().getResults();
+//                placeList = response.body().getResults();
 //                recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
 
                 Log.d(TAG, "Number of movies received: " + movies.size());
@@ -188,15 +189,17 @@ public class HomeFragment extends Fragment {
 //                recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
 
                 Log.d(TAG, "Number of movies received: " + places.size());
-                Log.d("message","Incoming:" + response.body().getMessage());
+                Log.d("message", "Incoming:" + response.body().getMessage());
 
-                for (Place place: places) {
-                    movieList.add(new CardViewModel(place.getName(), place.getImagePaths().get(0),"12",
+                for (Place place : places) {
+                    double distanceFromCurrentPlace = calculateDistance(currentLocation, place.getLocation());
+                    Log.d(TAG,distanceFromCurrentPlace+"km <-----distance");
+                    placeList.add(new CardViewModel(place.getName(), place.getImagePaths().get(0), distanceFromCurrentPlace+"km",
                             place.getType().get(0)));
                 }
 
-                for (Place place: places) {
-                    movieList1.add(place);
+                for (Place place : places) {
+                    placeList1.add(place);
                 }
 
                 recyclerViewAdapter.notifyDataSetChanged();
@@ -210,7 +213,31 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public static List<Place> getMovieList1() {
-        return movieList1;
+    public static List<Place> getPlaceList1() {
+        return placeList1;
+    }
+
+    public static double calculateDistance(Point currentLocation, Point placeGPSLocation) {
+        double latitude1 = currentLocation.latitude();
+        double longitude1 = currentLocation.longitude();
+        double latitude2 = placeGPSLocation.latitude();
+        double longitude2 = placeGPSLocation.longitude();
+
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(latitude2 - latitude1);
+        double lonDistance = Math.toRadians(longitude2 - longitude1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(latitude1)) * Math.cos(Math.toRadians(latitude2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+        double height = 0;
+
+        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+        double distanceToPlace = Math.sqrt(distance)/1000;
+        return Math.round(distanceToPlace*100)/100;
     }
 }
