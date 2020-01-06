@@ -10,7 +10,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.watson.serendibtravelguide"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -52,14 +52,20 @@ dependencies {
 //    implementation 'com.google.android.gms:play-services-places:11.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
     implementation 'com.google.android.libraries.places:places:1.0.0'
     //implementation 'com.google.android.libraries.places:places-compat:1.0.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+
     implementation 'com.squareup.retrofit2:retrofit:2.7.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
 
     implementation 'com.mapbox.mapboxsdk:mapbox-sdk-geojson:4.9.0'
-
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     // Glide for remote image loading
 //    implementation 'com.github.bumptech.glide:glide:4.10.0-SNAPSHOT'
@@ -71,5 +77,4 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    compile group: 'org.riversun', name: 'java-promise', version: '1.1.0'
 }

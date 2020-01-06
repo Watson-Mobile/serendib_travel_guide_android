@@ -36,6 +36,9 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        HomeFragment homeFragment = new HomeFragment();
+        BottomNavigationViewHelper.replaceFragment(this, homeFragment,R.id.relLayout2,false);
         setupBottomNavigationView();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);

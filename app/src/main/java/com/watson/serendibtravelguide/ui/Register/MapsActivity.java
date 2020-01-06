@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -50,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double longi;
     private String place_name;
     private SupportMapFragment mapFragment;
+    private Button register_guide;
 
 
 
@@ -58,6 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        register_guide = (Button)findViewById(R.id.RegisterLocalGuide);
 
         Intent currentIntent = getIntent();
         firstname = currentIntent.getStringExtra("firstname");

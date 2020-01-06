@@ -40,11 +40,18 @@
     <string name="google_maps_api_key">AIzaSyDflkvLylyshUs_Qs-7U_9gvWbqgWReijE</string>
     <string name="title_add_new">Add New Place</string>
 
-    <string name="name_of_place">Title</string>
+    <string name="name_of_place">Place Name</string>
     <string name="description_place">Description</string>
     <string name="type_place">Type</string>
-    <string name="sample_string">Sample String</string>
-
+    <string name="other_name">Other Names</string>
+    <string name="get_my_location">Get My Location</string>
+    <string name="place_type">Place Type</string>
+    <string name="action_take_phot">Upload Photo</string>
+    <string name="invalid_placename">Invalid Place Name</string>
+    <string name="invalid_placedescription">Invalid Place Description</string>
+    <string name="invalid_placeType">Invalid Place Type</string>
+    <string name="invalid_othername">Invalid OtherName</string>
+    <string name="invalid_location">Invalid Location</string>
 
     <string name="demo_card_text">Card Text</string>
 
@@ -62,6 +69,8 @@
     <string name="search_hint">Search Places</string>
 
     <string name="settings_description">settings_description</string>
+
+    <string name="sample_image_url">http://ec2-34-238-82-190.compute-1.amazonaws.com/api/image?image_path=/home/ubuntu/backend-app/serendib_travel_guide_backend/uploads/images/DehiwalaZoo/DehiwalaZoo_dscf0048.jpg</string>
 
 
 </resources>

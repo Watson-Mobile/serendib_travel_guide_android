@@ -1,6 +1,7 @@
 package com.watson.serendibtravelguide.ui.home;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,22 +11,32 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.watson.serendibtravelguide.config.Config;
 import com.watson.serendibtravelguide.models.MovieItem;
 import com.watson.serendibtravelguide.models.Place;
+import com.watson.serendibtravelguide.ui.Utils.ImageUrl;
 import com.watson.serendibtravelguide.ui.places.DetailedDestination;
 import com.watson.serendibtravelguide.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.watson.serendibtravelguide.config.Config.BASE_URL_IMG;
 import static com.watson.serendibtravelguide.ui.home.HomeFragment.getMovieList1;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>{
 
     private List<CardViewModel> movieList;
     private List<Place> placeList;
+    private ArrayList<ImageUrl> imageUrls;
+    private Context context;
 
-    RecyclerViewAdapter(List<CardViewModel> movieList ){
+
+    RecyclerViewAdapter(List<CardViewModel> movieList , Context context ){
         this.movieList = movieList;
+        this.context = context;
     }
 
     @Override
@@ -38,9 +49,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.title.setText(movieList.get(position).getTitle());
-        holder.image.setBackgroundResource(movieList.get(position).getImage());
+//        holder.image.setBackgroundResource(movieList.get(position).getImage());
         holder.type.setText(movieList.get(position).getType());
         holder.distance.setText(movieList.get(position).getDistance());
+
+        Glide.with(context).load(BASE_URL_IMG+placeList.get(position).getImagePaths().get(0))
+                .apply(new RequestOptions().override(200, 200))
+                .into(holder.image);
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Intent intent = new Intent(v.getContext(),DetailedDestination.class);
                 intent.putExtra("title",placeList.get(position).getName());
                 intent.putExtra("description",placeList.get(position).getDescription());
+                intent.putExtra("imagePath",placeList.get(position).getImagePaths().get(0));
 
                 v.getContext().startActivity(intent);
 
@@ -59,6 +75,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         return movieList.size();
     }
+
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 

@@ -1,10 +1,13 @@
 package com.watson.serendibtravelguide.ui.Register;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,8 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.ui.userlogin.LoginActivity;
 
 import java.util.ArrayList;
 
@@ -29,7 +34,7 @@ public class RegisterTravellerActivity extends AppCompatActivity {
         registerViewModel = ViewModelProviders.of(this, new RegisterViewModelFactory())
                 .get(RegisterViewModel.class);
 
-        traveller_register = (Button) findViewById(R.id.Register);
+        traveller_register = (Button) findViewById(R.id.Btn_RegisterTraveller);
 
         final EditText firstnameEditText = findViewById(R.id.firstname);
         final EditText lastnameEditText = findViewById(R.id.lastname);
@@ -39,8 +44,10 @@ public class RegisterTravellerActivity extends AppCompatActivity {
         final EditText  emailEditText = findViewById(R.id.email);
         final EditText passwordEditText = findViewById(R.id.register_pwd);
         final EditText confirm_passwordEditText = findViewById(R.id.register_con_pwd);
-        final Button nextButton = findViewById(R.id.Next);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+
+
+
 
 
         registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
@@ -49,7 +56,7 @@ public class RegisterTravellerActivity extends AppCompatActivity {
                 if (registerFormState == null) {
                     return;
                 }
-                nextButton.setEnabled(registerFormState.isDataValid());
+                traveller_register.setEnabled(registerFormState.isDataValid());
                 if (registerFormState.getFirstnameError() != null) {
                     firstnameEditText.setError(getString(registerFormState.getFirstnameError()));
                 }
@@ -75,6 +82,28 @@ public class RegisterTravellerActivity extends AppCompatActivity {
                     confirm_passwordEditText.setError(getString(registerFormState.getConfirmPasswordError()));
                 }
 
+            }
+        });
+
+        registerViewModel.getRegisterResult().observe(this, new Observer<RegisterResult>() {
+            @Override
+            public void onChanged(@Nullable RegisterResult registerResult) {
+                if (registerResult == null) {
+                    return;
+                }
+                loadingProgressBar.setVisibility(View.GONE);
+                if (registerResult.getError() != null) {
+                    showRegisterFailed(registerResult.getError());
+                }
+                if (registerResult.getSuccess() != null) {
+                    Toast.makeText(getApplicationContext(), "Registration is Successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterTravellerActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+                setResult(Activity.RESULT_OK);
+
+                //Complete and destroy login activity once successful
+                finish();
             }
         });
 
@@ -113,9 +142,16 @@ public class RegisterTravellerActivity extends AppCompatActivity {
                 registerViewModel.register(firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),
                         emailEditText.getText().toString(),"traveller",tel_num,nic_numberEditText.getText().toString(),null,
                         passwordEditText.getText().toString());
+
             }
         });
 
 
+    }
+
+    private void showRegisterFailed(@StringRes Integer errorString) {
+        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(RegisterTravellerActivity.this, MainRegisterActivity.class);
+        startActivity(intent);
     }
 }

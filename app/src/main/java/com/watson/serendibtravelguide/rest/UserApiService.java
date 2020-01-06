@@ -14,8 +14,6 @@ import retrofit2.http.Query;
 
 public interface UserApiService {
 
-
-
     @POST("user/login")
     @FormUrlEncoded
     Call<UserResponse> getUserByEmailAndPassword(@Field("email") String email, @Field("password") String password);
@@ -29,5 +27,7 @@ public interface UserApiService {
     Call<UserResponse> saveUser(@Body User user);
 
 
+    @GET("all_place")
+    Call<UserResponse> getMockLoginSuccess();
 
 }

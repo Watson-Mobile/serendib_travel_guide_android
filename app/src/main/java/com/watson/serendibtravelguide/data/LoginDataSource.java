@@ -1,5 +1,6 @@
 package com.watson.serendibtravelguide.data;
 
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,13 +12,14 @@ import com.watson.serendibtravelguide.ui.userlogin.LoginActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import org.riversun.promise.Promise;
+//import org.riversun.promise.Promise;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -27,13 +29,21 @@ public class LoginDataSource {
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
 
-    public static User loggedUser = new User();
+    public User loggedUser ;
 
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
-    public Result<User> login(String email, String password){
-       User user = connectAndGetApiDataAWS(email, password);
-       if(user==null){
-           return new Result.Error(new Exception("Error register in"));
+
+
+    public Result<User> login(String email, String password) throws IOException {
+       connectAndGetApiDataAWS(email, password);
+        Log.i(TAG, "post submitted to API."+loggedUser.getFirstname());
+
+        /*
+        * completable future implementation
+        * */
+
+       if(loggedUser==null){
+           return new Result.Error(new Exception("Error in login"));
        }else{
            return new Result.Success<> (loggedUser);
        }
@@ -44,8 +54,11 @@ public class LoginDataSource {
         // TODO: revoke authentication
     }
 
-    public User connectAndGetApiDataAWS(String email, String password) {
-        final User[] retrievedUser = new User[1];
+    public void connectAndGetApiDataAWS(String email, String password) throws IOException {
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL_AWS)
@@ -56,41 +69,55 @@ public class LoginDataSource {
 
         Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
 
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+        loggedUser = call.execute().body().getData();
 
-                if(response.isSuccessful()) {
-                    retrievedUser[0] = response.body().getData();
-                    Log.i(TAG, "post submitted to API." + retrievedUser[0].getUsername() + "----"+retrievedUser[0].getLastname()+"----"+retrievedUser[0].getEmail());
-                    Log.i(TAG, "post submitted to API.");
+//        call.enqueue(new Callback<UserResponse>() {
+//            @Override
+//            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+//
+//                if(response.isSuccessful()) {
+//                    User retrievedUser = response.body().getData();
+//                    Log.i(TAG, "post submitted to API." + retrievedUser.getUsername() + "----"+retrievedUser.getLastname()+"----"+retrievedUser.getEmail());
+//                    Log.i(TAG, "post submitted to API.");
+//
+//                    loggedUser = new User(
+//                            retrievedUser.getUserId(),
+//                            retrievedUser.getFirstname(),
+//                            retrievedUser.getLastname(),
+//                            retrievedUser.getUsername(),
+//                            retrievedUser.getEmail(),
+//                            retrievedUser.getUserType(),
+//                            retrievedUser.getTelephone_number(),
+//                            retrievedUser.getNic_num(),
+//                            retrievedUser.getGuide_locations(),
+//                            retrievedUser.getPassword());
+//
+//
+//                }
+//
+////                loggedUser.setFirstname(retrievedUser[0].getFirstname());
+////                loggedUser.setLastname(retrievedUser[0].getLastname());
+////                loggedUser.setLastname(retrievedUser[0].getUsername());
+////                loggedUser.setEmail(retrievedUser[0].getEmail());
+////                loggedUser.setNic_num(retrievedUser[0].getNic_num());
+////                loggedUser.setTelephone_number(retrievedUser[0].getTelephone_number());
+////                loggedUser.setGuide_locations(retrievedUser[0].getGuide_locations());
+////                loggedUser.setUserType(retrievedUser[0].getUserType());
+////                loggedUser.setPassword(retrievedUser[0].getPassword());
+//
+//            }
+//
+//
+//            @Override
+//            public void onFailure(Call<UserResponse> call, Throwable throwable) {
+//                Log.e(TAG, throwable.toString());
+//                call.cancel();
+//
+//            }
+//        });
 
-                }
-
-                loggedUser.setFirstname(retrievedUser[0].getFirstname());
-                loggedUser.setLastname(retrievedUser[0].getLastname());
-                loggedUser.setLastname(retrievedUser[0].getUsername());
-                loggedUser.setEmail(retrievedUser[0].getEmail());
-                loggedUser.setNic_num(retrievedUser[0].getNic_num());
-                loggedUser.setTelephone_number(retrievedUser[0].getTelephone_number());
-                loggedUser.setGuide_locations(retrievedUser[0].getGuide_locations());
-                loggedUser.setUserType(retrievedUser[0].getUserType());
-                loggedUser.setPassword(retrievedUser[0].getPassword());
-
-
-            }
-
-
-
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable throwable) {
-                Log.e(TAG, throwable.toString());
-
-            }
-        });
-
-        return retrievedUser[0];
+//        return retrievedUser[0];
+//        return loggedUser;
 
     }
 
