@@ -227,8 +227,8 @@ public class AddPlaceFragment extends Fragment {
         get_my_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationEditText_lat.setText("lat : "+String.valueOf(current_location_lat));
-                locationEditText_long.setText("long : "+String.valueOf(current_location_long));
+                locationEditText_lat.setText(String.valueOf(current_location_lat));
+                locationEditText_long.setText(String.valueOf(current_location_long));
             }
 
 
