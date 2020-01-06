@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 import com.watson.serendibtravelguide.ui.places.LocalGuideFragment;
@@ -29,6 +30,8 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
     private MenuItem searchMenuItem;
     private SearchView searchView;
 
+    private Point locationFromIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
+
+        locationFromIntent = (Point) getIntent().getSerializableExtra("location_point");
 
     }
 

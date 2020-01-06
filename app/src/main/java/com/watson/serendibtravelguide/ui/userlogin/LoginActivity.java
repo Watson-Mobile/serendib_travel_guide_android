@@ -3,11 +3,17 @@ package com.watson.serendibtravelguide.ui.userlogin;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.data.model.UserResponse;
@@ -38,6 +45,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_DISTANCE;
+import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_TIME;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -49,6 +58,39 @@ public class LoginActivity extends AppCompatActivity {
     private LoginActivity loginActivity = this;
 
     public static User loggedUser;
+    private LocationManager mLocationManager;
+    private Point currentLocation;
+
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+//            //your code here
+//            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();
+//            String longitude = "Longitude: " + location.getLongitude();
+//            String latitude = "Latitude: " + location.getLatitude();
+//            String s = longitude + "\n" + latitude;
+//            Log.d(TAG, "location String : "+s);
+
+            currentLocation = Point.fromLngLat(location.getLongitude(),location.getLatitude());
+            Log.d(TAG, "Current Point : "+currentLocation);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +103,22 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+
+        mLocationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        }
+
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -143,6 +201,7 @@ public class LoginActivity extends AppCompatActivity {
                             passwordEditText.getText().toString())) {
 
                         Intent intent = new Intent(loginActivity, HomeActivity.class);
+                        intent.putExtra("location",currentLocation);
                         //killing all other activities
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

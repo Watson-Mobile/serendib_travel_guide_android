@@ -20,7 +20,6 @@
 
     </TextView>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notification_list"
         android:tag="list_fragment"
