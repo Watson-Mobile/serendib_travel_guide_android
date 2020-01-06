@@ -44,6 +44,10 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AddPlaceActivity extends AppCompatActivity {
 
+    /*
+    not being used , remove
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

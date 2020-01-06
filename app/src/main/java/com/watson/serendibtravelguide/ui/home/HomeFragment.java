@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
 
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
 
+
     private List<CardViewModel> placeList;
     private static List<Place> placeList1;
 
@@ -68,7 +69,6 @@ public class HomeFragment extends Fragment {
         @Override
         public void onLocationChanged(final Location location) {
             //your code here
-            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();
             String longitude = "Longitude: " + location.getLongitude();
             String latitude = "Latitude: " + location.getLatitude();
             String s = longitude + "\n" + latitude;
@@ -76,6 +76,7 @@ public class HomeFragment extends Fragment {
 
             currentLocation = Point.fromLngLat(location.getLatitude(), location.getLongitude());
             Log.d(TAG, "Current Point : " + currentLocation);
+            connectAndGetApiDataAWS(false,currentLocation.latitude(),currentLocation.longitude());
         }
 
         @Override
@@ -101,12 +102,6 @@ public class HomeFragment extends Fragment {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.item_chip_distance);
-//        homeViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                cardView.setText(s);
-//            }
-//        });
 
         placeList = new ArrayList<>();
         placeList1 = new ArrayList<>();
@@ -116,7 +111,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        connectAndGetApiDataAWS();
+        connectAndGetApiDataAWS(true,currentLocation.latitude(),currentLocation.longitude());
 
 
         mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
@@ -134,6 +129,7 @@ public class HomeFragment extends Fragment {
 
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
+
 
         return root;
     }
@@ -170,7 +166,8 @@ public class HomeFragment extends Fragment {
 
     // This method create an instance of Retrofit
     // set the base url
-    public void connectAndGetApiDataAWS() {
+    public void connectAndGetApiDataAWS(boolean isFirstTime, double latitude, double longitude) {
+
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL_AWS)
@@ -180,8 +177,16 @@ public class HomeFragment extends Fragment {
         PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
 
         List<Place> placesOut = new ArrayList<>();
+        Call<PlaceResponse> call;
 
-        Call<PlaceResponse> call = placeApiService.getAllPlaces();
+        if(isFirstTime){
+            call = placeApiService.getAllPlaces();
+
+        }else
+            placeList.clear();
+            call = placeApiService.getByLocation(Double.toString(longitude),Double.toString(latitude));
+
+
         call.enqueue(new Callback<PlaceResponse>() {
             @Override
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {

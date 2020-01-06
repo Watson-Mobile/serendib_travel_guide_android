@@ -8,7 +8,9 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -34,12 +37,29 @@ import androidx.lifecycle.ViewModelProviders;
 //import com.google.android.gms.location.LocationListener;
 import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.config.Config;
 import com.watson.serendibtravelguide.models.Place;
+import com.watson.serendibtravelguide.models.PlaceAddResponse;
+import com.watson.serendibtravelguide.models.PlaceResponse;
+import com.watson.serendibtravelguide.rest.PlaceApiService;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 import com.watson.serendibtravelguide.ui.home.HomeActivity;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -56,6 +76,9 @@ public class AddPlaceFragment extends Fragment {
     private EditText sampleText;
     private double current_location_lat;
     private double current_location_long;
+    private static Retrofit retrofit = null;
+    String currentPhotoPath;
+    Uri photoURI;
 
 
 
@@ -218,8 +241,18 @@ public class AddPlaceFragment extends Fragment {
         btn_take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //submit data or take photograph
+
+
+                try {
+                    photoURI = FileProvider.getUriForFile(v.getContext(),
+                            "com.watson.serendibtravelguide.provider",
+                            createImageFile());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //take photograph
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
                 startActivityForResult(camera_intent, pic_id);
             }
         });
@@ -282,4 +315,73 @@ public class AddPlaceFragment extends Fragment {
             click_image_id.setImageBitmap(photo);
         }
     }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    public void connectAndGetApiDataAWS(Place newPlace, String image) throws IOException {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.serverIp)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
+
+        //Create a file object using file path
+//        File file = new File(filePath);
+        File file = createImageFile();
+        // Create a request body with file and image media type
+        RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
+        // Create MultipartBody.Part using file request-body,file name and part name
+        MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileReqBody);
+        //Create request body with text description and text media type
+        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
+
+//        Uri photoURI = FileProvider.getUriForFile(this.getContext(),
+//                "com.watson.android.fileprovider",
+//                file);
+
+
+
+//        List<Place> placesOut = new ArrayList<>();
+
+        Call<PlaceAddResponse> call = placeApiService.savePlaceWithImage(part, newPlace);
+        call.enqueue(new Callback<PlaceAddResponse>() {
+            @Override
+            public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
+                Place place = response.body().getData();
+
+                Log.d(TAG, "Place responce received: " + place.getName());
+                Log.d("message", "Incoming:" + response.body().getMessage());
+
+                for (Fragment fragment : getFragmentManager().getFragments()) {
+                    getFragmentManager().beginTransaction().remove(fragment).commit();
+                }
+
+                AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
+                BottomNavigationViewHelper.replaceFragment( getActivity(), addPlaceFragment,R.id.relLayout2,false);
+
+            }
+
+            @Override
+            public void onFailure(Call<PlaceAddResponse> call, Throwable throwable) {
+                Log.e(TAG, throwable.toString());
+            }
+        });
+    }
+
 }
