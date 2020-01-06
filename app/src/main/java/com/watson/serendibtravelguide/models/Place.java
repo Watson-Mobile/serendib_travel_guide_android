@@ -49,6 +49,10 @@ public class Place {
         this.imagePaths = imagePaths;
     }
 
+    public Place(){
+
+    }
+
     public List<String> getOtherNames() {
         return otherNames;
     }
