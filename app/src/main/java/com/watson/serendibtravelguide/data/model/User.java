@@ -2,6 +2,7 @@ package com.watson.serendibtravelguide.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.mapbox.geojson.Point;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class User {
     private String nic_num;
     @SerializedName("guide_locations")
     @Expose
-    private ArrayList<String> guide_locations;
+    private ArrayList<Point> guide_locations;
     @SerializedName("password")
     @Expose
     private String password;
@@ -42,7 +43,7 @@ public class User {
 
     }
 
-    public User(String userId, String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+    public User(String userId, String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<Point> guide_locations, String password) {
         this.userId = userId;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -119,11 +120,11 @@ public class User {
         this.nic_num = nic_num;
     }
 
-    public ArrayList<String> getGuide_locations() {
+    public ArrayList<Point> getGuide_locations() {
         return guide_locations;
     }
 
-    public void setGuide_locations(ArrayList<String> guide_locations) {
+    public void setGuide_locations(ArrayList<Point> guide_locations) {
         this.guide_locations = guide_locations;
     }
 

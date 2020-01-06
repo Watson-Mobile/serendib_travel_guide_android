@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.data.RegisterRepository;
 import com.watson.serendibtravelguide.data.Result;
@@ -35,7 +36,7 @@ public class RegisterViewModel extends ViewModel {
         return registerResult;
     }
 
-    public boolean register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+    public boolean register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<Point> guide_locations, String password) {
         // can be launched in a separate asynchronous job
         Result<User> result = registerRepository.register(firstname,lastname, username, email,userType,telephone_number,nic_num,guide_locations,password);
 

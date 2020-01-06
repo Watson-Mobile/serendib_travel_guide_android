@@ -1,6 +1,7 @@
 package com.watson.serendibtravelguide.data;
 
 
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.data.model.User;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class RegisterRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<User> register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+    public Result<User> register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<Point> guide_locations, String password) {
         // handle login
         Result<User> result = dataSource.register(firstname,lastname, username, email,userType,telephone_number,nic_num,guide_locations,password);
         if (result instanceof Result.Success) {
