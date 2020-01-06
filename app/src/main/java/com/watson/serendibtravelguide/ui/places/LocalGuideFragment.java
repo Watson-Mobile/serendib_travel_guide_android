@@ -8,13 +8,34 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.config.Config;
+import com.watson.serendibtravelguide.data.model.GuideResponse;
+import com.watson.serendibtravelguide.data.model.User;
+import com.watson.serendibtravelguide.data.model.UserResponse;
 import com.watson.serendibtravelguide.dummy.DummyContent;
 import com.watson.serendibtravelguide.dummy.DummyContent.DummyItem;
+import com.watson.serendibtravelguide.models.Place;
+import com.watson.serendibtravelguide.models.PlaceResponse;
+import com.watson.serendibtravelguide.rest.PlaceApiService;
+import com.watson.serendibtravelguide.rest.UserApiService;
+import com.watson.serendibtravelguide.ui.home.CardViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * A fragment representing a list of Items.
@@ -29,7 +50,10 @@ public class LocalGuideFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private static Retrofit retrofit = null;
+    private MyLocalGuideRecyclerViewAdapter recyclerViewAdapter;
 
+    List<User> placesOut;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -61,6 +85,7 @@ public class LocalGuideFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_localguide_list, container, false);
 
+        placesOut = new ArrayList<>();
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -70,8 +95,11 @@ public class LocalGuideFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyLocalGuideRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerViewAdapter = new MyLocalGuideRecyclerViewAdapter(placesOut, mListener);
+            recyclerView.setAdapter(recyclerViewAdapter);
         }
+
+        connectAndGetApiDataAWS();
         return view;
     }
 
@@ -107,4 +135,43 @@ public class LocalGuideFragment extends Fragment {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Object item);
     }
+
+    public void connectAndGetApiDataAWS() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.serverIp)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        UserApiService userApiService = retrofit.create(UserApiService.class);
+
+
+
+        Call<GuideResponse> call = userApiService.getGuidesFromCoordinates("18.902","19.6783");
+        call.enqueue(new Callback<GuideResponse>() {
+            @Override
+            public void onResponse(Call<GuideResponse> call, Response<GuideResponse> response) {
+                List<User> guides = response.body().getData();
+//                places = response.body().getData();
+//                recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
+
+                Log.d(TAG, "Number of Guides received: " + guides.size());
+                Log.d("message", "Incoming:" + response.body().getMessage());
+
+
+                for (User user : guides) {
+                    placesOut.add(user);
+                }
+
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<GuideResponse> call, Throwable throwable) {
+                Log.e(TAG, throwable.toString());
+            }
+        });
+    }
+
+
 }

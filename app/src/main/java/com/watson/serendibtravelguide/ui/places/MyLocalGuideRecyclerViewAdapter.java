@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.ui.places.LocalGuideFragment.OnListFragmentInteractionListener;
 import com.watson.serendibtravelguide.dummy.DummyContent.DummyItem;
 
@@ -20,10 +21,11 @@ import java.util.List;
  */
 public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLocalGuideRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<User> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyLocalGuideRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+
+    public MyLocalGuideRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -38,8 +40,8 @@ public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLoca
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getFirstname());
+        holder.mContentView.setText(mValues.get(position).getLastname());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +64,7 @@ public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLoca
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public User mItem;
 
         public ViewHolder(View view) {
             super(view);
