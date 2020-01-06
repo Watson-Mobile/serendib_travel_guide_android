@@ -39,6 +39,8 @@ import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 import com.watson.serendibtravelguide.ui.home.HomeActivity;
 
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -56,7 +58,7 @@ public class AddPlaceFragment extends Fragment {
     private EditText sampleText;
     private double current_location_lat;
     private double current_location_long;
-
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
 
     private final LocationListener mLocationListener = new LocationListener() {
@@ -93,7 +95,7 @@ public class AddPlaceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_add_new_place, container, false);
-
+        df.setRoundingMode(RoundingMode.DOWN);
         final EditText placenameEditText = root.findViewById(R.id.PlaceName);
         final EditText descriptionEditText = root.findViewById(R.id.PlaceDescription);
         final EditText otherNamesEditText = root.findViewById(R.id.OtherName);
@@ -228,8 +230,8 @@ public class AddPlaceFragment extends Fragment {
         get_my_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationEditText_lat.setText(String.valueOf(current_location_lat));
-                locationEditText_long.setText(String.valueOf(current_location_long));
+                locationEditText_lat.setText(df.format(String.valueOf(current_location_lat)));
+                locationEditText_long.setText(df.format(String.valueOf(current_location_long)));
             }
 
 
