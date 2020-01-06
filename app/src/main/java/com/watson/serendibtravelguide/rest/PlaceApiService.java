@@ -1,10 +1,16 @@
 package com.watson.serendibtravelguide.rest;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 //import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
+import com.watson.serendibtravelguide.data.model.User;
+import com.watson.serendibtravelguide.data.model.UserResponse;
+import com.watson.serendibtravelguide.models.Place;
 import com.watson.serendibtravelguide.models.PlaceResponse;
 
 public interface PlaceApiService {
@@ -18,5 +24,9 @@ public interface PlaceApiService {
 
     @GET("search_place")
     Call<PlaceResponse> searchPlaces(@Query("query") String query);
+
+    @POST("place")
+    @FormUrlEncoded
+    Call<PlaceResponse> savePlace(@Body Place place);
 
 }

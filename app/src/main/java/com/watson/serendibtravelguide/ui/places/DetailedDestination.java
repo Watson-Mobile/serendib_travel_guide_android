@@ -29,6 +29,7 @@ import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.dummy.DummyContent;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.watson.serendibtravelguide.config.Config.BASE_URL_IMG;
 
 public class DetailedDestination extends AppCompatActivity implements
@@ -161,8 +162,8 @@ public class DetailedDestination extends AppCompatActivity implements
         map.addMarker(new MarkerOptions().position(
                 new LatLng(located_point.latitude(), located_point.longitude())).title(title));
         map.moveCamera(CameraUpdateFactory.newLatLng(
-                new LatLng(located_point.latitude(), located_point.latitude())));
-        map.animateCamera(CameraUpdateFactory.zoomTo(8));
+                new LatLng(located_point.latitude(), located_point.longitude())));
+        map.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
     @Override

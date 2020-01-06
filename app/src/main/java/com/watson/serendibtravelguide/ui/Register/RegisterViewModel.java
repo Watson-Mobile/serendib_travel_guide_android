@@ -1,6 +1,8 @@
 package com.watson.serendibtravelguide.ui.Register;
 
+import android.util.Log;
 import android.util.Patterns;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,6 +12,7 @@ import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.data.RegisterRepository;
 import com.watson.serendibtravelguide.data.Result;
 import com.watson.serendibtravelguide.data.model.User;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import com.watson.serendibtravelguide.ui.userlogin.LoginFormState;
 
 
@@ -32,15 +35,17 @@ public class RegisterViewModel extends ViewModel {
         return registerResult;
     }
 
-    public void register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+    public boolean register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
         // can be launched in a separate asynchronous job
         Result<User> result = registerRepository.register(firstname,lastname, username, email,userType,telephone_number,nic_num,guide_locations,password);
 
         if (result instanceof Result.Success) {
             User data = ((Result.Success<User>) result).getData();
             registerResult.setValue(new RegisterResult(R.string.register_success));
+            return true;
         } else {
             registerResult.setValue(new RegisterResult(R.string.register_failed));
+            return false;
         }
     }
 
@@ -51,14 +56,14 @@ public class RegisterViewModel extends ViewModel {
             registerFormState.setValue(new RegisterFormState(null, R.string.invalid_lastname, null, null, null, null, null, null));
         } else if (!isUserNameValid(username)) {
             registerFormState.setValue(new RegisterFormState(null, null, R.string.invalid_username, null, null, null, null, null));
-        } else if (!isEmailValid(username)) {
+        } else if (!isEmailValid(email)) {
             registerFormState.setValue(new RegisterFormState(null,null,null,R.string.invalid_email,null,null,null,null));
-        } else if(!isNICNumValid(NICNumber)){
-            registerFormState.setValue(new RegisterFormState(null,null,null,R.string.invalid_NIC,null,null,null,null));
-        }else if(!isTelephoneNumberValid(telephone_number)){
-            registerFormState.setValue(new RegisterFormState(null,null,null,null,R.string.invalid_telephone_number,null,null,null));
+        } else if(!isTelephoneNumberValid(telephone_number)){
+            registerFormState.setValue(new RegisterFormState(null,null,null,null,null,R.string.invalid_telephone_number,null,null));
+        }else if(!isNICNumValid(NICNumber)){
+            registerFormState.setValue(new RegisterFormState(null,null,null,null,R.string.invalid_NIC,null,null,null));
         }else if(!isPasswordValid(password)){
-            registerFormState.setValue(new RegisterFormState(null,null,null,null,null,R.string.invalid_password,null,null));
+            registerFormState.setValue(new RegisterFormState(null,null,null,null,null,null,R.string.invalid_password,null));
         }else if(isConfirmPassowrdValid(confirm_password, password)){
             registerFormState.setValue(new RegisterFormState(null,null,null,null,null,null,null,R.string.invalid_confirm_password));
         }else{
@@ -68,17 +73,8 @@ public class RegisterViewModel extends ViewModel {
 
     // A placeholder username validation check
     private boolean isEmailValid(String email) {
-        if (email == null) {
-            return false;
-        }
         if (email.contains("@")) {
-            if(Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                //call the database and check all user names
-                return true;
-            }else{
-               return false;
-            }
-
+            return Patterns.EMAIL_ADDRESS.matcher(email).matches();
         } else {
             return !email.trim().isEmpty();
         }
@@ -126,19 +122,8 @@ public class RegisterViewModel extends ViewModel {
     }
 
     private boolean isNICNumValid(String nic_num){
-        if(nic_num == null){
-            return false;
-        }else if(nic_num.trim().length() == 10){
-            if(nic_num.trim().substring(0,10).matches("\\d+")){
-                if(nic_num.trim().substring(10) == "v" ||  nic_num.trim().substring(10) == "V"){
-                    return true;
-                }else{
-                    return false;
-                }
-
-            }else{
-                return false;
-            }
+        if(nic_num.trim().length() == 10){
+            return true;
         }else{
             return false;
         }

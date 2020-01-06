@@ -1,5 +1,6 @@
 package com.watson.serendibtravelguide.data;
 
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.watson.serendibtravelguide.data.model.User;
@@ -35,22 +36,15 @@ public class RegisterDataSource {
         regiseter_user.setGuide_locations(guide_locations);
         regiseter_user.setPassword(password);
 
-        try {
 
-            connectAndGetApiDataAWS(regiseter_user);
-            return null;
-//            // TODO: handle loggedInUser authentication
-//            ArrayList<String> guide_locationss = new ArrayList<>();
-//            guide_locations.add("Matara");
-//            guide_locations.add("Dondra");
-//            User fakeUser =
-//                    new User(
-//                            java.util.UUID.randomUUID().toString(),
-//                            "Piyumi","Sudusinghe","piyumisudusinghe","piyumi@gmail.com","admin",Long.parseLong("0717872513"),"956731267v",guide_locationss,"12345678");
-//            return new Result.Success<>(fakeUser);
+        try {
+            if(connectAndGetApiDataAWS(regiseter_user)){
+                return new Result.Success<> (regiseter_user);
+            }
         } catch (Exception e) {
             return new Result.Error(new IOException("Error register in", e));
         }
+        return new Result.Error(new IOException("Error register in"));
     }
 
     public void logout() {
@@ -58,8 +52,8 @@ public class RegisterDataSource {
     }
 
 
-    public void connectAndGetApiDataAWS(User user) {
-        final User[] loggedUser = new User[1];
+    public boolean connectAndGetApiDataAWS(User user) throws IOException{
+
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL_AWS)
@@ -68,28 +62,24 @@ public class RegisterDataSource {
         }
         UserApiService userApiService = retrofit.create(UserApiService.class);
 
-//        Call<UserResponse> call = userApiService.saveUser(user);
-//
-//        call.enqueue(new Callback<UserResponse>() {
-//            @Override
-//            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-//
-//
-//
-//                if(response.isSuccessful()) {
-//                    loggedUser[0] = response.body().getData();
-//                    Log.i(TAG, "post submitted to API." + loggedUser[0].getUsername() + loggedUser[0].getLastname());
-//                    Log.i(TAG, "post submitted to API.");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<UserResponse> call, Throwable throwable) {
-//                Log.e(TAG, throwable.toString());
-//                loggedUser[0] =  null;
-//            }
-//        });
-//
-//        return loggedUser[0];
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL_AWS)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+
+        Log.d(TAG,"registering");
+        Log.d(TAG,"NewUser:"+user.toString());
+        Call<UserResponse> call = userApiService.saveUser(user);
+        if(call.execute().isSuccessful()){
+            Log.d(TAG,"register_success");
+            return true;
+        }
+        return false;
     }
 }

@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
+        android:id="@+id/notification_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="@string/notification_title"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:paddingTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:textAlignment="textStart"
+        android:padding="2dp"
+        android:textSize="18sp">
+
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notification_list"
+        android:tag="list_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="@dimen/no_space"
+        android:layout_marginRight="@dimen/no_space"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".ui.notifications.NotificationsFragment"
+        tools:listitem="@layout/fragment_search_list_item" />
+
+</LinearLayout>

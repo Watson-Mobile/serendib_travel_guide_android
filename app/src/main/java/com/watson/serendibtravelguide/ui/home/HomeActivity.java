@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 import com.watson.serendibtravelguide.ui.places.LocalGuideFragment;
@@ -29,11 +30,14 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
     private MenuItem searchMenuItem;
     private SearchView searchView;
 
+    private static Point locationFromIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        locationFromIntent = (Point) getIntent().getSerializableExtra("location_point");
 
         HomeFragment homeFragment = new HomeFragment();
         BottomNavigationViewHelper.replaceFragment(this, homeFragment, R.id.relLayout2, false);
@@ -41,6 +45,8 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
+
+
 
     }
 
@@ -119,5 +125,7 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
         return true;
     }
 
-
+    public static Point getLocationFromIntent() {
+        return locationFromIntent;
+    }
 }
