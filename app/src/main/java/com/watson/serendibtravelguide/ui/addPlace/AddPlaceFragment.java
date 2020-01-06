@@ -48,6 +48,8 @@ import com.watson.serendibtravelguide.ui.home.HomeActivity;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,20 +82,23 @@ public class AddPlaceFragment extends Fragment {
     String currentPhotoPath;
     Uri photoURI;
 
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
 
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
             //your code here
-//            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();   // Toast not showing
-//            String longitude = "Longitude: " + location.getLongitude();
-//            String latitude = "Latitude: " + location.getLatitude();
-//            String s = longitude + "\n" + latitude;
-//            Log.d(TAG, "location String : "+s);
-//            sampleText.setHint(s);
             current_location_lat = location.getLatitude();
             current_location_long = location.getLongitude();
+            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();
+            String longitude = "Longitude: " + location.getLongitude();
+            String latitude = "Latitude: " + location.getLatitude();
+            String s = longitude + "\n" + latitude;
+            Log.d(TAG, "location String : "+s);
+            sampleText.setHint(s);
+
+
         }
 
         @Override
@@ -115,7 +120,7 @@ public class AddPlaceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_add_new_place, container, false);
-
+        df.setRoundingMode(RoundingMode.DOWN);
         final EditText placenameEditText = root.findViewById(R.id.PlaceName);
         final EditText descriptionEditText = root.findViewById(R.id.PlaceDescription);
         final EditText otherNamesEditText = root.findViewById(R.id.OtherName);
@@ -260,8 +265,10 @@ public class AddPlaceFragment extends Fragment {
         get_my_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationEditText_lat.setText(String.valueOf(current_location_lat));
-                locationEditText_long.setText(String.valueOf(current_location_long));
+                double roundOff_lat = Math.round(current_location_lat * 100.0) / 100.0;
+                double roundOff_long = Math.round(current_location_long * 100.0) / 100.0;
+                locationEditText_lat.setText(String.valueOf(roundOff_lat));
+                locationEditText_long.setText(String.valueOf(roundOff_long));
             }
 
 
