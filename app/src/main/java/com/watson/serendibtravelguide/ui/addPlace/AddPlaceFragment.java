@@ -65,7 +65,6 @@ public class AddPlaceFragment extends Fragment {
         @Override
         public void onLocationChanged(final Location location) {
             //your code here
-
             current_location_lat = location.getLatitude();
             current_location_long = location.getLongitude();
             Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();
@@ -74,6 +73,8 @@ public class AddPlaceFragment extends Fragment {
             String s = longitude + "\n" + latitude;
             Log.d(TAG, "location String : "+s);
             sampleText.setHint(s);
+
+
         }
 
         @Override
