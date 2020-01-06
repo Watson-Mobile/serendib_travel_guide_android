@@ -37,7 +37,7 @@ public class User {
     @SerializedName("password")
     @Expose
     private String password;
-    @SerializedName("guide_locations")
+    @SerializedName("guide_location")
     @Expose
     private MultiPoint guideLocations;
 
