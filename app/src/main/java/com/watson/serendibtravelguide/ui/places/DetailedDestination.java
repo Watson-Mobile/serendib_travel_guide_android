@@ -61,8 +61,6 @@ public class DetailedDestination extends AppCompatActivity implements
                 .apply(new RequestOptions().override(200, 300))
                 .into(detailImage);
 
-        Log.d(TAG, "location String : "+ located_point.latitude());
-
 
         findGuides.setOnClickListener(new View.OnClickListener() {
             @Override

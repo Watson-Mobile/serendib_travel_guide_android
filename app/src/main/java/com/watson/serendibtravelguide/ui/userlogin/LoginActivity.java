@@ -201,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
                             passwordEditText.getText().toString())) {
 
                         Intent intent = new Intent(loginActivity, HomeActivity.class);
-                        intent.putExtra("location",currentLocation);
+                        intent.putExtra("location_point",currentLocation);
                         //killing all other activities
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

@@ -30,13 +30,14 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
     private MenuItem searchMenuItem;
     private SearchView searchView;
 
-    private Point locationFromIntent;
+    private static Point locationFromIntent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        locationFromIntent = (Point) getIntent().getSerializableExtra("location_point");
 
         HomeFragment homeFragment = new HomeFragment();
         BottomNavigationViewHelper.replaceFragment(this, homeFragment, R.id.relLayout2, false);
@@ -45,7 +46,7 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
-        locationFromIntent = (Point) getIntent().getSerializableExtra("location_point");
+
 
     }
 
@@ -124,5 +125,7 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
         return true;
     }
 
-
+    public static Point getLocationFromIntent() {
+        return locationFromIntent;
+    }
 }
