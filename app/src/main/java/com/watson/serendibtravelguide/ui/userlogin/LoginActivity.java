@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPref = getSharedPreferences("serandib_travel_guide_user", Context.MODE_PRIVATE);
+        sharedPref = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         setContentView(R.layout.activity_login2);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())

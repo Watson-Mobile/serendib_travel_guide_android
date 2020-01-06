@@ -2,6 +2,7 @@ package com.watson.serendibtravelguide.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.mapbox.geojson.MultiPoint;
 import com.mapbox.geojson.Point;
 
 import java.util.ArrayList;
@@ -32,18 +33,19 @@ public class User {
     @SerializedName("nic_num")
     @Expose
     private String nic_num;
-    @SerializedName("guide_locations")
-    @Expose
-    private ArrayList<Point> guide_locations;
+
     @SerializedName("password")
     @Expose
     private String password;
+    @SerializedName("guide_locations")
+    @Expose
+    private MultiPoint guideLocations;
 
     public User(){
 
     }
 
-    public User(String userId, String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<Point> guide_locations, String password) {
+    public User(String userId, String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, MultiPoint guide_locations, String password) {
         this.userId = userId;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -52,7 +54,7 @@ public class User {
         this.userType = userType;
         this.telephone_number = telephone_number;
         this.nic_num = nic_num;
-        this.guide_locations = guide_locations;
+        this.guideLocations = guide_locations;
         this.password = password;
     }
 
@@ -120,14 +122,6 @@ public class User {
         this.nic_num = nic_num;
     }
 
-    public ArrayList<Point> getGuide_locations() {
-        return guide_locations;
-    }
-
-    public void setGuide_locations(ArrayList<Point> guide_locations) {
-        this.guide_locations = guide_locations;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -136,7 +130,13 @@ public class User {
         this.password = password;
     }
 
+    public MultiPoint getGuideLocations() {
+        return guideLocations;
+    }
 
+    public void setGuideLocations(MultiPoint guideLocations) {
+        this.guideLocations = guideLocations;
+    }
 }
 
 

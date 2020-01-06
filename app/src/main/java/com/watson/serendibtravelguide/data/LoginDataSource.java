@@ -29,10 +29,18 @@ public class LoginDataSource {
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
 
-    public User loggedUser ;
+    public static User loggedUser ;
 
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
 
+
+    public static User getLoggedUser() {
+        return loggedUser;
+    }
+
+    public static void setLoggedUser(User loggedUser) {
+        LoginDataSource.loggedUser = loggedUser;
+    }
 
     public Result<User> login(String email, String password) throws IOException {
        connectAndGetApiDataAWS(email, password);
@@ -69,7 +77,7 @@ public class LoginDataSource {
 
         Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
 
-        loggedUser = call.execute().body().getData();
+        setLoggedUser(call.execute().body().getData());
 
 //        call.enqueue(new Callback<UserResponse>() {
 //            @Override

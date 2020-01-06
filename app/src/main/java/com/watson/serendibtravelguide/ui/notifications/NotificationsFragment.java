@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.config.Config;
+import com.watson.serendibtravelguide.data.LoginDataSource;
 import com.watson.serendibtravelguide.models.Place;
 import com.watson.serendibtravelguide.models.PlaceResponse;
 import com.watson.serendibtravelguide.rest.PlaceApiService;
@@ -36,9 +37,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
-    private float latitude;
-    private float longitude;
-    private SharedPreferences sharedPref;
+    private double latitude;
+    private double longitude;
 
     private static final String TAG = "SearchListFragment";
     private static Retrofit retrofit = null;
@@ -55,7 +55,9 @@ public class NotificationsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        sharedPref = getContext().getSharedPreferences("serandib_travel_guide_user",Context.MODE_PRIVATE);
+        SharedPreferences userPrefs = this.getActivity().getSharedPreferences("userPrefs",Context.MODE_PRIVATE);
+        Log.d("userpref",userPrefs.getString("name","")+"=========");
+        Log.d("lllllll","pppppppppppppp");
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
 
@@ -72,11 +74,13 @@ public class NotificationsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
         final TextView textView = root.findViewById(R.id.notification_title);
 
-        longitude = sharedPref.getFloat("latitude",79);
-        latitude = sharedPref.getFloat("longitude",6);
+        Log.d("Notification",LoginDataSource.getLoggedUser().getGuideLocations()+",----locations");
 
-        Log.d("Nofification","latitude: "+latitude);
-        Log.d("Notification","longitude: "+longitude);
+//        longitude = LoginDataSource.getLoggedUser().getGuideLocations().coordinates().get(0).longitude();
+//        latitude = LoginDataSource.getLoggedUser().getGuideLocations().coordinates().get(0).latitude();
+//
+//        Log.d("Nofification", "latitude: " + latitude);
+//        Log.d("Notification", "longitude: " + longitude);
 
 //        notificationsViewModel.getText().observe(this, new Observer<String>() {
         searchResultsTextView = root.findViewById(R.id.notification_title);
@@ -112,11 +116,11 @@ public class NotificationsFragment extends Fragment {
                     searchViewList.add(searchViewModel);
 
                 }
-                if (searchViewList.isEmpty()){
-                    searchResultsTextView.setText("No results found for \'"+query+"\'");
-                    Log.d(TAG,"No results");
-                }else{
-                    Log.d(TAG,"Search results found");
+                if (searchViewList.isEmpty()) {
+                    searchResultsTextView.setText("No results found for \'" + query + "\'");
+                    Log.d(TAG, "No results");
+                } else {
+                    Log.d(TAG, "Search results found");
                     searchResultsTextView.setText("Search Results...");
                 }
 
@@ -130,9 +134,6 @@ public class NotificationsFragment extends Fragment {
             }
         });
     }
-
-
-
 
 
 }
