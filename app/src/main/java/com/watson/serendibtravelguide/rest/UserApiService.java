@@ -1,5 +1,6 @@
 package com.watson.serendibtravelguide.rest;
 
+import com.watson.serendibtravelguide.data.model.GuideResponse;
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.data.model.UserResponse;
 
@@ -29,5 +30,8 @@ public interface UserApiService {
 
     @GET("all_place")
     Call<UserResponse> getMockLoginSuccess();
+
+    @GET("user/local_guides")
+    Call<GuideResponse> getGuidesFromCoordinates(@Query("longitude") String longitude, @Query("latitude") String latitude);
 
 }

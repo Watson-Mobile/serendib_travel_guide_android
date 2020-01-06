@@ -140,7 +140,7 @@ public class RegisterTravellerActivity extends AppCompatActivity {
                 ArrayList<String> tel_num = new ArrayList<>();
                 tel_num.add(telephone_numberEditText.getText().toString());
                 registerViewModel.register(firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),
-                        emailEditText.getText().toString(),"traveller",tel_num,nic_numberEditText.getText().toString(),null,
+                        emailEditText.getText().toString(),"Traveler",tel_num,nic_numberEditText.getText().toString(),null,
                         passwordEditText.getText().toString());
 
             }

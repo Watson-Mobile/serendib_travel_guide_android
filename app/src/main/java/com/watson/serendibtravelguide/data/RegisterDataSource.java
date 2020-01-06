@@ -36,12 +36,15 @@ public class RegisterDataSource {
         regiseter_user.setGuide_locations(guide_locations);
         regiseter_user.setPassword(password);
 
+
         try {
-            connectAndGetApiDataAWS(regiseter_user);
-            return new Result.Success<> (regiseter_user);
+            if(connectAndGetApiDataAWS(regiseter_user)){
+                return new Result.Success<> (regiseter_user);
+            }
         } catch (Exception e) {
             return new Result.Error(new IOException("Error register in", e));
         }
+        return new Result.Error(new IOException("Error register in"));
     }
 
     public void logout() {
@@ -49,7 +52,7 @@ public class RegisterDataSource {
     }
 
 
-    public void connectAndGetApiDataAWS(User user) throws IOException{
+    public boolean connectAndGetApiDataAWS(User user) throws IOException{
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -70,6 +73,13 @@ public class RegisterDataSource {
         }
 
 
+        Log.d(TAG,"registering");
+        Log.d(TAG,"NewUser:"+user.toString());
         Call<UserResponse> call = userApiService.saveUser(user);
+        if(call.execute().isSuccessful()){
+            Log.d(TAG,"register_success");
+            return true;
+        }
+        return false;
     }
 }

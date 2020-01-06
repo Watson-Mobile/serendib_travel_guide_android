@@ -22,6 +22,9 @@ public interface PlaceApiService {
     @GET("all_place")
     Call<PlaceResponse> getAllPlaces();
 
+    @GET("search_place")
+    Call<PlaceResponse> searchPlaces(@Query("query") String query);
+
     @POST("place")
     @FormUrlEncoded
     Call<PlaceResponse> savePlace(@Body Place place);
