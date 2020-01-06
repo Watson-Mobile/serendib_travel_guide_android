@@ -11,6 +11,8 @@ import com.watson.serendibtravelguide.data.LoginRepository;
 import com.watson.serendibtravelguide.data.Result;
 import com.watson.serendibtravelguide.data.model.User;
 
+import java.io.IOException;
+
 public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
@@ -28,15 +30,17 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
+    public boolean login(String username, String password) throws IOException {
         // can be launched in a separate asynchronous job
         Result<User> result = loginRepository.login(username, password);
 
         if (result instanceof Result.Success) {
             User data = ((Result.Success<User>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedUserView(data.getUsername())));
+            return true;
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
+            return false;
         }
     }
 

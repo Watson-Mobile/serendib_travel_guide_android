@@ -1,21 +1,25 @@
 package com.watson.serendibtravelguide.data;
 
+import android.os.StrictMode;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.watson.serendibtravelguide.BuildConfig;
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.data.model.UserResponse;
 import com.watson.serendibtravelguide.rest.UserApiService;
+import com.watson.serendibtravelguide.ui.userlogin.LoginActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+//import org.riversun.promise.Promise;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -25,31 +29,38 @@ public class LoginDataSource {
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
 
+    public User loggedUser ;
+
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
-    public Result<User> login(String email, String password) {
 
-        try {
 
-            connectAndGetApiDataAWS(email);
-            // TODO: handle loggedInUser authentication
-            ArrayList<String> guide_locations = new ArrayList<>();
-            guide_locations.add("Matara");
-            guide_locations.add("Dondra");
-            User fakeUser =
-                    new User(
-                            java.util.UUID.randomUUID().toString(),
-                            "Piyumi","Sudusinghe","piyumisudusinghe","piyumi@gmail.com","admin",Long.parseLong("0717872513"),"956731267v",guide_locations,"12345678");
-            return new Result.Success<>(fakeUser);
-        } catch (Exception e) {
-            return new Result.Error(new IOException("Error logging in", e));
-        }
+    public Result<User> login(String email, String password) throws IOException {
+       connectAndGetApiDataAWS(email, password);
+        Log.i(TAG, "post submitted to API."+loggedUser.getFirstname());
+
+        /*
+        * completable future implementation
+        * */
+
+
+//        connectAndGetApiDataAWS(email, password);
+       if(loggedUser==null){
+           return new Result.Error(new Exception("Error register in"));
+       }else{
+           return new Result.Success<> (loggedUser);
+       }
+
     }
 
     public void logout() {
         // TODO: revoke authentication
     }
 
-    public void connectAndGetApiDataAWS(String email) {
+    public void connectAndGetApiDataAWS(String email, String password) throws IOException {
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL_AWS)
@@ -58,26 +69,60 @@ public class LoginDataSource {
         }
         UserApiService userApiService = retrofit.create(UserApiService.class);
 
-        List<User> user = new ArrayList<>();
+        Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
 
+        loggedUser = call.execute().body().getData();
 
-        Call<UserResponse> call = userApiService.getUserByEmail(email);
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                List<User> user = response.body().getData();
-//                places = response.body().getData();
-//                recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
+//        call.enqueue(new Callback<UserResponse>() {
+//            @Override
+//            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+//
+//                if(response.isSuccessful()) {
+//                    User retrievedUser = response.body().getData();
+//                    Log.i(TAG, "post submitted to API." + retrievedUser.getUsername() + "----"+retrievedUser.getLastname()+"----"+retrievedUser.getEmail());
+//                    Log.i(TAG, "post submitted to API.");
+//
+//                    loggedUser = new User(
+//                            retrievedUser.getUserId(),
+//                            retrievedUser.getFirstname(),
+//                            retrievedUser.getLastname(),
+//                            retrievedUser.getUsername(),
+//                            retrievedUser.getEmail(),
+//                            retrievedUser.getUserType(),
+//                            retrievedUser.getTelephone_number(),
+//                            retrievedUser.getNic_num(),
+//                            retrievedUser.getGuide_locations(),
+//                            retrievedUser.getPassword());
+//
+//
+//                }
+//
+////                loggedUser.setFirstname(retrievedUser[0].getFirstname());
+////                loggedUser.setLastname(retrievedUser[0].getLastname());
+////                loggedUser.setLastname(retrievedUser[0].getUsername());
+////                loggedUser.setEmail(retrievedUser[0].getEmail());
+////                loggedUser.setNic_num(retrievedUser[0].getNic_num());
+////                loggedUser.setTelephone_number(retrievedUser[0].getTelephone_number());
+////                loggedUser.setGuide_locations(retrievedUser[0].getGuide_locations());
+////                loggedUser.setUserType(retrievedUser[0].getUserType());
+////                loggedUser.setPassword(retrievedUser[0].getPassword());
+//
+//            }
+//
+//
+//            @Override
+//            public void onFailure(Call<UserResponse> call, Throwable throwable) {
+//                Log.e(TAG, throwable.toString());
+//                call.cancel();
+//
+//            }
+//        });
 
-                Log.d(TAG, "Number of users received: " + user.size());
-                Log.d("USER_REQUEST","users output" + user);
+//        return retrievedUser[0];
+//        return loggedUser;
 
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable throwable) {
-                Log.e(TAG, throwable.toString());
-            }
-        });
     }
+
+
+
 }

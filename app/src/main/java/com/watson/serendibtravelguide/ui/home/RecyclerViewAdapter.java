@@ -64,6 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("title",placeList.get(position).getName());
                 intent.putExtra("description",placeList.get(position).getDescription());
                 intent.putExtra("imagePath",placeList.get(position).getImagePaths().get(0));
+                intent.putExtra("location_point",placeList.get(position).getLocation());
 
                 v.getContext().startActivity(intent);
 

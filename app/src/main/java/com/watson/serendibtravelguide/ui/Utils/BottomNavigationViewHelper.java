@@ -82,7 +82,7 @@ public class BottomNavigationViewHelper {
                                 //launch home activity
                                 Log.d(TAG, "Case Home");
                                 HomeFragment homeFragment = new HomeFragment();
-                                addFragment(activity, homeFragment,R.id.relLayout2,true);
+                                addFragment(activity, homeFragment,R.id.relLayout2,false);
 //                                Intent intent1 = new Intent(context, HomeActivity.class);
 
 //                                context.startActivity(intent1);
@@ -91,7 +91,7 @@ public class BottomNavigationViewHelper {
                                     // search activity
                                 Log.d(TAG, "Case Search");
                                 DashboardFragment dashboardFrag = new DashboardFragment();
-                                replaceFragment(activity, dashboardFrag,R.id.relLayout2,true);
+                                replaceFragment(activity, dashboardFrag,R.id.relLayout2,false);
 
 
                                 break;
@@ -99,7 +99,7 @@ public class BottomNavigationViewHelper {
                                 //add activity
                                 Log.d(TAG, "Case Add");
                                 AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
-                                replaceFragment(activity, addPlaceFragment,R.id.relLayout2,true);
+                                replaceFragment(activity, addPlaceFragment,R.id.relLayout2,false);
 
                                 break;
                         }
