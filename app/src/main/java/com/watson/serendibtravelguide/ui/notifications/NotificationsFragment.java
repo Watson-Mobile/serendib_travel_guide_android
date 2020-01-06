@@ -1,5 +1,7 @@
 package com.watson.serendibtravelguide.ui.notifications;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +36,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
+    private float latitude;
+    private float longitude;
+    private SharedPreferences sharedPref;
+
     private static final String TAG = "SearchListFragment";
     private static Retrofit retrofit = null;
     private String userId;
@@ -49,6 +55,9 @@ public class NotificationsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        sharedPref = getContext().getSharedPreferences("serandib_travel_guide_user",Context.MODE_PRIVATE);
+        notificationsViewModel =
+                ViewModelProviders.of(this).get(NotificationsViewModel.class);
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -61,6 +70,15 @@ public class NotificationsFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        final TextView textView = root.findViewById(R.id.text_notifications);
+
+        longitude = sharedPref.getFloat("latitude",79);
+        latitude = sharedPref.getFloat("longitude",6);
+
+        Log.d("Nofification","latitude: "+latitude);
+        Log.d("Notification","longitude: "+longitude);
+
+        notificationsViewModel.getText().observe(this, new Observer<String>() {
         searchResultsTextView = root.findViewById(R.id.notification_title);
         recyclerView = root.findViewById(R.id.notification_list);
         searchAdapter = new RecycleViewAdapterNotification(searchViewList, this.getContext());
