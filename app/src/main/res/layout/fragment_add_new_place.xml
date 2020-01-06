@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"
+        tools:context=".ui.Register.RegisterLocalGuideActivity">
+
+
+        <EditText
+            android:id="@+id/PlaceName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/et_custom"
+            android:hint="@string/name_of_place"
+            android:inputType="text"
+            android:selectAllOnFocus="true"
+            android:padding="15dp"
+            android:fontFamily="sans-serif"
+            android:layout_above="@id/PlaceDescription"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/PlaceDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/et_custom"
+            android:hint="@string/description_place"
+            android:inputType="text"
+            android:selectAllOnFocus="true"
+            android:padding="15dp"
+            android:fontFamily="sans-serif"
+            android:layout_above="@id/OtherName"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/PlaceName"/>
+
+        <EditText
+            android:id="@+id/OtherName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/et_custom"
+            android:hint="@string/other_name"
+            android:inputType="text"
+            android:selectAllOnFocus="true"
+            android:padding="15dp"
+            android:fontFamily="sans-serif"
+            android:layout_above="@id/placeType"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/PlaceDescription"  />
+
+        <Spinner
+            android:id="@+id/placeType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_custom"
+            android:spinnerMode="dropdown"
+            android:selectAllOnFocus="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:padding="15dp"
+            android:fontFamily="sans-serif"
+            android:autofillHints="Select Location Type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/OtherName" />
+
+        <LinearLayout
+            android:id="@+id/layout_getmylocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/placeType"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:padding="15dp"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/btn_get_my_location"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/btn_custom"
+                android:text="@string/get_my_location"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/OtherName"
+                app:layout_constraintVertical_bias="0.2"
+                android:layout_below="@id/OtherName"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/white"
+                />
+
+            <EditText
+                android:id="@+id/showLocation_lat"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/et_custom"
+                android:selectAllOnFocus="true"
+                android:padding="15dp"
+                android:fontFamily="sans-serif"
+                android:textSize="15sp"
+                android:editable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+            <EditText
+                android:id="@+id/showLocation_long"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/et_custom"
+                android:selectAllOnFocus="true"
+                android:padding="15dp"
+                android:fontFamily="sans-serif"
+                android:textSize="15sp"
+                android:editable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_get_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_add_place"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/btn_custom"
+            android:fontFamily="sans-serif"
+            android:text="@string/action_take_phot"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_getmylocation"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/image_add_place"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_below="@id/layout_getmylocation"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_get_photo"
+            app:layout_constraintVertical_bias="0.0">
+
+        </ImageView>
+
+        <Button
+            android:id="@+id/btn_add_place"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_below="@id/image_add_place"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/btn_custom"
+            android:fontFamily="sans-serif"
+            android:text="@string/action_add_newplaces"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.556"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_add_place"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

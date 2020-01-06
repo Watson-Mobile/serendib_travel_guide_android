@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardView="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    style="@style/Widget.MaterialComponents.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/card_spacing"
+    android:layout_marginTop="@dimen/card_spacing"
+    android:layout_marginRight="@dimen/card_spacing"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:minHeight="250dp"
+    cardView:cardCornerRadius="10dp"
+    cardView:cardBackgroundColor="@color/colorBackground">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorSurface">
+
+        <ImageView
+            android:id="@+id/card_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:maxHeight="200dp"
+            android:contentDescription="@string/card_description"
+            android:src="@drawable/train_101_200x200"/>
+
+        <TextView
+            android:id="@+id/card_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="left"
+            android:lines="1"
+            android:padding="@dimen/padding_small_card"
+            android:text="@string/demo_card_text"
+            android:textAlignment="gravity"
+            android:layout_marginTop="150dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            android:textSize="35sp"/>
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/item_chip_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="210dp"
+            android:layout_marginLeft="16dp"
+            android:text="Historical"
+            android:textStyle="bold|italic"
+            android:textAppearance="@style/chipTextappearance"
+            cardView:chipBackgroundColor="@color/colorSecondary"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/item_chip_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="210dp"
+            android:layout_marginLeft="1.5in"
+            android:layout_marginRight="16dp"
+            android:text="5km"
+            android:textStyle="bold|italic"
+            android:textAppearance="@style/chipTextappearance"
+            cardView:chipStrokeColor="@color/colorPrimaryDark"
+            cardView:chipStrokeWidth="1dp"
+            cardView:chipIcon="@drawable/ic_location"
+            cardView:chipBackgroundColor="@color/colorOnPrimary"/>
+
+        <!--        <TextView-->
+<!--            android:id="@+id/card_text_types"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="sans-serif-smallcaps"-->
+<!--            android:gravity="end"-->
+<!--            android:paddingTop="@dimen/txt_space_x_large_card"-->
+<!--            android:text="@string/demo_card_text"-->
+<!--            android:textAlignment="gravity"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Display1"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textStyle="normal"-->
+<!--            cardView:layout_constraintEnd_toEndOf="parent" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/card_text_distance"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingTop="@dimen/txt_space_x_large_card"-->
+<!--            android:paddingRight="@dimen/txt_space_small_card"-->
+<!--            android:paddingLeft="300dp"-->
+<!--            android:layout_marginTop="75dp"-->
+<!--            android:lines="1"-->
+<!--            android:text="@string/demo_card_text" />-->
+
+    </FrameLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
+

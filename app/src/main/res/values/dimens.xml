@@ -8,4 +8,17 @@
     <dimen name="shrine_toolbar_image_offset_top">0dp</dimen>
     <dimen name="shrine_toolbar_collapsed_height">56dp</dimen>
     <dimen name="tall_toolbar_height">224dp</dimen>
+
+    <dimen name="card_spacing">5dp</dimen>
+    <dimen name="no_space">0dp</dimen>
+
+    <dimen name="txt_space_small_card">24dp</dimen>
+    <dimen name="txt_space_large_card">40dp</dimen>
+    <dimen name="txt_space_x_large_card">80dp</dimen>
+    <dimen name="img_card">200dp</dimen>
+    <dimen name="padding_large_card">16dp</dimen>
+    <dimen name="padding_small_card">8dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+
 </resources>

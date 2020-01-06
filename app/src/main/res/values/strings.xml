@@ -1,6 +1,83 @@
 <resources>
     <string name="app_name">SerendibTravelGuide</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_dashboard">Search</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">SIGN IN</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Invalid username</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="register_failed">"Register failed"</string>
+    <string name="register_success">"Register successful"</string>
+    <string name="password">"Password"</string>
+    <string name="e_mail">"Email"</string>
+    <string name="firstname">"First Name"</string>
+    <string name="lastname">"Last Name"</string>
+    <string name="username">"Username"</string>
+    <string name="tel_no">"Mobile Number"</string>
+    <string name="nic_no">"NIC Number"</string>
+    <string name="reg_pwd">"Password"</string>
+    <string name="con_reg_pwd">"Confirm Password"</string>
+    <string name="action_next">"Next"</string>
+    <string name="action_registerTraveller">"Register as Traveller"</string>
+    <string name="action_registerLocalGuide">"Register as Local Guide"</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="invalid_confirm_password">Invalid Confirm password</string>
+<!--    <string name="google_maps_api_key">AIzaSyB2tJ8pDaNO6l3wo2XJRtXdzmCnEfdtVW8</string>-->
+    <string name="action_addLocations">Add</string>
+    <string name="invalid_firstname">Invalid first name</string>
+    <string name="invalid_lastname">Invalid last name</string>
+    <string name="invalid_NIC">Invalid NIC number</string>
+    <string name="invalid_telephone_number">Invalid telephone number</string>
+<!--    <string name="google_maps_api_key">AIzaSyAd_MAlvB03spY4wQMCOLEYF7abzodQBZ4</string>-->
+    <string name="google_maps_api_key">AIzaSyDflkvLylyshUs_Qs-7U_9gvWbqgWReijE</string>
+    <string name="title_add_new">Add New Place</string>
+    <string name="action_add_newplaces">Add New Place</string>
+
+    <string name="name_of_place">Place Name</string>
+    <string name="description_place">Description</string>
+    <string name="type_place">Type</string>
+    <string name="other_name">Other Names</string>
+    <string name="get_my_location">Locate</string>
+    <string name="place_type">Place Type</string>
+    <string name="action_take_phot">Upload Photo</string>
+    <string name="invalid_placename">Invalid Place Name</string>
+    <string name="invalid_placedescription">Invalid Place Description</string>
+    <string name="invalid_placeType">Invalid Place Type</string>
+    <string name="invalid_othername">Invalid OtherName</string>
+    <string name="invalid_location">Invalid Location</string>
+
+    <string name="demo_card_text">Card Text</string>
+
+    <string name="demo_card_para">
+        Cdd the word "Detail" to every reference to an id, in order to differentiate
+    it from list_item ids. For example, change the ImageView ID from sportsImage to
+    sportsImageDetail, as well as any references to this ID for
+    relative placement such layout_below.
+    </string>
+
+    <string name="google_maps_key">AIzaSyD11iqwl4dM1oIWB0QG8qp53hx3hz8CMkU</string>
+
+    <string name="search_label">Search</string>
+
+    <string name="search_hint">Search Places</string>
+
+    <string name="search_results">Search Results...</string>
+
+    <string name="notification_title">Notifications</string>
+
+    <string name="settings_description">settings_description</string>
+    <string name="search_item_image">Search Item Image</string>
+
+    <string name="sample_image_url">http://ec2-34-238-82-190.compute-1.amazonaws.com/api/image?image_path=/home/ubuntu/backend-app/serendib_travel_guide_backend/uploads/images/DehiwalaZoo/DehiwalaZoo_dscf0048.jpg</string>
+
+    <string name="card_description">card image description</string>
+
 </resources>

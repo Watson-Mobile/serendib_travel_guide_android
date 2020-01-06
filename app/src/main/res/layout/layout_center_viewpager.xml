@@ -1,0 +1,32 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/container_home">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                tools:context="com.watson.serendibtravelguide.ui.home.HomeFragment">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+
+        </androidx.viewpager.widget.ViewPager>
+
+    </RelativeLayout>
+
+</merge>

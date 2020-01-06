@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/serendib_back_login"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Register.RegisterTravellerActivity">
+
+
+    <EditText
+        android:id="@+id/firstname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/firstname"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:layout_above="@id/lastname"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+        android:id="@+id/lastname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/lastname"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:layout_above="@id/username"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/firstname"/>
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/username"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:layout_above="@id/email"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lastname" />
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/e_mail"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:layout_above="@id/tel_no"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username"  />
+
+    <EditText
+        android:id="@+id/tel_no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/tel_no"
+        android:inputType="number"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:layout_above="@id/nic_no"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email" />
+
+    <EditText
+        android:id="@+id/nic_no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/nic_no"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tel_no" />
+    <EditText
+        android:id="@+id/register_pwd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/reg_pwd"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nic_no" />
+    <EditText
+        android:id="@+id/register_con_pwd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/con_reg_pwd"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_pwd" />
+
+    <Button
+        android:id="@+id/Btn_RegisterTraveller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="64dp"
+        android:enabled="false"
+        android:background="@drawable/btn_custom"
+        android:text="@string/action_register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_con_pwd"
+        app:layout_constraintVertical_bias="0.2"
+        android:layout_below="@id/nic_no"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:fontFamily="sans-serif"
+        android:textColor="@android:color/white"
+        />
+
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/password"
+        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+

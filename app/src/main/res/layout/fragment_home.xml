@@ -1,99 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/colorBackground"
     tools:context="com.watson.serendibtravelguide.ui.home.HomeFragment">
 
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tall_toolbar_height"
-        android:fitsSystemWindows="true">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleGravity="top"
-            app:expandedTitleMarginStart="@dimen/shrine_toolbar_offset_start"
-            app:expandedTitleMarginTop="@dimen/shrine_toolbar_offset_top"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/sri_lanka_main"
-                android:layout_marginTop="@dimen/shrine_toolbar_image_offset_top"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.5"/>
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/action_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/shrine_toolbar_collapsed_height"
-                app:layout_collapseMode="pin"/>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_home"
+        android:paddingTop="@dimen/shrine_toolbar_collapsed_height"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/shrine_toolbar_collapsed_height"
-        android:fillViewport="true">
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="1">
-
-            <!-- everything you already have -->
-            <TextView
-                android:id="@+id/text_home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="300dp"
-                android:layout_marginEnd="8dp"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/text_home1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="8dp"
-                android:text="sample"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/text_home2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginEnd="8dp"
-                android:text="sample2"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </TableLayout>
-    </ScrollView>
+        android:layout_marginBottom="@dimen/shrine_toolbar_collapsed_height">
 
 
+    </androidx.recyclerview.widget.RecyclerView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
