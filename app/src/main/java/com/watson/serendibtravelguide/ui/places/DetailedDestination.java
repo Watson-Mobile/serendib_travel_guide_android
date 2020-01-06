@@ -159,10 +159,10 @@ public class DetailedDestination extends AppCompatActivity implements
                 new LatLng(0, 0)).title("Marker"));
         map.setMyLocationEnabled(true);
         map.addMarker(new MarkerOptions().position(
-                new LatLng(located_point.latitude(), located_point.longitude())).title(title));
+                new LatLng(located_point.longitude(), located_point.latitude())).title(title));
         map.moveCamera(CameraUpdateFactory.newLatLng(
-                new LatLng(located_point.latitude(), located_point.latitude())));
-        map.animateCamera(CameraUpdateFactory.zoomTo(8));
+                new LatLng(located_point.longitude(), located_point.latitude())));
+        map.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
     @Override
