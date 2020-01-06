@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.watson.serendibtravelguide.config.Config;
-import com.watson.serendibtravelguide.models.MovieItem;
+import com.google.android.material.chip.Chip;
 import com.watson.serendibtravelguide.models.Place;
 import com.watson.serendibtravelguide.ui.Utils.ImageUrl;
 import com.watson.serendibtravelguide.ui.places.DetailedDestination;
@@ -24,34 +23,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.watson.serendibtravelguide.config.Config.BASE_URL_IMG;
-import static com.watson.serendibtravelguide.ui.home.HomeFragment.getMovieList1;
+import static com.watson.serendibtravelguide.ui.home.HomeFragment.getPlaceList1;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>{
 
-    private List<CardViewModel> movieList;
+    private List<CardViewModel> suggestedPlaceList;
     private List<Place> placeList;
     private ArrayList<ImageUrl> imageUrls;
     private Context context;
 
 
-    RecyclerViewAdapter(List<CardViewModel> movieList , Context context ){
-        this.movieList = movieList;
+    RecyclerViewAdapter(List<CardViewModel> suggestedPlaceList, Context context ){
+        this.suggestedPlaceList = suggestedPlaceList;
         this.context = context;
     }
 
     @Override
     public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_card,parent,false);
-        placeList = getMovieList1();
+        placeList = getPlaceList1();
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, int position) {
-        holder.title.setText(movieList.get(position).getTitle());
-//        holder.image.setBackgroundResource(movieList.get(position).getImage());
-        holder.type.setText(movieList.get(position).getType());
-        holder.distance.setText(movieList.get(position).getDistance());
+        holder.title.setText(suggestedPlaceList.get(position).getTitle());
+//        holder.image.setBackgroundResource(suggestedPlaceList.get(position).getImage());
+        holder.type.setText(suggestedPlaceList.get(position).getType());
+        holder.distance.setText(suggestedPlaceList.get(position).getDistance());
 
         Glide.with(context).load(BASE_URL_IMG+placeList.get(position).getImagePaths().get(0))
                 .apply(new RequestOptions().override(200, 200))
@@ -74,7 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        return suggestedPlaceList.size();
     }
 
 
@@ -82,17 +81,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
-        private TextView distance;
-        private TextView type;
+        private Chip distance;
+        private Chip type;
         private ImageView image;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             title = (TextView)itemView.findViewById(R.id.card_title);
             image = (ImageView)itemView.findViewById(R.id.card_image);
-            distance = (TextView)itemView.findViewById(R.id.card_text_distance);
-            type = (TextView)itemView.findViewById(R.id.card_text_types);
-//            itemView.setOnClickListener(this);
+            distance = (Chip) itemView.findViewById(R.id.item_chip_distance);
+            type = (Chip) itemView.findViewById(R.id.item_chip_tag);
+//
         }
 
 //        @Override

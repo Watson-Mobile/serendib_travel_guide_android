@@ -67,5 +67,6 @@
 
     <string name="sample_image_url">http://ec2-34-238-82-190.compute-1.amazonaws.com/api/image?image_path=/home/ubuntu/backend-app/serendib_travel_guide_backend/uploads/images/DehiwalaZoo/DehiwalaZoo_dscf0048.jpg</string>
 
+    <string name="card_description">card image description</string>
 
 </resources>

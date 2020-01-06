@@ -36,7 +36,7 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
         setContentView(R.layout.activity_home);
 
         HomeFragment homeFragment = new HomeFragment();
-        BottomNavigationViewHelper.replaceFragment(this, homeFragment,R.id.relLayout2,false);
+        BottomNavigationViewHelper.replaceFragment(this, homeFragment, R.id.relLayout2, false);
         setupBottomNavigationView();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
@@ -65,15 +65,15 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(searchListFragment!=null){
-                    Log.d(TAG,"Fragment removed......................");
+                if (searchListFragment != null) {
+                    Log.d(TAG, "Fragment removed......................");
                     getSupportFragmentManager().beginTransaction().remove(searchListFragment).commit();
                 }
                 Log.d(TAG, "query submitted............");
-                Log.d(TAG,query);
+                Log.d(TAG, query);
                 searchListFragment = new SearchListFragment(query);
 
-                BottomNavigationViewHelper.replaceFragment(homeActivity, searchListFragment,R.id.relLayout2,false);
+                BottomNavigationViewHelper.replaceFragment(homeActivity, searchListFragment, R.id.relLayout2, false);
 
                 return false;
             }
@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
                 Log.d(TAG, "Expanding menubar items.....");
                 searchView.setQueryHint("Search Places");
 
-                if(searchView.isIconified()){
+                if (searchView.isIconified()) {
                     Log.d(TAG, "Iconified...........");
                 }
 
@@ -107,8 +107,10 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 homeFragment = new HomeFragment();
                 invalidateOptionsMenu();
-                getSupportFragmentManager().beginTransaction().remove(searchListFragment).commit();
-                BottomNavigationViewHelper.replaceFragment(homeActivity, homeFragment,R.id.relLayout2,false);
+                if (searchListFragment != null) {
+                    getSupportFragmentManager().beginTransaction().remove(searchListFragment).commit();
+                }
+                BottomNavigationViewHelper.replaceFragment(homeActivity, homeFragment, R.id.relLayout2, false);
                 Log.d(TAG, "Collapsing menubar......");
                 return false;
             }
