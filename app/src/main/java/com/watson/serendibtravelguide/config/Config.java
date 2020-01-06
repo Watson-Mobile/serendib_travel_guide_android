@@ -5,4 +5,5 @@ public class Config {
     public static String BASE_URL_IMG = serverIp+"image?image_path=";
     public static long LOCATION_REFRESH_TIME = 10;
     public static float LOCATION_REFRESH_DISTANCE = 1;
+    public static final String SEARCH_URL = serverIp+"search_place/";
 }

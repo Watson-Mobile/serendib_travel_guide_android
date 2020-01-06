@@ -33,17 +33,6 @@
             <include layout="@layout/layout_center_viewpager" />
         </RelativeLayout>
 
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-<!--           <ListView-->
-<!--               android:id="@+id/light"-->
-<!--               android:layout_width="match_parent"-->
-<!--               android:layout_height="match_parent">-->
-
-<!--           </ListView>-->
-<!--        </RelativeLayout>-->
-
         <!-- bottom navigation -->
         <include layout="@layout/layout_bottom_navigation_view" />
 
