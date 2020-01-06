@@ -42,10 +42,8 @@ public class LoginDataSource {
         * completable future implementation
         * */
 
-
-//        connectAndGetApiDataAWS(email, password);
        if(loggedUser==null){
-           return new Result.Error(new Exception("Error register in"));
+           return new Result.Error(new Exception("Error in login"));
        }else{
            return new Result.Success<> (loggedUser);
        }

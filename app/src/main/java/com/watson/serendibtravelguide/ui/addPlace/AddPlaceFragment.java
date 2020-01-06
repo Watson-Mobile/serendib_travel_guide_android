@@ -77,7 +77,7 @@ public class AddPlaceFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_add_new_place, container, false);
         final TextView textView = root.findViewById(R.id.firstname);
         sampleText = root.findViewById(R.id.lastname);
-        final Button btnNext = root.findViewById(R.id.btn_next);
+        final Button btn_take_photo = root.findViewById(R.id.btn_get_photo);
         click_image_id = (ImageView) root.findViewById(R.id.image_add_place);
 
         mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
@@ -96,7 +96,7 @@ public class AddPlaceFragment extends Fragment {
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
+        btn_take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //submit data or take photograph

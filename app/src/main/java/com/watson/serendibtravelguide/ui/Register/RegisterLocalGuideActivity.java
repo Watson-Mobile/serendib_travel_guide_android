@@ -85,7 +85,7 @@ public class RegisterLocalGuideActivity extends AppCompatActivity {
                 if (registerFormState == null) {
                     return;
                 }
-                nextButton.setEnabled(registerFormState.isDataValid());
+                btn_nextPage.setEnabled(registerFormState.isDataValid());
                 if (registerFormState.getFirstnameError() != null) {
                     firstnameEditText.setError(getString(registerFormState.getFirstnameError()));
                 }
@@ -114,7 +114,7 @@ public class RegisterLocalGuideActivity extends AppCompatActivity {
             }
         });
 
-//        registerViewModel.getRegisterResult().observe(this, new Observer<LoginResult>() {
+//        registerViewModel.getRegisterResult().observe(this, new Observer<RegisterResult>() {
 //            @Override
 //            public void onChanged(@Nullable RegisterResult registerResult) {
 //                if (registerResult == null) {
