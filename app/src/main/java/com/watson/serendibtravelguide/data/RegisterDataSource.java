@@ -25,29 +25,29 @@ public class RegisterDataSource {
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
 
-    public User registerUser ;
+    public User registeringUser ;
 
 
     public Result<User> register( String[] telephone_number,String firstname, String lastname, String username, String email, String userType, String password, String[] guide_location ) {
         Log.d(TAG,"i am in the datasource");
-        User regiseter_user = new User();
-        regiseter_user.setFirstname(firstname);
-        regiseter_user.setLastname(lastname);
-        regiseter_user.setUsername(username);
-        regiseter_user.setEmail(email);
-        regiseter_user.setUserType(userType);
-        regiseter_user.setTelephone_number(telephone_number);
-        regiseter_user.setGuide_location(guide_location);
-        regiseter_user.setPassword(password);
+        User register_user = new User();
+        register_user.setFirstname(firstname);
+        register_user.setLastname(lastname);
+        register_user.setUsername(username);
+        register_user.setEmail(email);
+        register_user.setUserType(userType);
+        register_user.setTelephone_number(telephone_number);
+        register_user.setGuide_location(guide_location);
+        register_user.setPassword(password);
         try{
 
             connectAndGetApiDataAWS(telephone_number,firstname,lastname,username,email,userType,password,guide_location);
-            if(registerUser==null){
+            if(registeringUser==null){
                 Log.d(TAG,"i am in the datasource error");
                 return new Result.Error(new Exception("Error in register"));
             }else{
                 Log.d(TAG,"i am in the datasource success");
-                return new Result.Success<> (regiseter_user);
+                return new Result.Success<> (registeringUser);
             }
         }catch (Exception e ){
             Log.d(TAG,"i am in the exception"+e);
@@ -83,7 +83,7 @@ public class RegisterDataSource {
         Call<UserResponse> call = userApiService.saveUser(telephone_number,firstname,lastname,username,email,userType,password,guide_location);
 
         //Call<UserResponse> call = userApiService.saveUser();
-        registerUser = call.execute().body().getData();
+        registeringUser = call.execute().body().getData();
        // Log.i(TAG,"registered"+call.execute().body().getMessage());
 
 
