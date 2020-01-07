@@ -110,21 +110,21 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
-        mLocationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-
-        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
-
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
+//        mLocationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+//
+//        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+//        }
+//        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+//        }
+//
+//        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+//                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("userId", userLoggedIn.getUserId());
                         editor.putString("userType", userLoggedIn.getUserType());
                         if (userLoggedIn.getUserType() == "Local_Assistent") {
-                            editor.putString("telephoneNumber", userLoggedIn.getTelephone_number().get(0));
+                            editor.putString("telephoneNumber", userLoggedIn.getTelephone_number().toString());
                             editor.putString("nicNumber", userLoggedIn.getNic_num());
                             editor.putFloat("logitude", 79.899963F);
                             editor.putFloat("langitude", 6.797072F);

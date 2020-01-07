@@ -42,10 +42,10 @@ public class NotificationsFragment extends Fragment {
     private static final String TAG = "SearchListFragment";
     private static Retrofit retrofit = null;
     private String userId;
-    private List<Place> notificationList = new ArrayList<>();
+    private static List<Place> notificationList = new ArrayList<>();
     private List<NotificationsViewModel> notificationViewList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private RecycleViewAdapterNotification notificationAdapter;
+    private static RecycleViewAdapterNotification notificationAdapter;
     private TextView notificationResultsTextView;
 
     public NotificationsFragment(String userId) {
@@ -57,8 +57,8 @@ public class NotificationsFragment extends Fragment {
         SharedPreferences userPrefs = this.getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
         Log.d("userpref", userPrefs.getString("name", "") + "=========");
         Log.d("lllllll", "pppppppppppppp");
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
+//        notificationsViewModel =
+//                ViewModelProviders.of(this).get(NotificationsViewModel.class);
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -73,11 +73,11 @@ public class NotificationsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
         final TextView textView = root.findViewById(R.id.notification_title);
 
-        Log.d("Notification", LoginDataSource.getLoggedUser().getGuideLocations() + ",----locations");
+        Log.d("Notification", LoginDataSource.loggedUser.getGuide_locations() + ",----locations");
 
         longitude = 79.899963;
         latitude = 6.797072;
-        latitude = LoginDataSource.getLoggedUser().getGuideLocations().coordinates().get(0).latitude();
+        latitude = LoginDataSource.loggedUser.getGuide_locations().latitude();
 
 //        Log.d("Nofification", "latitude: " + latitude);
 //        Log.d("Notification", "longitude: " + longitude);
@@ -96,7 +96,10 @@ public class NotificationsFragment extends Fragment {
     public void queryNotVerifiedPlaces(String query) {
         PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
 
-        Call<PlaceResponse> notificationCall = placeApiService.getNotVerifiedPlaces(Double.toString(longitude), Double.toString(latitude));
+        Call<PlaceResponse> notificationCall = placeApiService.getNotVerifiedPlaces(
+//                Double.toString(longitude), Double.toString(latitude)
+                "79.899","6.7969"
+        );
 
         notificationCall.enqueue(new Callback<PlaceResponse>() {
             @Override
@@ -143,7 +146,7 @@ public class NotificationsFragment extends Fragment {
         });
     }
 
-    public static void verifyPlace(String placeId) {
+    public static void verifyPlace(String placeId,int position) {
         PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
         Call<PlaceAddResponse> notificationVerifyCall = placeApiService.verifyPlace(placeId);
         notificationVerifyCall.enqueue(new Callback<PlaceAddResponse>() {
@@ -152,6 +155,9 @@ public class NotificationsFragment extends Fragment {
                 Place updatedPlace = response.body().getData();
                 if(updatedPlace!=null){
                     Log.d("Notification","Place verified...");
+                    notificationList.remove(notificationList.indexOf(updatedPlace));
+//                    notificationList.remove(position);
+                    notificationAdapter.notifyDataSetChanged();
                 }else{
                     Log.d("Notification","Place verification place...");
                 }

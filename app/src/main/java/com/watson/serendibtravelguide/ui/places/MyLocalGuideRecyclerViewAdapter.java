@@ -2,6 +2,7 @@ package com.watson.serendibtravelguide.ui.places;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.ui.places.LocalGuideFragment.OnListFragmentInteractionListener;
 import com.watson.serendibtravelguide.dummy.DummyContent.DummyItem;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLoca
 
     private final List<User> mValues;
     private final OnListFragmentInteractionListener mListener;
+
 
 
     public MyLocalGuideRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener) {
@@ -47,6 +50,7 @@ public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLoca
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
+                    Log.i(TAG,"i am in the list onclick");
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);

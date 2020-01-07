@@ -34,26 +34,17 @@ public class LoginDataSource {
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
 
 
-    public static User getLoggedUser() {
-        return loggedUser;
-    }
-
-    public static void setLoggedUser(User loggedUser) {
-        LoginDataSource.loggedUser = loggedUser;
-    }
-
     public Result<User> login(String email, String password) throws IOException {
        connectAndGetApiDataAWS(email, password);
-        Log.i(TAG, "post submitted to API."+loggedUser.getFirstname());
 
-        /*
-        * completable future implementation
-        * */
 
        if(loggedUser==null){
+
            return new Result.Error(new Exception("Error in login"));
        }else{
+           Log.i(TAG, "post submitted to API."+loggedUser.getFirstname());
            return new Result.Success<> (loggedUser);
+
        }
 
     }
@@ -76,56 +67,13 @@ public class LoginDataSource {
         UserApiService userApiService = retrofit.create(UserApiService.class);
 
         Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
+        try {
+            loggedUser = call.execute().body().getData();
+        }catch (NullPointerException e){
+            Log.e(TAG, "Login Failed"+e);
+        }
 
-        LoginDataSource.setLoggedUser(call.execute().body().getData());
 
-//        call.enqueue(new Callback<UserResponse>() {
-//            @Override
-//            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-//
-//                if(response.isSuccessful()) {
-//                    User retrievedUser = response.body().getData();
-//                    Log.i(TAG, "post submitted to API." + retrievedUser.getUsername() + "----"+retrievedUser.getLastname()+"----"+retrievedUser.getEmail());
-//                    Log.i(TAG, "post submitted to API.");
-//
-//                    loggedUser = new User(
-//                            retrievedUser.getUserId(),
-//                            retrievedUser.getFirstname(),
-//                            retrievedUser.getLastname(),
-//                            retrievedUser.getUsername(),
-//                            retrievedUser.getEmail(),
-//                            retrievedUser.getUserType(),
-//                            retrievedUser.getTelephone_number(),
-//                            retrievedUser.getNic_num(),
-//                            retrievedUser.getGuide_locations(),
-//                            retrievedUser.getPassword());
-//
-//
-//                }
-//
-////                loggedUser.setFirstname(retrievedUser[0].getFirstname());
-////                loggedUser.setLastname(retrievedUser[0].getLastname());
-////                loggedUser.setLastname(retrievedUser[0].getUsername());
-////                loggedUser.setEmail(retrievedUser[0].getEmail());
-////                loggedUser.setNic_num(retrievedUser[0].getNic_num());
-////                loggedUser.setTelephone_number(retrievedUser[0].getTelephone_number());
-////                loggedUser.setGuide_locations(retrievedUser[0].getGuide_locations());
-////                loggedUser.setUserType(retrievedUser[0].getUserType());
-////                loggedUser.setPassword(retrievedUser[0].getPassword());
-//
-//            }
-//
-//
-//            @Override
-//            public void onFailure(Call<UserResponse> call, Throwable throwable) {
-//                Log.e(TAG, throwable.toString());
-//                call.cancel();
-//
-//            }
-//        });
-
-//        return retrievedUser[0];
-//        return loggedUser;
 
     }
 
