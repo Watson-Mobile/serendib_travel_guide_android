@@ -58,6 +58,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.security.Provider;
 import java.text.SimpleDateFormat;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -94,11 +96,19 @@ public class AddPlaceFragment extends Fragment {
     String currentPhotoPath;
     Uri photoURI;
 
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
 
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
+            //your code here
+//            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();   // Toast not showing
+//            String longitude = "Longitude: " + location.getLongitude();
+//            String latitude = "Latitude: " + location.getLatitude();
+//            String s = longitude + "\n" + latitude;
+//            Log.d(TAG, "location String : "+s);
+//            sampleText.setHint(s);
             current_location_lat = location.getLatitude();
             current_location_long = location.getLongitude();
         }
@@ -122,7 +132,7 @@ public class AddPlaceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_add_new_place, container, false);
-
+        df.setRoundingMode(RoundingMode.DOWN);
         final EditText placenameEditText = root.findViewById(R.id.PlaceName);
         final EditText descriptionEditText = root.findViewById(R.id.PlaceDescription);
         final EditText otherNamesEditText = root.findViewById(R.id.OtherName);
@@ -155,48 +165,10 @@ public class AddPlaceFragment extends Fragment {
         if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         }
 
-//        criteria = new Criteria();
-        provider = mLocationManager.getBestProvider(criteria, true);
-
-        if (this.getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            if (this.getActivity().shouldShowRequestPermissionRationale(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            } else {
-                // No explanation needed; request the permission
-                this.getActivity().requestPermissions(
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        678);
-            }
-        }
-
-        if (this.getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // Explain to the user why we need to read the contacts
-            }
-
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    987);
-
-
-            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-            // app-defined int constant
-
-//            return;
-        }
-
-        mLocationManager.requestLocationUpdates(provider, 10,
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
 
 
@@ -216,10 +188,10 @@ public class AddPlaceFragment extends Fragment {
                 if (placeFormState.getDescriptionError() != null) {
                     descriptionEditText.setError(getString(placeFormState.getDescriptionError()));
                 }
-                if (placeFormState.getLocationError() != null) {
+                if(placeFormState.getLocationError() != null){
                     locationEditText_lat.setError(getString(placeFormState.getLocationError()));
                 }
-                if (placeFormState.getPlaceTypeError() != null) {
+                if(placeFormState.getPlaceTypeError() != null){
 
                 }
             }
@@ -264,6 +236,24 @@ public class AddPlaceFragment extends Fragment {
 
         placenameEditText.addTextChangedListener(afterTextChangedListener);
         descriptionEditText.addTextChangedListener(afterTextChangedListener);
+        /*
+
+        /*if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            return;
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME,
+                MIN_DISTANCE, this);
+         */
 
 
         btn_take_photo.setOnClickListener(new View.OnClickListener() {
@@ -307,25 +297,10 @@ public class AddPlaceFragment extends Fragment {
         get_my_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (v.getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED && v.getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    Activity#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for Activity#requestPermissions for more details.
-                    return;
-                }
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10,
-                        LOCATION_REFRESH_DISTANCE, mLocationListener);
-//                locationEditText_lat.setText(String.valueOf(current_location_lat));
-//                locationEditText_long.setText(String.valueOf(current_location_long));
-                locationEditText_lat.setText(String.valueOf(LocationHandler.currentLocation.latitude()));
-                locationEditText_long.setText(String.valueOf(LocationHandler.currentLocation.longitude()));
+                double roundOff_lat = Math.round(current_location_lat * 100.0) / 100.0;
+                double roundOff_long = Math.round(current_location_long * 100.0) / 100.0;
+                locationEditText_lat.setText(String.valueOf(roundOff_lat));
+                locationEditText_long.setText(String.valueOf(roundOff_long));
             }
 
 

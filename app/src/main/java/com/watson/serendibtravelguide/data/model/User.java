@@ -2,7 +2,7 @@ package com.watson.serendibtravelguide.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.mapbox.geojson.MultiPoint;
+
 import com.mapbox.geojson.Point;
 
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ public class User {
     @SerializedName("guide_location")
     @Expose
     private Point guide_locations;
+    private String[] guide_location;
     @SerializedName("password")
     @Expose
     private String password;
@@ -45,7 +46,7 @@ public class User {
 
     }
 
-    public User(String userId, String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, Point guide_locations, String password) {
+    public User(String userId, String firstname, String lastname, String username, String email, String userType, String[] telephone_number, String[] guide_location, String password) {
         this.userId = userId;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -53,8 +54,8 @@ public class User {
         this.email = email;
         this.userType = userType;
         this.telephone_number = telephone_number;
-        this.nic_num = nic_num;
-        this.guide_locations = guide_locations;
+        //this.nic_num = nic_num;
+        this.guide_location = guide_location;
         this.password = password;
     }
 
@@ -106,20 +107,24 @@ public class User {
         this.userType = userType;
     }
 
-    public ArrayList<String> getTelephone_number() {
+    public String[] getTelephone_number() {
         return telephone_number;
     }
 
-    public void setTelephone_number(ArrayList<String> telephone_number) {
+    public void setTelephone_number(String[] telephone_number) {
         this.telephone_number = telephone_number;
     }
 
-    public String getNic_num() {
-        return nic_num;
-    }
+//    public String getNic_num() {
+//        return nic_num;
+//    }
+//
+//    public void setNic_num(String nic_num) {
+//        this.nic_num = nic_num;
+//    }
 
-    public void setNic_num(String nic_num) {
-        this.nic_num = nic_num;
+    public String[] getGuide_location() {
+        return guide_location;
     }
 
     public Point getGuide_locations() {

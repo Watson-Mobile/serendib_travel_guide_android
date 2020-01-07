@@ -1,12 +1,10 @@
 package com.watson.serendibtravelguide.data;
 
 
-import com.mapbox.geojson.MultiPoint;
 import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.data.model.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RegisterRepository {
     private static volatile RegisterRepository instance;
@@ -43,9 +41,9 @@ public class RegisterRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<User> register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, Point guide_locations, String password) {
+    public Result<User> register(String[] telephone_number,String firstname, String lastname, String username, String email, String userType, String password, String[] guide_location) {
         // handle login
-        Result<User> result = dataSource.register(firstname,lastname, username, email,userType,telephone_number,nic_num,guide_locations,password);
+        Result<User> result = dataSource.register(telephone_number,firstname,lastname,username,email,userType,password,guide_location);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<User>) result).getData());
         }

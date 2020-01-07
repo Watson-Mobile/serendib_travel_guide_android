@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.config.Config;
@@ -53,6 +54,7 @@ public class LocalGuideFragment extends Fragment {
     private static Retrofit retrofit = null;
     private MyLocalGuideRecyclerViewAdapter recyclerViewAdapter;
 
+
     List<User> placesOut;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,6 +80,8 @@ public class LocalGuideFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+
     }
 
     @Override
