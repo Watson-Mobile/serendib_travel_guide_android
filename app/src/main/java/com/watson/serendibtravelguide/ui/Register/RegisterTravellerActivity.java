@@ -30,6 +30,7 @@ public class RegisterTravellerActivity extends AppCompatActivity {
 
     RegisterViewModel registerViewModel;
     Button traveller_register;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +46,10 @@ public class RegisterTravellerActivity extends AppCompatActivity {
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText nic_numberEditText = findViewById(R.id.nic_no);
         final EditText telephone_numberEditText = findViewById(R.id.tel_no);
-        final EditText  emailEditText = findViewById(R.id.email);
+        final EditText emailEditText = findViewById(R.id.email);
         final EditText passwordEditText = findViewById(R.id.register_pwd);
         final EditText confirm_passwordEditText = findViewById(R.id.register_con_pwd);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-
-
-
 
 
         registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
@@ -101,7 +99,7 @@ public class RegisterTravellerActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Registration is Successful", Toast.LENGTH_SHORT).show();
                     updateUI();
 
-                }else{
+                } else {
                     showRegisterFailed(registerResult.getError());
                 }
                 setResult(Activity.RESULT_OK);
@@ -124,8 +122,15 @@ public class RegisterTravellerActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                registerViewModel.registerDataChanged(firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),emailEditText.getText().toString(),nic_numberEditText.getText().toString(), telephone_numberEditText.getText().toString(),
-                        passwordEditText.getText().toString(),confirm_passwordEditText.getText().toString());
+                registerViewModel.registerDataChanged(
+                        telephone_numberEditText.getText().toString(),
+                        firstnameEditText.getText().toString(),
+                        lastnameEditText.getText().toString(),
+                        usernameEditText.getText().toString(),
+                        emailEditText.getText().toString(),
+                        passwordEditText.getText().toString(),
+                        confirm_passwordEditText.getText().toString(),
+                        nic_numberEditText.getText().toString());
             }
         };
 
@@ -143,12 +148,18 @@ public class RegisterTravellerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String[] tel_num = new String[1];
                 tel_num[0] = telephone_numberEditText.getText().toString();
-                String [] guide_location = new String[2];
-                guide_location[0]= "23.21";
+                String[] guide_location = new String[2];
+                guide_location[0] = "23.21";
                 guide_location[1] = "23.21";
-                registerViewModel.register(tel_num,firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),
-                        emailEditText.getText().toString(),"Traveler",
-                        passwordEditText.getText().toString(),guide_location,nic_numberEditText.getText().toString());
+                if (registerViewModel.register(tel_num, firstnameEditText.getText().toString(), lastnameEditText.getText().toString(), usernameEditText.getText().toString(),
+                        emailEditText.getText().toString(), "Traveler",
+                        passwordEditText.getText().toString(), guide_location, nic_numberEditText.getText().toString())) {
+                    updateUI();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Registration Failed", Toast.LENGTH_SHORT).show();
+                    Intent intentMainRegister = new Intent(RegisterTravellerActivity.this, MainRegisterActivity.class);
+                    startActivity(intentMainRegister);
+                }
             }
         });
 
@@ -157,12 +168,12 @@ public class RegisterTravellerActivity extends AppCompatActivity {
 
     private void showRegisterFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-        Intent intentMainRegister = new Intent(RegisterTravellerActivity.this,MainRegisterActivity.class);
+        Intent intentMainRegister = new Intent(RegisterTravellerActivity.this, MainRegisterActivity.class);
         startActivity(intentMainRegister);
     }
 
-    private void updateUI(){
-        Intent intentLogin = new Intent(RegisterTravellerActivity.this,LoginActivity.class);
+    private void updateUI() {
+        Intent intentLogin = new Intent(RegisterTravellerActivity.this, LoginActivity.class);
         startActivity(intentLogin);
     }
 }

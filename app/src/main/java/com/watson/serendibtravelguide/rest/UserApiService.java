@@ -3,6 +3,7 @@ package com.watson.serendibtravelguide.rest;
 import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.data.model.GuideResponse;
 import com.watson.serendibtravelguide.data.model.User;
+import com.watson.serendibtravelguide.data.model.UserRegisterResponse;
 import com.watson.serendibtravelguide.data.model.UserResponse;
 
 
@@ -29,7 +30,7 @@ public interface UserApiService {
 
     @POST("user")
     @FormUrlEncoded
-    Call<UserResponse> saveUser(
+    Call<UserRegisterResponse> saveUser(
             @Field("telephone_number") String[] telephone_number,
             @Field("firstname") String firstname,
             @Field("lastname") String lastname,

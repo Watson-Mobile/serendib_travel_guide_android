@@ -14,6 +14,8 @@ import com.watson.serendibtravelguide.data.RegisterRepository;
 import com.watson.serendibtravelguide.data.Result;
 import com.watson.serendibtravelguide.data.model.User;
 import static androidx.constraintlayout.widget.Constraints.TAG;
+
+import com.watson.serendibtravelguide.data.model.UserSubmit;
 import com.watson.serendibtravelguide.ui.userlogin.LoginFormState;
 
 
@@ -36,12 +38,12 @@ public class RegisterViewModel extends ViewModel {
         return registerResult;
     }
 
-    public boolean register(String[] telephone_number,String firstname, String lastname, String username, String email, String userType, String password, String[] guide_location,String nic_num) {
+    public boolean register(String[] telephone_number,String firstname, String lastname, String username, String email, String userType, String password, String[] guide_location, String nic_num) {
         // can be launched in a separate asynchronous job
-        Result<User> result = registerRepository.register(telephone_number,firstname,lastname, username, email,userType,password,guide_location,nic_num);
+        Result<UserSubmit> result = registerRepository.register(telephone_number,firstname,lastname, username, email,userType,password,guide_location,nic_num);
 
         if (result instanceof Result.Success) {
-            User data = ((Result.Success<User>) result).getData();
+            UserSubmit data = ((Result.Success<UserSubmit>) result).getData();
             registerResult.setValue(new RegisterResult(R.string.register_success));
             return true;
         } else {
@@ -50,7 +52,7 @@ public class RegisterViewModel extends ViewModel {
         }
     }
 
-    public void registerDataChanged(String firstname,String lastname, String username, String email, String NICNumber,String telephone_number,String password, String confirm_password) {
+    public void registerDataChanged(String telephone_number,String firstname, String lastname, String username, String email, String password, String confirm_password, String nic_num) {
         if (!isFirstnameValid(firstname)) {
             registerFormState.setValue(new RegisterFormState(R.string.invalid_firstname, null, null, null, null, null, null, null));
         } else if (!isLastnameValid(lastname)) {
@@ -61,7 +63,7 @@ public class RegisterViewModel extends ViewModel {
             registerFormState.setValue(new RegisterFormState(null,null,null,R.string.invalid_email,null,null,null,null));
         } else if(!isTelephoneNumberValid(telephone_number)){
             registerFormState.setValue(new RegisterFormState(null,null,null,null,null,R.string.invalid_telephone_number,null,null));
-        }else if(!isNICNumValid(NICNumber)){
+        }else if(!isNICNumValid(nic_num)){
             registerFormState.setValue(new RegisterFormState(null,null,null,null,R.string.invalid_NIC,null,null,null));
         }else if(!isPasswordValid(password)){
             registerFormState.setValue(new RegisterFormState(null,null,null,null,null,null,R.string.invalid_password,null));
@@ -136,7 +138,7 @@ public class RegisterViewModel extends ViewModel {
             return false;
         }
 
-        if(telephone_number.trim().length()!=9){
+        if(telephone_number.trim().length()!=10){
             return false;
         }else{
             return true;

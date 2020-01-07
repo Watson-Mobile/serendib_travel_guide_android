@@ -29,21 +29,22 @@ public class LoginDataSource {
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
 
-    public User loggedUser ;
+    public static User loggedUser ;
 
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
 
 
     public Result<User> login(String email, String password) throws IOException {
        connectAndGetApiDataAWS(email, password);
-        /*
-        * completable future implementation
-        * */
+
 
        if(loggedUser==null){
+
            return new Result.Error(new Exception("Error in login"));
        }else{
+           Log.i(TAG, "post submitted to API."+loggedUser.getFirstname());
            return new Result.Success<> (loggedUser);
+
        }
 
     }
@@ -66,8 +67,13 @@ public class LoginDataSource {
         UserApiService userApiService = retrofit.create(UserApiService.class);
 
         Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
+        try {
+            loggedUser = call.execute().body().getData();
+        }catch (NullPointerException e){
+            Log.e(TAG, "Login Failed"+e);
+        }
 
-        loggedUser = call.execute().body().getData();
+
 
     }
 

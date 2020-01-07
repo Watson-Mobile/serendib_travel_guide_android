@@ -2,10 +2,9 @@ package com.watson.serendibtravelguide.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import com.mapbox.geojson.Point;
 
-public class User {
+public class UserSubmit {
 
     @SerializedName("userId")
     @Expose
@@ -31,8 +30,7 @@ public class User {
     @SerializedName("nic_num")
     @Expose
     private String nic_num;
-
-    @SerializedName("guide_locations")
+    @SerializedName("guide_location_submit")
     @Expose
     private Point guide_locations;
 
@@ -40,15 +38,13 @@ public class User {
     @Expose
     private String password;
 
+    private String[] guide_location_submit;
 
-    private String[] guide_locations_new;
-
-
-    public User(){
+    public UserSubmit(){
 
     }
 
-    public User(String userId, String firstname, String lastname, String username, String email, String userType, String[] telephone_number, Point guide_location_submit, String password, String nic_num) {
+    public UserSubmit(String userId, String firstname, String lastname, String username, String email, String userType, String[] telephone_number, String[] guide_location_submit, String password, String nic_num) {
         this.userId = userId;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -57,7 +53,7 @@ public class User {
         this.userType = userType;
         this.telephone_number = telephone_number;
         this.nic_num = nic_num;
-        this.guide_locations = guide_location_submit;
+        this.guide_location_submit = guide_location_submit;
         this.password = password;
     }
 
@@ -125,6 +121,9 @@ public class User {
         this.nic_num = nic_num;
     }
 
+    public String[] getGuide_location_submit() {
+        return guide_location_submit;
+    }
 
     public Point getGuide_locations() {
         return guide_locations;
@@ -134,6 +133,9 @@ public class User {
         this.guide_locations = guide_locations;
     }
 
+    public void setGuide_location_submit(String[] guide_location_submit) {
+        this.guide_location_submit = guide_location_submit;
+    }
 
     public String getPassword() {
         return password;
