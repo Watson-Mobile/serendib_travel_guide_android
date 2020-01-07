@@ -27,7 +27,7 @@ public class RegisterDataSource {
     private static Retrofit retrofit = null;
 
 
-    public Result<User> register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
+    public Result<User> register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, Point guide_locations, String password) {
         User regiseter_user = new User();
         regiseter_user.setFirstname(firstname);
         regiseter_user.setLastname(lastname);

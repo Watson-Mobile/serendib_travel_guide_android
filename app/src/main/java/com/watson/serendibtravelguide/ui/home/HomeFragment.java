@@ -29,6 +29,7 @@ import com.watson.serendibtravelguide.models.Place;
 import com.watson.serendibtravelguide.models.PlaceResponse;
 import com.watson.serendibtravelguide.rest.MovieApiService;
 import com.watson.serendibtravelguide.rest.PlaceApiService;
+import com.watson.serendibtravelguide.ui.Utils.LocationHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ import static android.content.Context.LOCATION_SERVICE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_DISTANCE;
 import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_TIME;
+import static com.watson.serendibtravelguide.ui.Utils.LocationHandler.currentLocation;
 
 
 public class HomeFragment extends Fragment {
@@ -63,45 +65,47 @@ public class HomeFragment extends Fragment {
 
 
     private LocationManager mLocationManager;
-    private Point currentLocation;
+//    private Point currentLocation;
 
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(final Location location) {
-            //your code here
-//            String longitude = "Longitude: " + location.getLongitude();
-//            String latitude = "Latitude: " + location.getLatitude();
-//            String s = longitude + "\n" + latitude;
-//            Log.d(TAG, "location String : " + s);
-
-            currentLocation = Point.fromLngLat(location.getLatitude(), location.getLongitude());
-            Log.d(TAG, "Current Point : " + currentLocation);
-            connectAndGetApiDataAWS(false, currentLocation.latitude(), currentLocation.longitude());
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
+//    private final LocationListener mLocationListener = new LocationListener() {
+//        @Override
+//        public void onLocationChanged(final Location location) {
+//            //your code here
+////            String longitude = "Longitude: " + location.getLongitude();
+////            String latitude = "Latitude: " + location.getLatitude();
+////            String s = longitude + "\n" + latitude;
+////            Log.d(TAG, "location String : " + s);
+//
+//            currentLocation = Point.fromLngLat(location.getLatitude(), location.getLongitude());
+//            Log.d(TAG, "Current Point : " + currentLocation);
+//            connectAndGetApiDataAWS(false, currentLocation.latitude(), currentLocation.longitude());
+//        }
+//
+//        @Override
+//        public void onStatusChanged(String s, int i, Bundle bundle) {
+//
+//        }
+//
+//        @Override
+//        public void onProviderEnabled(String s) {
+//
+//        }
+//
+//        @Override
+//        public void onProviderDisabled(String s) {
+//
+//        }
+//    };
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        currentLocation = Point.fromLngLat(79.899963, 6.797072);
+//        currentLocation = Point.fromLngLat(79.899963, 6.797072);
 //        currentLocation = HomeActivity.getLocationFromIntent();
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.item_chip_distance);
+//        currentLocation = LocationHandler.getCurrentLocation();
+        Log.d(TAG,"Centralized Location"+ currentLocation.toJson());
 
         placeList = new ArrayList<>();
         placeList1 = new ArrayList<>();
@@ -114,21 +118,22 @@ public class HomeFragment extends Fragment {
         connectAndGetApiDataAWS(true, currentLocation.latitude(), currentLocation.longitude());
 
 
-        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
 
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
-
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
+//        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+//
+//        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this.getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+//        }
+//        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this.getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+//        }
+//
+//        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+//                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
 
         return root;

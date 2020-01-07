@@ -29,7 +29,7 @@ public class LoginDataSource {
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
 
-    public User loggedUser ;
+    public static User loggedUser ;
 
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
 
@@ -64,14 +64,14 @@ public class LoginDataSource {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-//        UserApiService userApiService = retrofit.create(UserApiService.class);
-//
-//        Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
-//        try {
-//            loggedUser = call.execute().body().getData();
-//        }catch (NullPointerException e){
-//            Log.e(TAG, "Login Failed"+e);
-//        }
+        UserApiService userApiService = retrofit.create(UserApiService.class);
+
+        Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
+        try {
+            loggedUser = call.execute().body().getData();
+        }catch (NullPointerException e){
+            Log.e(TAG, "Login Failed"+e);
+        }
 
 
 

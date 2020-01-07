@@ -23,6 +23,8 @@ import com.watson.serendibtravelguide.ui.search.SearchListFragment;
 
 import java.util.ArrayList;
 
+import static com.watson.serendibtravelguide.ui.Utils.LocationHandler.initLocationHandler;
+
 public class HomeActivity extends AppCompatActivity implements LocalGuideFragment.OnListFragmentInteractionListener {
     private static final String TAG = "HomeActivity";
     private static SearchListFragment searchListFragment;
@@ -33,7 +35,7 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
     private SearchView searchView;
 
     private static Point locationFromIntent;
-    private static ArrayList<String> userLocationFromIntent;
+    private static String[] userLocationFromIntent;
 
 
     @Override
@@ -41,7 +43,6 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         locationFromIntent = (Point) getIntent().getSerializableExtra("location_point");
-        userLocationFromIntent = (ArrayList<String>) getIntent().getSerializableExtra("user_location");
 
 //        Log.d(TAG,"long"+userLocationFromIntent.get(0)+"lat"+userLocationFromIntent.get(1));
 
@@ -51,6 +52,8 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
+
+        initLocationHandler(this);
 
 
 

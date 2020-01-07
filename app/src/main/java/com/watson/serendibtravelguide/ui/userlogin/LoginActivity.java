@@ -225,7 +225,6 @@ public class LoginActivity extends AppCompatActivity {
                         loggedUser = userLoggedIn;
                         Intent intent = new Intent(loginActivity, HomeActivity.class);
                         intent.putExtra("location_point",currentLocation);
-                        intent.putExtra("user_location",loggedUser.getGuide_locations().get(0));
                         //killing all other activities
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

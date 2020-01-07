@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.data.model.UserResponse;
+import com.watson.serendibtravelguide.models.ImageUploadResponse;
 import com.watson.serendibtravelguide.models.Place;
 import com.watson.serendibtravelguide.models.PlaceAddResponse;
 import com.watson.serendibtravelguide.models.PlaceResponse;
@@ -56,7 +57,7 @@ public interface PlaceApiService {
 
     @POST("place/images")
     @Multipart
-    Call<PlaceAddResponse> uploadImage(
+    Call<ImageUploadResponse> uploadImage(
             @Part MultipartBody.Part file,
             @Query("name") String name);
 

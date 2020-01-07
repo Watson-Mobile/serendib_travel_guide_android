@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -43,16 +44,19 @@ import androidx.lifecycle.ViewModelProviders;
 import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.config.Config;
+import com.watson.serendibtravelguide.models.ImageUploadResponse;
 import com.watson.serendibtravelguide.models.Place;
 import com.watson.serendibtravelguide.models.PlaceAddResponse;
 import com.watson.serendibtravelguide.models.PlaceResponse;
 import com.watson.serendibtravelguide.rest.PlaceApiService;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
+import com.watson.serendibtravelguide.ui.Utils.LocationHandler;
 import com.watson.serendibtravelguide.ui.home.HomeActivity;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.security.Provider;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,6 +90,7 @@ public class AddPlaceFragment extends Fragment {
     private double current_location_lat;
     private double current_location_long;
     private static Retrofit retrofit = null;
+    private String provider;
     String currentPhotoPath;
     Uri photoURI;
 
@@ -94,13 +99,6 @@ public class AddPlaceFragment extends Fragment {
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
-            //your code here
-//            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();   // Toast not showing
-//            String longitude = "Longitude: " + location.getLongitude();
-//            String latitude = "Latitude: " + location.getLatitude();
-//            String s = longitude + "\n" + latitude;
-//            Log.d(TAG, "location String : "+s);
-//            sampleText.setHint(s);
             current_location_lat = location.getLatitude();
             current_location_long = location.getLongitude();
         }
@@ -129,16 +127,17 @@ public class AddPlaceFragment extends Fragment {
         final EditText descriptionEditText = root.findViewById(R.id.PlaceDescription);
         final EditText otherNamesEditText = root.findViewById(R.id.OtherName);
         final Spinner placeTypes = (Spinner) root.findViewById(R.id.placeType);
-        final Button btn_add_place = (Button)root.findViewById(R.id.btn_add_place);
-        final Button get_my_location = (Button)root.findViewById(R.id.btn_get_my_location);
+        final Button btn_add_place = (Button) root.findViewById(R.id.btn_add_place);
+        final Button get_my_location = (Button) root.findViewById(R.id.btn_get_my_location);
         final EditText locationEditText_lat = root.findViewById(R.id.showLocation_lat);
         final EditText locationEditText_long = root.findViewById(R.id.showLocation_long);
 
+        final Criteria criteria = new Criteria();
 
 
-        String[] items = new String[] {"Historical","Heritage" ,"Religious","Nature","Leisure","Adventure","Cultural","Wildlife","Other"};
+        String[] items = new String[]{"Historical", "Heritage", "Religious", "Nature", "Leisure", "Adventure", "Cultural", "Wildlife", "Other"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(root.getContext(),android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
 
         placeTypes.setAdapter(adapter);
 
@@ -156,8 +155,11 @@ public class AddPlaceFragment extends Fragment {
         if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
         }
+
+//        criteria = new Criteria();
+        provider = mLocationManager.getBestProvider(criteria, true);
 
         if (this.getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -188,14 +190,13 @@ public class AddPlaceFragment extends Fragment {
                     987);
 
 
-
             // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
             // app-defined int constant
 
 //            return;
         }
 
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+        mLocationManager.requestLocationUpdates(provider, 10,
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
 
 
@@ -215,10 +216,10 @@ public class AddPlaceFragment extends Fragment {
                 if (placeFormState.getDescriptionError() != null) {
                     descriptionEditText.setError(getString(placeFormState.getDescriptionError()));
                 }
-                if(placeFormState.getLocationError() != null){
+                if (placeFormState.getLocationError() != null) {
                     locationEditText_lat.setError(getString(placeFormState.getLocationError()));
                 }
-                if(placeFormState.getPlaceTypeError() != null){
+                if (placeFormState.getPlaceTypeError() != null) {
 
                 }
             }
@@ -236,7 +237,7 @@ public class AddPlaceFragment extends Fragment {
                     //showLoginFailed(loginResult.getError());
                 }
                 if (placeResult.getSuccess() != null) {
-                   // updateUiWithUser(loginResult.getSuccess());
+                    // updateUiWithUser(loginResult.getSuccess());
                 }
 
             }
@@ -306,8 +307,25 @@ public class AddPlaceFragment extends Fragment {
         get_my_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationEditText_lat.setText(String.valueOf(current_location_lat));
-                locationEditText_long.setText(String.valueOf(current_location_long));
+
+                if (v.getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && v.getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    Activity#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for Activity#requestPermissions for more details.
+                    return;
+                }
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10,
+                        LOCATION_REFRESH_DISTANCE, mLocationListener);
+//                locationEditText_lat.setText(String.valueOf(current_location_lat));
+//                locationEditText_long.setText(String.valueOf(current_location_long));
+                locationEditText_lat.setText(String.valueOf(LocationHandler.currentLocation.latitude()));
+                locationEditText_long.setText(String.valueOf(LocationHandler.currentLocation.longitude()));
             }
 
 
@@ -321,32 +339,22 @@ public class AddPlaceFragment extends Fragment {
                 newPlace.setName(placenameEditText.getText().toString());
                 newPlace.setDescription(descriptionEditText.getText().toString());
                 ArrayList<String> other_names = new ArrayList<>();
-                if(otherNamesEditText.getText() != null){
+                if (otherNamesEditText.getText() != null) {
                     other_names.add(otherNamesEditText.getText().toString());
                     newPlace.setOtherNames(other_names);
-                }else{
+                } else {
                     newPlace.setOtherNames(null);
                 }
                 ArrayList<String> selectedPlaceTypes = new ArrayList<>();
                 selectedPlaceTypes.add(placeTypes.getSelectedItem().toString());
                 newPlace.setType(selectedPlaceTypes);
-                newPlace.setLocation( Point.fromLngLat(current_location_long,current_location_lat));
+                newPlace.setLocation(Point.fromLngLat(current_location_long, current_location_lat));
 
                 try {
                     connectAndGetApiDataAWS(newPlace);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-//                try {
-//                    if (placeViewModel.addPlace(newPlace)) {
-//                        AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
-//                        BottomNavigationViewHelper.replaceFragment( getActivity(), addPlaceFragment,R.id.relLayout2,false);
-//
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
             }
         });
 
@@ -401,7 +409,7 @@ public class AddPlaceFragment extends Fragment {
 
         //Create a file object using file path
         File file1 = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                +photoURI.getPath().substring(19));
+                + photoURI.getPath().substring(19));
 
         File file = new Compressor(this.getContext())
                 .setMaxWidth(640)
@@ -421,49 +429,71 @@ public class AddPlaceFragment extends Fragment {
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), newPlace.getName());
 
 
-
 //        List<Place> placesOut = new ArrayList<>();
 //        newPlace.getLocation().coordinates().toArray();
 
-        Call<PlaceAddResponse> call = placeApiService.uploadImage(part, newPlace.getName());
+        Call<ImageUploadResponse> call = placeApiService.uploadImage(part, newPlace.getName());
 
-
-//        Call<PlaceAddResponse> call = placeApiService.savePlaceSeperate(
-//                newPlace.getName(),
-//                new String[]{"45.55","45.25"},
-//                newPlace.getDescription(),
-//                new String[]{"nature"},
-//                newPlace.getId(),"mockpath/storage");
-        call.enqueue(new Callback<PlaceAddResponse>() {
+        call.enqueue(new Callback<ImageUploadResponse>() {
             @Override
-            public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
+            public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
                 try {
-                    Log.d(TAG, "Place response received Manual: " + response.toString());
-                    Place place = response.body().getData();
-
-                    Log.d(TAG, "Place responce received: " + place.getName());
                     Log.d("message", "Incoming:" + response.body().getMessage());
+                    String[] data = response.body().getData();
+                    Log.d(TAG, "Image upload response received: " + data[0]);
+                    Log.d(TAG, "Location: " + newPlace.getLocation().coordinates().get(0).toString());
 
-                }catch (NullPointerException e){
-                    Log.d(TAG, e.getMessage());
-                }
+
+                    Call<PlaceAddResponse> callPlace = placeApiService.savePlaceSeperate(
+                            newPlace.getName(),
+                            new String[]{
+                                    newPlace.getLocation().coordinates().get(0).toString(),
+                                    newPlace.getLocation().coordinates().get(1).toString()},
+                            newPlace.getDescription(),
+                            new String[]{newPlace.getType().get(0)},
+                            newPlace.getId(), data[0]);
+                    callPlace.enqueue(new Callback<PlaceAddResponse>() {
+                        @Override
+                        public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
+                            try {
+                                Log.d("message", "Incoming:" + response.body().getMessage());
+//                                String[] data = response.body().getData();
+                                Log.d(TAG, "Place add response received: " + response.body().getMessage());
+                                AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
+                                BottomNavigationViewHelper.replaceFragment(getActivity(), addPlaceFragment, R.id.relLayout2, false);
+
+
+
+                            } catch (NullPointerException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
 
 //                for (Fragment fragment : getFragmentManager().getFragments()) {
 //                    getFragmentManager().beginTransaction().remove(fragment).commit();
 //                }
 
-                AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
-                BottomNavigationViewHelper.replaceFragment( getActivity(), addPlaceFragment,R.id.relLayout2,false);
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<PlaceAddResponse> call, Throwable throwable) {
+                            Log.e(TAG, throwable.toString());
+                        }
+                    });
+
+
+                } catch (NullPointerException e) {
+                    Log.d(TAG, e.getMessage());
+                }
 
             }
 
             @Override
-            public void onFailure(Call<PlaceAddResponse> call, Throwable throwable) {
+            public void onFailure(Call<ImageUploadResponse> call, Throwable throwable) {
                 Log.e(TAG, throwable.toString());
             }
         });
     }
-
 
 
 }
