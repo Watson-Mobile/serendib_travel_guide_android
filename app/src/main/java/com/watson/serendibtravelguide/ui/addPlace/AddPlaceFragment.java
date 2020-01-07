@@ -117,22 +117,22 @@ public class AddPlaceFragment extends Fragment {
         final Button btn_take_photo = root.findViewById(R.id.btn_get_photo);
         click_image_id = (ImageView) root.findViewById(R.id.image_add_place);
 
-        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+//        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
 
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+//        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this.getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+//        }
+//
+//        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this.getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+//        }
 
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
-
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
+//        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+//                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
 
         placeViewModel = ViewModelProviders.of(this, new PlaceViewModelFactory())

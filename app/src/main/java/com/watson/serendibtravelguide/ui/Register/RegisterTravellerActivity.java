@@ -11,16 +11,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.ui.userlogin.LoginActivity;
 
 import java.util.ArrayList;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class RegisterTravellerActivity extends AppCompatActivity {
 
@@ -92,13 +96,13 @@ public class RegisterTravellerActivity extends AppCompatActivity {
                     return;
                 }
                 loadingProgressBar.setVisibility(View.GONE);
-                if (registerResult.getError() != null) {
-                    showRegisterFailed(registerResult.getError());
-                }
+
                 if (registerResult.getSuccess() != null) {
                     Toast.makeText(getApplicationContext(), "Registration is Successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegisterTravellerActivity.this, LoginActivity.class);
-                    startActivity(intent);
+                    updateUI();
+
+                }else{
+                    showRegisterFailed(registerResult.getError());
                 }
                 setResult(Activity.RESULT_OK);
 
@@ -137,12 +141,14 @@ public class RegisterTravellerActivity extends AppCompatActivity {
         traveller_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> tel_num = new ArrayList<>();
-                tel_num.add(telephone_numberEditText.getText().toString());
-                registerViewModel.register(firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),
-                        emailEditText.getText().toString(),"Traveler",tel_num,nic_numberEditText.getText().toString(),null,
-                        passwordEditText.getText().toString());
-
+                String[] tel_num = new String[1];
+                tel_num[0] = telephone_numberEditText.getText().toString();
+                String [] guide_location = new String[2];
+                guide_location[0]= "23.21";
+                guide_location[1] = "23.21";
+                registerViewModel.register(tel_num,firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),
+                        emailEditText.getText().toString(),"Traveler",
+                        passwordEditText.getText().toString(),guide_location);
             }
         });
 
@@ -151,7 +157,12 @@ public class RegisterTravellerActivity extends AppCompatActivity {
 
     private void showRegisterFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(RegisterTravellerActivity.this, MainRegisterActivity.class);
-        startActivity(intent);
+        Intent intentMainRegister = new Intent(RegisterTravellerActivity.this,MainRegisterActivity.class);
+        startActivity(intentMainRegister);
+    }
+
+    private void updateUI(){
+        Intent intentLogin = new Intent(RegisterTravellerActivity.this,LoginActivity.class);
+        startActivity(intentLogin);
     }
 }

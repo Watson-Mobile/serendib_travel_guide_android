@@ -1,15 +1,19 @@
 package com.watson.serendibtravelguide.rest;
 
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.data.model.GuideResponse;
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.data.model.UserResponse;
 
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -25,13 +29,26 @@ public interface UserApiService {
 
     @POST("user")
     @FormUrlEncoded
-    Call<UserResponse> saveUser(@Body User user);
+    Call<UserResponse> saveUser(
+            @Field("telephone_number") String[] telephone_number,
+            @Field("firstname") String firstname,
+            @Field("lastname") String lastname,
+            @Field("username") String username,
+            @Field("email") String email,
+            @Field("userType") String userType,
+            @Field("password") String password,
+            @Field("guide_location")String[] guide_location);
 
 
+//    @POST("user")
+//    @Headers("Content-type: application/json")
+//    Call<UserResponse> saveUser();
     @GET("all_place")
     Call<UserResponse> getMockLoginSuccess();
 
     @GET("user/local_guides")
     Call<GuideResponse> getGuidesFromCoordinates(@Query("longitude") String longitude, @Query("latitude") String latitude);
+
+
 
 }

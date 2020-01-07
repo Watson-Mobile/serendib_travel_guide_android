@@ -36,9 +36,9 @@ public class RegisterViewModel extends ViewModel {
         return registerResult;
     }
 
-    public boolean register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<Point> guide_locations, String password) {
+    public boolean register(String[] telephone_number,String firstname, String lastname, String username, String email, String userType, String password, String[] guide_location) {
         // can be launched in a separate asynchronous job
-        Result<User> result = registerRepository.register(firstname,lastname, username, email,userType,telephone_number,nic_num,guide_locations,password);
+        Result<User> result = registerRepository.register(telephone_number,firstname,lastname, username, email,userType,password,guide_location);
 
         if (result instanceof Result.Success) {
             User data = ((Result.Success<User>) result).getData();
