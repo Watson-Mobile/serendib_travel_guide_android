@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.mapbox.geojson.MultiPoint;
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.data.RegisterRepository;
 import com.watson.serendibtravelguide.data.Result;
@@ -17,6 +19,7 @@ import com.watson.serendibtravelguide.ui.userlogin.LoginFormState;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterViewModel extends ViewModel {
     private MutableLiveData<RegisterFormState> registerFormState = new MutableLiveData<>();

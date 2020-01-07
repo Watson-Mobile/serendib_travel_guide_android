@@ -1,9 +1,12 @@
 package com.watson.serendibtravelguide.data;
 
 
+import com.mapbox.geojson.MultiPoint;
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.data.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterRepository {
     private static volatile RegisterRepository instance;

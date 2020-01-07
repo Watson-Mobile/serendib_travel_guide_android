@@ -21,6 +21,8 @@ import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 import com.watson.serendibtravelguide.ui.places.LocalGuideFragment;
 import com.watson.serendibtravelguide.ui.search.SearchListFragment;
 
+import java.util.ArrayList;
+
 public class HomeActivity extends AppCompatActivity implements LocalGuideFragment.OnListFragmentInteractionListener {
     private static final String TAG = "HomeActivity";
     private static SearchListFragment searchListFragment;
@@ -31,6 +33,7 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
     private SearchView searchView;
 
     private static Point locationFromIntent;
+    private static ArrayList<String> userLocationFromIntent;
 
 
     @Override
@@ -38,6 +41,9 @@ public class HomeActivity extends AppCompatActivity implements LocalGuideFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         locationFromIntent = (Point) getIntent().getSerializableExtra("location_point");
+        userLocationFromIntent = (ArrayList<String>) getIntent().getSerializableExtra("user_location");
+
+//        Log.d(TAG,"long"+userLocationFromIntent.get(0)+"lat"+userLocationFromIntent.get(1));
 
         HomeFragment homeFragment = new HomeFragment();
         BottomNavigationViewHelper.replaceFragment(this, homeFragment, R.id.relLayout2, false);

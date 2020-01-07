@@ -36,16 +36,15 @@ public class LoginDataSource {
 
     public Result<User> login(String email, String password) throws IOException {
        connectAndGetApiDataAWS(email, password);
-        Log.i(TAG, "post submitted to API."+loggedUser.getFirstname());
 
-        /*
-        * completable future implementation
-        * */
 
        if(loggedUser==null){
+
            return new Result.Error(new Exception("Error in login"));
        }else{
+           Log.i(TAG, "post submitted to API."+loggedUser.getFirstname());
            return new Result.Success<> (loggedUser);
+
        }
 
     }
@@ -65,11 +64,16 @@ public class LoginDataSource {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        UserApiService userApiService = retrofit.create(UserApiService.class);
+//        UserApiService userApiService = retrofit.create(UserApiService.class);
+//
+//        Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
+//        try {
+//            loggedUser = call.execute().body().getData();
+//        }catch (NullPointerException e){
+//            Log.e(TAG, "Login Failed"+e);
+//        }
 
-        Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
 
-        loggedUser = call.execute().body().getData();
 
 //        call.enqueue(new Callback<UserResponse>() {
 //            @Override

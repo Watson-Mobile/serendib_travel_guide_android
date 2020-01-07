@@ -2,8 +2,11 @@ package com.watson.serendibtravelguide.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.mapbox.geojson.MultiPoint;
+import com.mapbox.geojson.Point;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -31,7 +34,7 @@ public class User {
     @SerializedName("nic_num")
     @Expose
     private String nic_num;
-    @SerializedName("guide_locations")
+    @SerializedName("guide_location")
     @Expose
     private ArrayList<String> guide_locations;
     @SerializedName("password")

@@ -2,15 +2,20 @@ package com.watson.serendibtravelguide.ui.addPlace;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.FileUtils;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -47,11 +52,13 @@ import com.watson.serendibtravelguide.ui.home.HomeActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -61,8 +68,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.watson.serendibtravelguide.BuildConfig.DEBUG;
 import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_DISTANCE;
 import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_TIME;
 
@@ -150,6 +159,42 @@ public class AddPlaceFragment extends Fragment {
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         }
 
+        if (this.getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            if (this.getActivity().shouldShowRequestPermissionRationale(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                this.getActivity().requestPermissions(
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        678);
+            }
+        }
+
+        if (this.getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
+            }
+
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    987);
+
+
+
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant
+
+//            return;
+        }
+
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
 
@@ -218,42 +263,43 @@ public class AddPlaceFragment extends Fragment {
 
         placenameEditText.addTextChangedListener(afterTextChangedListener);
         descriptionEditText.addTextChangedListener(afterTextChangedListener);
-        /*
-
-        /*if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
-        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            return;
-        }
-
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME,
-                MIN_DISTANCE, this);
-         */
 
 
         btn_take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                try {
-                    photoURI = FileProvider.getUriForFile(v.getContext(),
-                            "com.watson.serendibtravelguide.provider",
-                            createImageFile());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(v.getContext().getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        photoURI = FileProvider.getUriForFile(v.getContext(),
+                                "com.watson.serendibtravelguide.provider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, pic_id);
+                    }
                 }
-                //take photograph
-                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
-                startActivityForResult(camera_intent, pic_id);
+
+
+//                try {
+//                    photoURI = FileProvider.getUriForFile(v.getContext(),
+//                            "com.watson.serendibtravelguide.provider",
+//                            createImageFile());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                //take photograph
+//                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
+//                startActivityForResult(camera_intent, pic_id);
             }
         });
 
@@ -287,14 +333,20 @@ public class AddPlaceFragment extends Fragment {
                 newPlace.setLocation( Point.fromLngLat(current_location_long,current_location_lat));
 
                 try {
-                    if (placeViewModel.addPlace(newPlace)) {
-                        AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
-                        BottomNavigationViewHelper.replaceFragment( getActivity(), addPlaceFragment,R.id.relLayout2,false);
-
-                    }
+                    connectAndGetApiDataAWS(newPlace);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+//                try {
+//                    if (placeViewModel.addPlace(newPlace)) {
+//                        AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
+//                        BottomNavigationViewHelper.replaceFragment( getActivity(), addPlaceFragment,R.id.relLayout2,false);
+//
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
 
@@ -304,16 +356,22 @@ public class AddPlaceFragment extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Match the request 'pic id with requestCode
-        if (requestCode == pic_id) {
 
-            // BitMap is data structure of image file
-            // which stor the image in memory
-            Bitmap photo = (Bitmap)data.getExtras()
-                    .get("data");
-
-            // Set the image in imageview for display
-            click_image_id.setImageBitmap(photo);
+        if (requestCode == pic_id && resultCode == RESULT_OK) {
+            //Perform any task using uri
+            //For example set this URI to fill an ImageView like below
+            this.click_image_id.setImageURI(photoURI);
         }
+
+//        if (requestCode == pic_id) {
+//
+//            // BitMap is data structure of image file
+//            // which store the image in memory
+//            Bitmap photo = (Bitmap)data.getExtras().get("data");
+//
+//            // Set the image in imageview for display
+//            click_image_id.setImageBitmap(photo);
+//        }
     }
 
     private File createImageFile() throws IOException {
@@ -332,7 +390,7 @@ public class AddPlaceFragment extends Fragment {
         return image;
     }
 
-    public void connectAndGetApiDataAWS(Place newPlace, String image) throws IOException {
+    public void connectAndGetApiDataAWS(Place newPlace) throws IOException {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(Config.serverIp)
@@ -342,35 +400,57 @@ public class AddPlaceFragment extends Fragment {
         PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
 
         //Create a file object using file path
-//        File file = new File(filePath);
-        File file = createImageFile();
+        File file1 = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                +photoURI.getPath().substring(19));
+
+        File file = new Compressor(this.getContext())
+                .setMaxWidth(640)
+                .setMaxHeight(480)
+                .setQuality(75)
+                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                .compressToFile(file1);
+
+//        File file = createImageFile();
         // Create a request body with file and image media type
         RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
         // Create MultipartBody.Part using file request-body,file name and part name
-        MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileReqBody);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("images", file.getName(), fileReqBody);
         //Create request body with text description and text media type
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
-
-//        Uri photoURI = FileProvider.getUriForFile(this.getContext(),
-//                "com.watson.android.fileprovider",
-//                file);
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), newPlace.getName());
 
 
 
 //        List<Place> placesOut = new ArrayList<>();
+//        newPlace.getLocation().coordinates().toArray();
 
-        Call<PlaceAddResponse> call = placeApiService.savePlaceWithImage(part, newPlace);
+        Call<PlaceAddResponse> call = placeApiService.uploadImage(part, newPlace.getName());
+
+
+//        Call<PlaceAddResponse> call = placeApiService.savePlaceSeperate(
+//                newPlace.getName(),
+//                new String[]{"45.55","45.25"},
+//                newPlace.getDescription(),
+//                new String[]{"nature"},
+//                newPlace.getId(),"mockpath/storage");
         call.enqueue(new Callback<PlaceAddResponse>() {
             @Override
             public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
-                Place place = response.body().getData();
+                try {
+                    Log.d(TAG, "Place response received Manual: " + response.toString());
+                    Place place = response.body().getData();
 
-                Log.d(TAG, "Place responce received: " + place.getName());
-                Log.d("message", "Incoming:" + response.body().getMessage());
+                    Log.d(TAG, "Place responce received: " + place.getName());
+                    Log.d("message", "Incoming:" + response.body().getMessage());
 
-                for (Fragment fragment : getFragmentManager().getFragments()) {
-                    getFragmentManager().beginTransaction().remove(fragment).commit();
+                }catch (NullPointerException e){
+                    Log.d(TAG, e.getMessage());
                 }
+
+//                for (Fragment fragment : getFragmentManager().getFragments()) {
+//                    getFragmentManager().beginTransaction().remove(fragment).commit();
+//                }
 
                 AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
                 BottomNavigationViewHelper.replaceFragment( getActivity(), addPlaceFragment,R.id.relLayout2,false);
@@ -383,5 +463,7 @@ public class AddPlaceFragment extends Fragment {
             }
         });
     }
+
+
 
 }

@@ -3,12 +3,15 @@ package com.watson.serendibtravelguide.data;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.mapbox.geojson.MultiPoint;
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.data.model.UserResponse;
 import com.watson.serendibtravelguide.rest.UserApiService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,7 +27,7 @@ public class RegisterDataSource {
     private static Retrofit retrofit = null;
 
 
-    public Result<User> register(String firstname, String lastname, String username, String email,String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations,String password) {
+    public Result<User> register(String firstname, String lastname, String username, String email, String userType, ArrayList<String> telephone_number, String nic_num, ArrayList<String> guide_locations, String password) {
         User regiseter_user = new User();
         regiseter_user.setFirstname(firstname);
         regiseter_user.setLastname(lastname);

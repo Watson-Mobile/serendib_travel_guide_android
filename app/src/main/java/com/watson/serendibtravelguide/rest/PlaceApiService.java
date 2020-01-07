@@ -1,8 +1,10 @@
 package com.watson.serendibtravelguide.rest;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 //import retrofit2.http.Path;
@@ -33,10 +35,30 @@ public interface PlaceApiService {
     @FormUrlEncoded
     Call<PlaceResponse> savePlace(@Body Place place);
 
-    @POST("place")
+    @POST("place/add")
     @FormUrlEncoded
+    Call<PlaceAddResponse> savePlaceSeperate(
+            @Field("name") String name,
+            @Field("location") String[] location,
+            @Field("description") String description,
+            @Field("type") String[] type,
+            @Field("user_id") String id,
+            @Field("images") String imagePaths);
+
+    @POST("place")
     @Multipart
-    Call<PlaceAddResponse> savePlaceWithImage(@Part MultipartBody.Part file , @Body Place place);
+    Call<PlaceAddResponse> savePlaceWithImage(
+            @Part MultipartBody.Part file
+            , @Part("name") RequestBody name
+            , @Part("description") RequestBody description
+            , @Part("type") RequestBody type
+            , @Part("location") RequestBody location);
+
+    @POST("place/images")
+    @Multipart
+    Call<PlaceAddResponse> uploadImage(
+            @Part MultipartBody.Part file,
+            @Query("name") String name);
 
 
 
