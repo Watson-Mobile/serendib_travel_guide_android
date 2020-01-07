@@ -1,12 +1,19 @@
 package com.watson.serendibtravelguide.ui.places;
 
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.data.model.User;
@@ -46,7 +53,7 @@ public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLoca
         holder.mIdView.setText(mValues.get(position).getFirstname());
         holder.mContentView.setText(mValues.get(position).getLastname());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
@@ -54,6 +61,19 @@ public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLoca
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
+                    Intent i = new Intent ( Intent.ACTION_CALL );
+                    i.setData ( Uri.parse ( "tel:" + mValues.get(position).getTelephone_number()[0]) );
+
+                    if (ActivityCompat.checkSelfPermission(v.getContext(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) v.getContext(),
+                                new String[]{Manifest.permission.CALL_PHONE}, 1);
+
+                        Toast.makeText(v.getContext(),"You cannot make a call",Toast.LENGTH_SHORT).show();
+
+                        return;
+                    }
+                    v.getContext().startActivity(i);
                 }
             }
         });

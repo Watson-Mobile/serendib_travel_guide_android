@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -20,8 +21,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.data.model.User;
+import com.watson.serendibtravelguide.ui.Utils.LocationHandler;
 import com.watson.serendibtravelguide.ui.userlogin.LoggedUserView;
+import com.watson.serendibtravelguide.ui.userlogin.LoginActivity;
 import com.watson.serendibtravelguide.ui.userlogin.LoginFormState;
 import com.watson.serendibtravelguide.ui.userlogin.LoginResult;
 import com.watson.serendibtravelguide.ui.userlogin.LoginViewModel;
@@ -35,11 +40,15 @@ public class RegisterLocalGuideActivity extends AppCompatActivity {
 
     Bundle extras;
 
+    public User loggedUser;
+    private Point currentLocation;
+
     RegisterViewModel registerViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_local_guide);
+        currentLocation = LocationHandler.defaultLocation;
 
         final EditText firstnameEditText = findViewById(R.id.firstname);
         final EditText lastnameEditText = findViewById(R.id.lastname);
@@ -66,9 +75,43 @@ public class RegisterLocalGuideActivity extends AppCompatActivity {
                 tel_nums.add(telephone_numberEditText.getText().toString());
                 extras.putStringArrayList("telNumber",tel_nums);
                 extras.putString("password",passwordEditText.getText().toString());
-                Intent intent = new Intent(RegisterLocalGuideActivity.this, MapsActivity.class);
-                intent.putExtras(extras);
-                startActivity(intent);
+//                Intent intent = new Intent(RegisterLocalGuideActivity.this, MapsActivity.class);
+//                intent.putExtras(extras);
+//                startActivity(intent);
+
+                currentLocation = LocationHandler.currentLocation;
+
+                User newGuide = new User();
+                newGuide.setFirstname(firstnameEditText.getText().toString());
+                newGuide.setLastname(lastnameEditText.getText().toString());
+                newGuide.setUsername(usernameEditText.getText().toString());
+                newGuide.setEmail(emailEditText.getText().toString());
+                newGuide.setPassword(passwordEditText.getText().toString());
+                newGuide.setNic_num(nic_numberEditText.getText().toString());
+                newGuide.setUserType("Local_Assistent");
+
+                String[] telephone_number = new String[1];
+                if (telephone_numberEditText.getText() != null) {
+                    telephone_number[0]=(telephone_numberEditText.getText().toString());
+                    newGuide.setTelephone_number(telephone_number);
+                } else {
+                    newGuide.setTelephone_number(null);
+                }
+                newGuide.setGuide_locations(currentLocation);
+                String[] location = new String[2];
+                location[0] = String.valueOf(newGuide.getGuide_locations().longitude());
+                location[1] = String.valueOf(newGuide.getGuide_locations().latitude());
+                if (registerViewModel.register(telephone_number, firstnameEditText.getText().toString(), lastnameEditText.getText().toString(), usernameEditText.getText().toString(),
+                        emailEditText.getText().toString(), "Local_Assistent",
+                        passwordEditText.getText().toString(), location, nic_numberEditText.getText().toString())) {
+                    Log.d("RegiterGuide","success");
+                    Intent intentLogin = new Intent(RegisterLocalGuideActivity.this, LoginActivity.class);
+                    startActivity(intentLogin);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Registration Failed", Toast.LENGTH_SHORT).show();
+                    Intent intentMainRegister = new Intent(RegisterLocalGuideActivity.this, MainRegisterActivity.class);
+                    startActivity(intentMainRegister);
+                }
             }
         });
 
@@ -85,7 +128,7 @@ public class RegisterLocalGuideActivity extends AppCompatActivity {
                 if (registerFormState == null) {
                     return;
                 }
-                btn_nextPage.setEnabled(registerFormState.isDataValid());
+                btn_nextPage.setEnabled(true);
                 if (registerFormState.getFirstnameError() != null) {
                     firstnameEditText.setError(getString(registerFormState.getFirstnameError()));
                 }

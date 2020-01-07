@@ -42,7 +42,7 @@ public class DetailedDestination extends AppCompatActivity implements
     private Context mContext = DetailedDestination.this;
     private MapView mMapView;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
-    private Point located_point;
+    public static Point located_point;
     private String title;
 
     @Override

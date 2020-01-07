@@ -32,7 +32,7 @@ public class SearchListFragment extends Fragment {
     private static final String TAG = "SearchListFragment";
     private static Retrofit retrofit = null;
     private String query;
-    private List<Place> searchPlaceList = new ArrayList<>();
+    public static List<Place> searchPlaceList = new ArrayList<>();
     private List<SearchViewModel> searchViewList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecycleViewAdapterSearch searchAdapter;

@@ -151,7 +151,11 @@ public class LocalGuideFragment extends Fragment {
 
 
 
-        Call<GuideResponse> call = userApiService.getGuidesFromCoordinates("18.902","19.6783");
+        Call<GuideResponse> call = userApiService.getGuidesFromCoordinates(
+                "79.84778","6.93194"
+//                String.valueOf(DetailedDestination.located_point.longitude()) ,
+//                String.valueOf(DetailedDestination.located_point.latitude())
+        );
         call.enqueue(new Callback<GuideResponse>() {
             @Override
             public void onResponse(Call<GuideResponse> call, Response<GuideResponse> response) {

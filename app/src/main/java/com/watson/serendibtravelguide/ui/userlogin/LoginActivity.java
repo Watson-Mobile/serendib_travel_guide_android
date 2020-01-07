@@ -61,8 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
-    public static User loggedUser;
-    private LocationManager mLocationManager;
+    public User loggedUser;
     private Point currentLocation;
 
     private final LocationListener mLocationListener = new LocationListener() {

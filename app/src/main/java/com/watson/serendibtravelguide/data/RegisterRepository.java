@@ -13,7 +13,7 @@ public class RegisterRepository {
     private RegisterDataSource dataSource;
 
 
-    private User user = null;
+    private UserSubmit user = null;
 
     // private constructor : singleton access
     private RegisterRepository(RegisterDataSource dataSource) {
@@ -36,7 +36,7 @@ public class RegisterRepository {
         dataSource.logout();
     }
 
-    private void setLoggedInUser(User user) {
+    private void setLoggedInUser(UserSubmit user) {
         this.user = user;
         // If User credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
@@ -46,7 +46,7 @@ public class RegisterRepository {
         // handle login
         Result<UserSubmit> result = dataSource.register(telephone_number, firstname,lastname,username,email,userType,password,guide_location, nic_num);
         if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<User>) result).getData());
+            setLoggedInUser(((Result.Success<UserSubmit>) result).getData());
         }
         return result;
     }

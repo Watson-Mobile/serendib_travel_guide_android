@@ -1,6 +1,7 @@
 package com.watson.serendibtravelguide.ui.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.chip.Chip;
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.ui.places.DetailedDestination;
 
 import java.util.List;
 
@@ -47,6 +49,19 @@ public class RecycleViewAdapterSearch extends RecyclerView.Adapter<RecycleViewAd
         Glide.with(context).load(BASE_URL_IMG+placeList.get(position).getImage())
                 .apply(new RequestOptions().override(100, 100))
                 .into(holder.circularPlaceImage);
+
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentDetailed = new Intent(view.getContext(), DetailedDestination.class);
+                intentDetailed.putExtra("title",SearchListFragment.searchPlaceList.get(position).getName());
+                intentDetailed.putExtra("description",SearchListFragment.searchPlaceList.get(position).getDescription());
+                intentDetailed.putExtra("imagePath",SearchListFragment.searchPlaceList.get(position).getImagePaths().get(0));
+                intentDetailed.putExtra("location_point",SearchListFragment.searchPlaceList.get(position).getLocation());
+
+                view.getContext().startActivity(intentDetailed);
+            }
+        });
     }
 
     @Override
@@ -67,6 +82,8 @@ public class RecycleViewAdapterSearch extends RecyclerView.Adapter<RecycleViewAd
             otherNames = (TextView)itemView.findViewById(R.id.card_secondary_title_search);
             tag = (Chip) itemView.findViewById(R.id.item_chip_tag);
             circularPlaceImage =  (CircleImageView) itemView.findViewById(R.id.place_image);
+
+
         }
 
     }
