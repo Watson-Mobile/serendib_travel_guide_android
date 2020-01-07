@@ -89,8 +89,8 @@ public class AddPlaceFragment extends Fragment {
     private ImageView click_image_id;
     private LocationManager mLocationManager;
     private EditText sampleText;
-    private double current_location_lat;
-    private double current_location_long;
+    private double current_location_lat = LocationHandler.defaultLocation.latitude();
+    private double current_location_long = LocationHandler.defaultLocation.longitude();
     private static Retrofit retrofit = null;
     private String provider;
     String currentPhotoPath;
@@ -98,36 +98,6 @@ public class AddPlaceFragment extends Fragment {
 
     private static DecimalFormat df = new DecimalFormat("0.00");
 
-
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(final Location location) {
-            //your code here
-//            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();   // Toast not showing
-//            String longitude = "Longitude: " + location.getLongitude();
-//            String latitude = "Latitude: " + location.getLatitude();
-//            String s = longitude + "\n" + latitude;
-//            Log.d(TAG, "location String : "+s);
-//            sampleText.setHint(s);
-            current_location_lat = location.getLatitude();
-            current_location_long = location.getLongitude();
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -154,23 +124,6 @@ public class AddPlaceFragment extends Fragment {
         final Button btn_take_photo = root.findViewById(R.id.btn_get_photo);
         click_image_id = (ImageView) root.findViewById(R.id.image_add_place);
 
-        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
-
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
-
 
         placeViewModel = ViewModelProviders.of(this, new PlaceViewModelFactory())
                 .get(AddPlaceViewModel.class);
@@ -188,10 +141,10 @@ public class AddPlaceFragment extends Fragment {
                 if (placeFormState.getDescriptionError() != null) {
                     descriptionEditText.setError(getString(placeFormState.getDescriptionError()));
                 }
-                if(placeFormState.getLocationError() != null){
+                if (placeFormState.getLocationError() != null) {
                     locationEditText_lat.setError(getString(placeFormState.getLocationError()));
                 }
-                if(placeFormState.getPlaceTypeError() != null){
+                if (placeFormState.getPlaceTypeError() != null) {
 
                 }
             }
@@ -236,25 +189,6 @@ public class AddPlaceFragment extends Fragment {
 
         placenameEditText.addTextChangedListener(afterTextChangedListener);
         descriptionEditText.addTextChangedListener(afterTextChangedListener);
-        /*
-
-        /*if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
-        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            return;
-        }
-
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME,
-                MIN_DISTANCE, this);
-         */
-
 
         btn_take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,26 +213,16 @@ public class AddPlaceFragment extends Fragment {
                     }
                 }
 
-
-//                try {
-//                    photoURI = FileProvider.getUriForFile(v.getContext(),
-//                            "com.watson.serendibtravelguide.provider",
-//                            createImageFile());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                //take photograph
-//                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
-//                startActivityForResult(camera_intent, pic_id);
             }
         });
 
         get_my_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double roundOff_lat = Math.round(current_location_lat * 100.0) / 100.0;
-                double roundOff_long = Math.round(current_location_long * 100.0) / 100.0;
+                current_location_lat = LocationHandler.currentLocation.latitude();
+                current_location_long = LocationHandler.currentLocation.longitude();
+                double roundOff_lat = Math.round(LocationHandler.currentLocation.latitude() * 1000.0) / 1000.0;
+                double roundOff_long = Math.round(LocationHandler.currentLocation.longitude() * 1000.0) / 1000.0;
                 locationEditText_lat.setText(String.valueOf(roundOff_lat));
                 locationEditText_long.setText(String.valueOf(roundOff_long));
             }
@@ -346,15 +270,6 @@ public class AddPlaceFragment extends Fragment {
             this.click_image_id.setImageURI(photoURI);
         }
 
-//        if (requestCode == pic_id) {
-//
-//            // BitMap is data structure of image file
-//            // which store the image in memory
-//            Bitmap photo = (Bitmap)data.getExtras().get("data");
-//
-//            // Set the image in imageview for display
-//            click_image_id.setImageBitmap(photo);
-//        }
     }
 
     private File createImageFile() throws IOException {
@@ -404,9 +319,6 @@ public class AddPlaceFragment extends Fragment {
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), newPlace.getName());
 
 
-//        List<Place> placesOut = new ArrayList<>();
-//        newPlace.getLocation().coordinates().toArray();
-
         Call<ImageUploadResponse> call = placeApiService.uploadImage(part, newPlace.getName());
 
         call.enqueue(new Callback<ImageUploadResponse>() {
@@ -436,7 +348,6 @@ public class AddPlaceFragment extends Fragment {
                                 Log.d(TAG, "Place add response received: " + response.body().getMessage());
                                 AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
                                 BottomNavigationViewHelper.replaceFragment(getActivity(), addPlaceFragment, R.id.relLayout2, false);
-
 
 
                             } catch (NullPointerException e) {

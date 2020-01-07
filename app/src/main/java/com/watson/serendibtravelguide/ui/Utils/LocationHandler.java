@@ -20,6 +20,7 @@ import static com.watson.serendibtravelguide.config.Config.LOCATION_REFRESH_TIME
 
 public class LocationHandler {
     private static LocationManager mLocationManager;
+    public static Point defaultLocation = Point.fromLngLat(79.899963, 6.797072);
     public static Point currentLocation = Point.fromLngLat(79.899963, 6.797072);
 
     private static final LocationListener mLocationListener = new LocationListener() {

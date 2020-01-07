@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("userId", userLoggedIn.getUserId());
                         editor.putString("userType", userLoggedIn.getUserType());
                         if (userLoggedIn.getUserType() == "Local_Assistent") {
-                            editor.putString("telephoneNumber", userLoggedIn.getTelephone_number().get(0));
+                            editor.putString("telephoneNumber", userLoggedIn.getTelephone_number().toString());
                             editor.putString("nicNumber", userLoggedIn.getNic_num());
                             editor.putFloat("logitude", 79.899963F);
                             editor.putFloat("langitude", 6.797072F);

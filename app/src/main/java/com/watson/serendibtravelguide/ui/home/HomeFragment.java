@@ -118,21 +118,21 @@ public class HomeFragment extends Fragment {
         connectAndGetApiDataAWS(true, currentLocation.latitude(), currentLocation.longitude());
 
 
-        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
-
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
+//        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+//
+//        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this.getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+//        }
+//        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this.getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+//        }
+//
+//        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+//                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
         return root;
     }
