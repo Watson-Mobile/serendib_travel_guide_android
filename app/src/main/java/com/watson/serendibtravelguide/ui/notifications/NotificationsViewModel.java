@@ -6,14 +6,59 @@ import androidx.lifecycle.ViewModel;
 
 public class NotificationsViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+    private String notificationMessage;
+    private String name;
+    private String type;
+    private String image;
+    private String id;
+
+
+    public NotificationsViewModel(String notificationMessage, String name, String type, String image, String id) {
+        this.notificationMessage = notificationMessage;
+        this.type = type;
+        this.image = image;
+        this.name = name;
+        this.id = id;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public String getNotificationMessage() {
+        return notificationMessage;
+    }
+
+    public void setNotificationMessage(String notificationMessage) {
+        this.notificationMessage = notificationMessage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

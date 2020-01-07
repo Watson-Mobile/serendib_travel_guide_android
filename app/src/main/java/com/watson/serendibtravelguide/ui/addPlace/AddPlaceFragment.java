@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.security.Provider;
 import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -99,6 +100,37 @@ public class AddPlaceFragment extends Fragment {
 
     private static DecimalFormat df = new DecimalFormat("0.00");
 
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //your code here
+            current_location_lat = location.getLatitude();
+            current_location_long = location.getLongitude();
+            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();
+            String longitude = "Longitude: " + location.getLongitude();
+            String latitude = "Latitude: " + location.getLatitude();
+            String s = longitude + "\n" + latitude;
+            Log.d(TAG, "location String : "+s);
+            sampleText.setHint(s);
+
+
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -124,6 +156,23 @@ public class AddPlaceFragment extends Fragment {
 
         final Button btn_take_photo = root.findViewById(R.id.btn_get_photo);
         click_image_id = (ImageView) root.findViewById(R.id.image_add_place);
+
+        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+
+        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
+        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.getActivity(),
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        }
+
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
 
         placeViewModel = ViewModelProviders.of(this, new PlaceViewModelFactory())
@@ -190,6 +239,25 @@ public class AddPlaceFragment extends Fragment {
 
         placenameEditText.addTextChangedListener(afterTextChangedListener);
         descriptionEditText.addTextChangedListener(afterTextChangedListener);
+        /*
+
+        /*if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            return;
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME,
+                MIN_DISTANCE, this);
+         */
+
 
         btn_take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,7 +281,10 @@ public class AddPlaceFragment extends Fragment {
                         startActivityForResult(takePictureIntent, pic_id);
                     }
                 }
-
+                //take photograph
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
+                startActivityForResult(camera_intent, pic_id);
             }
         });
 
@@ -268,6 +339,12 @@ public class AddPlaceFragment extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Match the request 'pic id with requestCode
+        if (requestCode == pic_id) {
+
+            // BitMap is data structure of image file
+            // which stor the image in memory
+            Bitmap photo = (Bitmap)data.getExtras()
+                    .get("data");
 
         if (requestCode == pic_id && resultCode == RESULT_OK) {
             //Perform any task using uri
@@ -323,6 +400,9 @@ public class AddPlaceFragment extends Fragment {
         //Create request body with text description and text media type
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), newPlace.getName());
 
+//        Uri photoURI = FileProvider.getUriForFile(this.getContext(),
+//                "com.watson.android.fileprovider",
+//                file);
 
         Call<ImageUploadResponse> call = placeApiService.uploadImage(part, newPlace.getName());
 

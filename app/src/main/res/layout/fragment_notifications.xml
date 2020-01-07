@@ -30,6 +30,6 @@
         android:layout_marginRight="@dimen/no_space"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.notifications.NotificationsFragment"
-        tools:listitem="@layout/fragment_search_list_item" />
+        tools:listitem="@layout/fragment_notification_item" />
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,50 +24,58 @@ import static com.watson.serendibtravelguide.config.Config.BASE_URL_IMG;
 
 public class RecycleViewAdapterNotification extends RecyclerView.Adapter<RecycleViewAdapterNotification.MyViewHolderSearch> {
 
-    private List<SearchViewModel> placeList;
+    private List<NotificationsViewModel> notVerifiedPlaceList;
     private Context context;
 
-    RecycleViewAdapterNotification(List<SearchViewModel> placeList , Context context){
-        this.placeList = placeList;
-        this.context=context;
+    RecycleViewAdapterNotification(List<NotificationsViewModel> notVerifiedPlaceList, Context context) {
+        this.notVerifiedPlaceList = notVerifiedPlaceList;
+        this.context = context;
     }
 
 
     @NonNull
     @Override
     public MyViewHolderSearch onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_search_list_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_notification_item, parent, false);
         return new MyViewHolderSearch(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecycleViewAdapterNotification.MyViewHolderSearch holder, int position) {
-        holder.title.setText(placeList.get(position).getCardTitle());
-        holder.otherNames.setText(placeList.get(position).getOtherNames());
-        holder.tag.setText(placeList.get(position).getCardTag(), TextView.BufferType.NORMAL);
-        Glide.with(context).load(BASE_URL_IMG+placeList.get(position).getImage())
-                .apply(new RequestOptions().override(100, 100))
-                .into(holder.circularPlaceImage);
+        holder.title.setText(notVerifiedPlaceList.get(position).getNotificationMessage());
+        holder.name.setText(notVerifiedPlaceList.get(position).getName());
+        holder.type.setText(notVerifiedPlaceList.get(position).getType());
+        Glide.with(context).load(BASE_URL_IMG + notVerifiedPlaceList.get(position).getImage())
+                .apply(new RequestOptions().override(50, 50))
+                .into(holder.circleImageView);
+        holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotificationsFragment.verifyPlace(notVerifiedPlaceList.get(position).getId());
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return placeList.size();
+        return notVerifiedPlaceList.size();
     }
 
     public class MyViewHolderSearch extends RecyclerView.ViewHolder {
 
         private TextView title;
-        private Chip tag;
-        private TextView otherNames;
-        private CircleImageView circularPlaceImage;
+        private TextView name;
+        private TextView type;
+        private ImageButton acceptBtn;
+        private CircleImageView circleImageView;
 
         public MyViewHolderSearch(View itemView) {
             super(itemView);
-            title = (TextView)itemView.findViewById(R.id.card_title_search);
-            otherNames = (TextView)itemView.findViewById(R.id.card_secondary_title_search);
-            tag = (Chip) itemView.findViewById(R.id.item_chip_tag);
-            circularPlaceImage =  (CircleImageView) itemView.findViewById(R.id.place_image);
+            title = (TextView) itemView.findViewById(R.id.card_notification_message);
+            name = (TextView) itemView.findViewById(R.id.card_notification_place_name);
+            type = (TextView) itemView.findViewById(R.id.card_notification_place_type);
+            acceptBtn = (ImageButton) itemView.findViewById(R.id.notification_accept_btn);
+            circleImageView = (CircleImageView) itemView.findViewById(R.id.place_image);
         }
 
     }
