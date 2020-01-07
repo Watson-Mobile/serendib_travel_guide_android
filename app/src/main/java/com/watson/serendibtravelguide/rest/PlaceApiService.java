@@ -8,7 +8,9 @@ import retrofit2.http.GET;
 //import retrofit2.http.Path;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 import com.watson.serendibtravelguide.data.model.User;
@@ -31,7 +33,7 @@ public interface PlaceApiService {
 
     @POST("place")
     @FormUrlEncoded
-    Call<PlaceResponse> savePlace(@Body Place place);
+    Call<PlaceAddResponse> savePlace(@Body Place place);
 
     @POST("place")
     @FormUrlEncoded
@@ -40,6 +42,10 @@ public interface PlaceApiService {
 
     @GET("not_verified_place")
     Call<PlaceResponse> getNotVerifiedPlaces(@Query("longitude") String longitude, @Query("latitude") String latitude);
+
+    @PUT("place/verify/{id}")
+    @FormUrlEncoded
+    Call<PlaceAddResponse>  verifyPlace(@Path("id") String id);
 
 
 

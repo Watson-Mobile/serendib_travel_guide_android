@@ -48,6 +48,12 @@ public class RecycleViewAdapterNotification extends RecyclerView.Adapter<Recycle
         Glide.with(context).load(BASE_URL_IMG + notVerifiedPlaceList.get(position).getImage())
                 .apply(new RequestOptions().override(50, 50))
                 .into(holder.circleImageView);
+        holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotificationsFragment.verifyPlace(notVerifiedPlaceList.get(position).getId());
+            }
+        });
     }
 
     @Override

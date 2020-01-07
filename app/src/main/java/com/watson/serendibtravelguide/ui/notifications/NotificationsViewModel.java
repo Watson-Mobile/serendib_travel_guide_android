@@ -11,12 +11,15 @@ public class NotificationsViewModel extends ViewModel {
     private String name;
     private String type;
     private String image;
+    private String id;
 
-    public NotificationsViewModel(String notificationMessage, String name, String type, String image) {
+
+    public NotificationsViewModel(String notificationMessage, String name, String type, String image, String id) {
         this.notificationMessage = notificationMessage;
-        this.name = name;
         this.type = type;
         this.image = image;
+        this.name = name;
+        this.id = id;
     }
 
     public String getNotificationMessage() {
@@ -51,4 +54,11 @@ public class NotificationsViewModel extends ViewModel {
         this.image = image;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

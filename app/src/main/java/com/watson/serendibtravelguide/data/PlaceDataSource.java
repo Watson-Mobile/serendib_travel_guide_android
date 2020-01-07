@@ -7,6 +7,7 @@ import com.watson.serendibtravelguide.BuildConfig;
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.data.model.UserResponse;
 import com.watson.serendibtravelguide.models.Place;
+import com.watson.serendibtravelguide.models.PlaceAddResponse;
 import com.watson.serendibtravelguide.models.PlaceResponse;
 import com.watson.serendibtravelguide.rest.PlaceApiService;
 import com.watson.serendibtravelguide.rest.UserApiService;
@@ -24,23 +25,23 @@ public class PlaceDataSource {
 
     public static final String BASE_URL_AWS = "http://ec2-34-238-82-190.compute-1.amazonaws.com/api/";
     private static Retrofit retrofit = null;
-    public List<Place> addedPlace;
+    public Place addedPlace;
 
     private final static String API_KEY = BuildConfig.CONSUMER_KEY;
 
 
     public Result<Place> addPlace(Place newPlace) throws IOException {
         connectAndGetApiDataAWS(newPlace);
-        Log.i(TAG, "post submitted to API."+addedPlace.get(0).getDescription());
+        Log.i(TAG, "post submitted to API."+addedPlace.getDescription());
 
         /*
          * completable future implementation
          * */
 
-        if(addedPlace.get(0)==null){
+        if(addedPlace==null){
             return new Result.Error(new Exception("Error in login"));
         }else{
-            return new Result.Success<> (addedPlace.get(0));
+            return new Result.Success<> (addedPlace);
         }
 
     }
@@ -59,7 +60,7 @@ public class PlaceDataSource {
         }
         PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
 
-        Call<PlaceResponse> call = placeApiService.savePlace(place);
+        Call<PlaceAddResponse> call = placeApiService.savePlace(place);
 
         addedPlace = call.execute().body().getData();
 
