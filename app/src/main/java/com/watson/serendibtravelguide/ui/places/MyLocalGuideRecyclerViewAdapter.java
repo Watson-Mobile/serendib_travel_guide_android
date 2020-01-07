@@ -1,12 +1,18 @@
 package com.watson.serendibtravelguide.ui.places;
 
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.watson.serendibtravelguide.R;
 import com.watson.serendibtravelguide.data.model.User;
@@ -50,10 +56,22 @@ public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLoca
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
+                    mListener.onListFragmentInteraction(holder.mItem);
                     Log.i(TAG,"i am in the list onclick");
+                    Intent i = new Intent ( Intent.ACTION_CALL );
+                    i.setData ( Uri.parse ( "tel:" + mValues.get(position).getTelephone_number()[0]) );
+
+                    if (ActivityCompat.checkSelfPermission(holder.mView.getContext(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                        Toast.makeText(holder.mView.getContext(),"You cannot make a call",Toast.LENGTH_SHORT).show();
+
+                        return;
+                    }
+                    holder.mView.getContext().startActivity(i);
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+
                 }
             }
         });

@@ -148,7 +148,7 @@ public class RegisterTravellerActivity extends AppCompatActivity {
                 guide_location[1] = "23.21";
                 registerViewModel.register(tel_num,firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),usernameEditText.getText().toString(),
                         emailEditText.getText().toString(),"Traveler",
-                        passwordEditText.getText().toString(),guide_location);
+                        passwordEditText.getText().toString(),guide_location,nic_numberEditText.getText().toString());
             }
         });
 

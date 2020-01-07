@@ -36,9 +36,9 @@ public class RegisterViewModel extends ViewModel {
         return registerResult;
     }
 
-    public boolean register(String[] telephone_number,String firstname, String lastname, String username, String email, String userType, String password, String[] guide_location) {
+    public boolean register(String[] telephone_number,String firstname, String lastname, String username, String email, String userType, String password, String[] guide_location,String nic_num) {
         // can be launched in a separate asynchronous job
-        Result<User> result = registerRepository.register(telephone_number,firstname,lastname, username, email,userType,password,guide_location);
+        Result<User> result = registerRepository.register(telephone_number,firstname,lastname, username, email,userType,password,guide_location,nic_num);
 
         if (result instanceof Result.Success) {
             User data = ((Result.Success<User>) result).getData();
@@ -136,7 +136,7 @@ public class RegisterViewModel extends ViewModel {
             return false;
         }
 
-        if(telephone_number.trim().length()!=10){
+        if(telephone_number.trim().length()!=9){
             return false;
         }else{
             return true;

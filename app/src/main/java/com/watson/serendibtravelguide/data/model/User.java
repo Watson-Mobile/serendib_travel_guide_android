@@ -29,9 +29,9 @@ public class User {
     @SerializedName("telephone_number")
     @Expose
     private String[] telephone_number;
-//    @SerializedName("nic_num")
-//    @Expose
-//    private String nic_num;
+    @SerializedName("nic_num")
+    @Expose
+    private String nic_num;
     @SerializedName("guide_locations")
     @Expose
     private String[] guide_location;
@@ -43,7 +43,7 @@ public class User {
 
     }
 
-    public User(String userId, String firstname, String lastname, String username, String email, String userType, String[] telephone_number, String[] guide_location, String password) {
+    public User(String userId, String firstname, String lastname, String username, String email, String userType, String[] telephone_number, String[] guide_location, String password,String nic_num) {
         this.userId = userId;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -51,7 +51,7 @@ public class User {
         this.email = email;
         this.userType = userType;
         this.telephone_number = telephone_number;
-        //this.nic_num = nic_num;
+        this.nic_num = nic_num;
         this.guide_location = guide_location;
         this.password = password;
     }
@@ -112,13 +112,13 @@ public class User {
         this.telephone_number = telephone_number;
     }
 
-//    public String getNic_num() {
-//        return nic_num;
-//    }
-//
-//    public void setNic_num(String nic_num) {
-//        this.nic_num = nic_num;
-//    }
+    public String getNic_num() {
+        return nic_num;
+    }
+
+    public void setNic_num(String nic_num) {
+        this.nic_num = nic_num;
+    }
 
     public String[] getGuide_location() {
         return guide_location;

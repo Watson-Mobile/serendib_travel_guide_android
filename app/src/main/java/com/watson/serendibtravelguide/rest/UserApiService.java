@@ -37,7 +37,8 @@ public interface UserApiService {
             @Field("email") String email,
             @Field("userType") String userType,
             @Field("password") String password,
-            @Field("guide_location")String[] guide_location);
+            @Field("guide_location")String[] guide_location,
+            @Field("nic_num")String nic_num);
 
 
 //    @POST("user")
