@@ -77,7 +77,7 @@ public class LoginDataSource {
 
         Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
 
-        setLoggedUser(call.execute().body().getData());
+        LoginDataSource.setLoggedUser(call.execute().body().getData());
 
 //        call.enqueue(new Callback<UserResponse>() {
 //            @Override

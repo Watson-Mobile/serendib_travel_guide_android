@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,11 +41,11 @@ public class NotificationsFragment extends Fragment {
     private static final String TAG = "SearchListFragment";
     private static Retrofit retrofit = null;
     private String userId;
-    private List<Place> searchPlaceList = new ArrayList<>();
-    private List<SearchViewModel> searchViewList = new ArrayList<>();
+    private List<Place> notificationList = new ArrayList<>();
+    private List<NotificationsViewModel> notificationViewList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private RecycleViewAdapterNotification searchAdapter;
-    private TextView searchResultsTextView;
+    private RecycleViewAdapterNotification notificationAdapter;
+    private TextView notificationResultsTextView;
 
     public NotificationsFragment(String userId) {
         this.userId = userId;
@@ -55,9 +53,9 @@ public class NotificationsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SharedPreferences userPrefs = this.getActivity().getSharedPreferences("userPrefs",Context.MODE_PRIVATE);
-        Log.d("userpref",userPrefs.getString("name","")+"=========");
-        Log.d("lllllll","pppppppppppppp");
+        SharedPreferences userPrefs = this.getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        Log.d("userpref", userPrefs.getString("name", "") + "=========");
+        Log.d("lllllll", "pppppppppppppp");
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
 
@@ -68,63 +66,71 @@ public class NotificationsFragment extends Fragment {
                     .build();
         }
         Log.d(TAG, "From search fragment, query received: " + userId);
-        this.queryPlaces(userId);
+        this.queryNotVerifiedPlaces(userId);
 
 
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
         final TextView textView = root.findViewById(R.id.notification_title);
 
-        Log.d("Notification",LoginDataSource.getLoggedUser().getGuideLocations()+",----locations");
+        Log.d("Notification", LoginDataSource.getLoggedUser().getGuideLocations() + ",----locations");
 
-//        longitude = LoginDataSource.getLoggedUser().getGuideLocations().coordinates().get(0).longitude();
-//        latitude = LoginDataSource.getLoggedUser().getGuideLocations().coordinates().get(0).latitude();
-//
+        longitude = 79.899963;
+        latitude = 6.797072;
+        latitude = LoginDataSource.getLoggedUser().getGuideLocations().coordinates().get(0).latitude();
+
 //        Log.d("Nofification", "latitude: " + latitude);
 //        Log.d("Notification", "longitude: " + longitude);
 
 //        notificationsViewModel.getText().observe(this, new Observer<String>() {
-        searchResultsTextView = root.findViewById(R.id.notification_title);
+        notificationResultsTextView = root.findViewById(R.id.notification_title);
         recyclerView = root.findViewById(R.id.notification_list);
-        searchAdapter = new RecycleViewAdapterNotification(searchViewList, this.getContext());
+        notificationAdapter = new RecycleViewAdapterNotification(notificationViewList, this.getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(searchAdapter);
+        recyclerView.setAdapter(notificationAdapter);
 
         return root;
     }
 
-    public void queryPlaces(String query) {
+    public void queryNotVerifiedPlaces(String query) {
         PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
 
-        Call<PlaceResponse> searchCall = placeApiService.searchPlaces(query);
+        Call<PlaceResponse> notificationCall = placeApiService.getNotVerifiedPlaces(Double.toString(longitude), Double.toString(latitude));
 
-        searchCall.enqueue(new Callback<PlaceResponse>() {
+        notificationCall.enqueue(new Callback<PlaceResponse>() {
             @Override
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
-                List<Place> searchPlaces = response.body().getData();
-                Log.d(TAG, response.body().getMessage());
+                List<Place> notVerifiedPlaces = response.body().getData();
+                Log.d("notification", response.body().getMessage());
 
-                for (Place place : searchPlaces) {
-                    searchPlaceList.add(place);
+                for (Place place : notVerifiedPlaces) {
+                    notificationList.add(place);
                     String secondaryTitle = "";
                     for (String name : place.getOtherNames()) {
                         secondaryTitle = secondaryTitle.concat(name).concat(" ");
                     }
 
-                    SearchViewModel searchViewModel = new SearchViewModel(place.getName(), place.getType().get(0),
-                            secondaryTitle, place.getImagePaths().get(0));
-                    searchViewList.add(searchViewModel);
+                    String notificationMessage = "User has posed a new travel destination("+place.getName()+
+                            ") in your area. Please verify if you now this place.";
+
+                    NotificationsViewModel searchViewModel = new NotificationsViewModel(
+                            notificationMessage,
+                            "",
+                            place.getType().get(0),
+                            place.getImagePaths().get(0)
+                    );
+                    notificationViewList.add(searchViewModel);
 
                 }
-                if (searchViewList.isEmpty()) {
-                    searchResultsTextView.setText("No results found for \'" + query + "\'");
+                if (notificationViewList.isEmpty()) {
+                    notificationResultsTextView.setText("No results found for \'" + query + "\'");
                     Log.d(TAG, "No results");
                 } else {
                     Log.d(TAG, "Search results found");
-                    searchResultsTextView.setText("Search Results...");
+                    notificationResultsTextView.setText("Search Results...");
                 }
 
-                searchAdapter.notifyDataSetChanged();
+                notificationAdapter.notifyDataSetChanged();
 
             }
 

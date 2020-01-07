@@ -38,6 +38,9 @@ public interface PlaceApiService {
     @Multipart
     Call<PlaceAddResponse> savePlaceWithImage(@Part MultipartBody.Part file , @Body Place place);
 
+    @GET("not_verified_place")
+    Call<PlaceResponse> getNotVerifiedPlaces(@Query("longitude") String longitude, @Query("latitude") String latitude);
+
 
 
 }
