@@ -32,7 +32,7 @@ public class LocationHandler {
             String s = longitude + "\n" + latitude;
             Log.d(TAG, "location String : " + s);
 
-            currentLocation = Point.fromLngLat(location.getLatitude(), location.getLongitude());
+            currentLocation = Point.fromLngLat(location.getLongitude(), location.getLatitude());
         }
 
         @Override

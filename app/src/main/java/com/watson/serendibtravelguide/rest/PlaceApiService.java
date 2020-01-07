@@ -71,7 +71,7 @@ public interface PlaceApiService {
     Call<PlaceResponse> getNotVerifiedPlaces(@Query("longitude") String longitude, @Query("latitude") String latitude);
 
     @PUT("place/verify/{id}")
-    @FormUrlEncoded
+//    @FormUrlEncoded
     Call<PlaceAddResponse>  verifyPlace(@Path("id") String id);
 
 

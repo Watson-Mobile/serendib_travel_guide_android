@@ -1,6 +1,7 @@
 package com.watson.serendibtravelguide.ui.notifications;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,13 +46,18 @@ public class RecycleViewAdapterNotification extends RecyclerView.Adapter<Recycle
         holder.title.setText(notVerifiedPlaceList.get(position).getNotificationMessage());
         holder.name.setText(notVerifiedPlaceList.get(position).getName());
         holder.type.setText(notVerifiedPlaceList.get(position).getType());
-        Glide.with(context).load(BASE_URL_IMG + notVerifiedPlaceList.get(position).getImage())
+        String url =  notVerifiedPlaceList.get(position).getImage();
+        url=url.replaceAll(" ","%20");
+        Log.d("image path: ","image is in "+BASE_URL_IMG+url);
+        url=BASE_URL_IMG+url;
+
+        Glide.with(context).load( url)
                 .apply(new RequestOptions().override(50, 50))
                 .into(holder.circleImageView);
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotificationsFragment.verifyPlace(notVerifiedPlaceList.get(position).getId());
+                NotificationsFragment.verifyPlace(notVerifiedPlaceList.get(position).getId(),position);
             }
         });
     }
@@ -75,7 +81,7 @@ public class RecycleViewAdapterNotification extends RecyclerView.Adapter<Recycle
             name = (TextView) itemView.findViewById(R.id.card_notification_place_name);
             type = (TextView) itemView.findViewById(R.id.card_notification_place_type);
             acceptBtn = (ImageButton) itemView.findViewById(R.id.notification_accept_btn);
-            circleImageView = (CircleImageView) itemView.findViewById(R.id.place_image);
+            circleImageView = (CircleImageView) itemView.findViewById(R.id.place_image_notification);
         }
 
     }

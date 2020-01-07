@@ -7,7 +7,7 @@ import com.mapbox.geojson.Point;
 
 public class User {
 
-    @SerializedName("userId")
+    @SerializedName("_id")
     @Expose
     private String userId;
     @SerializedName("firstname")
@@ -32,7 +32,7 @@ public class User {
     @Expose
     private String nic_num;
 
-    @SerializedName("guide_locations")
+    @SerializedName("guide_location")
     @Expose
     private Point guide_locations;
 

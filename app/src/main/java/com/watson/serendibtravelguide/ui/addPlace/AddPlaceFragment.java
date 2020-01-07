@@ -100,37 +100,6 @@ public class AddPlaceFragment extends Fragment {
 
     private static DecimalFormat df = new DecimalFormat("0.00");
 
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(final Location location) {
-            //your code here
-            current_location_lat = location.getLatitude();
-            current_location_long = location.getLongitude();
-            Toast.makeText(getContext(), "OnLocationChanged", Toast.LENGTH_SHORT).show();
-            String longitude = "Longitude: " + location.getLongitude();
-            String latitude = "Latitude: " + location.getLatitude();
-            String s = longitude + "\n" + latitude;
-            Log.d(TAG, "location String : "+s);
-            sampleText.setHint(s);
-
-
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -157,22 +126,6 @@ public class AddPlaceFragment extends Fragment {
         final Button btn_take_photo = root.findViewById(R.id.btn_get_photo);
         click_image_id = (ImageView) root.findViewById(R.id.image_add_place);
 
-        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-
-        if (this.getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
-
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
 
         placeViewModel = ViewModelProviders.of(this, new PlaceViewModelFactory())
@@ -342,136 +295,137 @@ public class AddPlaceFragment extends Fragment {
         if (requestCode == pic_id) {
 
             // BitMap is data structure of image file
-            // which stor the image in memory
-            Bitmap photo = (Bitmap)data.getExtras()
-                    .get("data");
+            // which store the image in memory
+//            Bitmap photo = (Bitmap) data.getExtras()
+//                    .get("data");
 
-        if (requestCode == pic_id && resultCode == RESULT_OK) {
-            //Perform any task using uri
-            //For example set this URI to fill an ImageView like below
-            this.click_image_id.setImageURI(photoURI);
+            if (requestCode == pic_id && resultCode == RESULT_OK) {
+                //Perform any task using uri
+                //For example set this URI to fill an ImageView like below
+                this.click_image_id.setImageURI(photoURI);
+            }
+
         }
-
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        private File createImageFile () throws IOException {
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    public void connectAndGetApiDataAWS(Place newPlace) throws IOException {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(Config.serverIp)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = image.getAbsolutePath();
+            return image;
         }
-        PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
 
-        //Create a file object using file path
-        File file1 = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                + photoURI.getPath().substring(19));
+        public void connectAndGetApiDataAWS (Place newPlace) throws IOException {
+            if (retrofit == null) {
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(Config.serverIp)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+            }
+            PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
 
-        File file = new Compressor(this.getContext())
-                .setMaxWidth(640)
-                .setMaxHeight(480)
-                .setQuality(75)
-                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+            //Create a file object using file path
+            File file1 = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                    + photoURI.getPath().substring(19));
+
+            File file = new Compressor(this.getContext())
+                    .setMaxWidth(640)
+                    .setMaxHeight(480)
+                    .setQuality(75)
+                    .setCompressFormat(Bitmap.CompressFormat.WEBP)
 //                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
 //                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
-                .compressToFile(file1);
+                    .compressToFile(file1);
 
 //        File file = createImageFile();
-        // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
-        // Create MultipartBody.Part using file request-body,file name and part name
-        MultipartBody.Part part = MultipartBody.Part.createFormData("images", file.getName(), fileReqBody);
-        //Create request body with text description and text media type
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), newPlace.getName());
+            // Create a request body with file and image media type
+            RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
+            // Create MultipartBody.Part using file request-body,file name and part name
+            MultipartBody.Part part = MultipartBody.Part.createFormData("images", file.getName(), fileReqBody);
+            //Create request body with text description and text media type
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), newPlace.getName());
 
 //        Uri photoURI = FileProvider.getUriForFile(this.getContext(),
 //                "com.watson.android.fileprovider",
 //                file);
 
-        Call<ImageUploadResponse> call = placeApiService.uploadImage(part, newPlace.getName());
+            Call<ImageUploadResponse> call = placeApiService.uploadImage(part, newPlace.getName());
 
-        call.enqueue(new Callback<ImageUploadResponse>() {
-            @Override
-            public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                try {
-                    Log.d("message", "Incoming:" + response.body().getMessage());
-                    String[] data = response.body().getData();
-                    Log.d(TAG, "Image upload response received: " + data[0]);
-                    Log.d(TAG, "Location: " + newPlace.getLocation().coordinates().get(0).toString());
+            call.enqueue(new Callback<ImageUploadResponse>() {
+                @Override
+                public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
+                    try {
+                        Log.d("message", "Incoming:" + response.body().getMessage());
+                        String[] data = response.body().getData();
+                        Log.d(TAG, "Image upload response received: " + data[0]);
+                        Log.d(TAG, "Location: " + newPlace.getLocation().coordinates().get(0).toString());
 
 
-                    Call<PlaceAddResponse> callPlace = placeApiService.savePlaceSeperate(
-                            newPlace.getName(),
-                            new String[]{
-                                    newPlace.getLocation().coordinates().get(0).toString(),
-                                    newPlace.getLocation().coordinates().get(1).toString()},
-                            newPlace.getDescription(),
-                            newPlace.getOtherNames().get(0),
+                        Call<PlaceAddResponse> callPlace = placeApiService.savePlaceSeperate(
+                                newPlace.getName(),
+                                new String[]{
+                                        newPlace.getLocation().coordinates().get(0).toString(),
+                                        newPlace.getLocation().coordinates().get(1).toString()},
+                                newPlace.getDescription(),
+                                newPlace.getOtherNames().get(0),
 //                            new String[]{newPlace.getType().get(0)},
-                            newPlace.getType().get(0),
-                            newPlace.getId(), data[0]);
-                    callPlace.enqueue(new Callback<PlaceAddResponse>() {
-                        @Override
-                        public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
-                            try {
-                                Log.d("message", "Incoming:" + response.body().getMessage());
+                                newPlace.getType().get(0),
+                                newPlace.getId(), data[0]);
+                        callPlace.enqueue(new Callback<PlaceAddResponse>() {
+                            @Override
+                            public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
+                                try {
+                                    Log.d("message", "Incoming:" + response.body().getMessage());
 //                                String[] data = response.body().getData();
-                                Log.d(TAG, "Place add response received: " + response.body().getMessage());
+                                    Log.d(TAG, "Place add response received: " + response.body().getMessage());
 
-                                for (Fragment fragment : getFragmentManager().getFragments()) {
-                                    getFragmentManager().beginTransaction().remove(fragment).commit();
+                                    for (Fragment fragment : getFragmentManager().getFragments()) {
+                                        getFragmentManager().beginTransaction().remove(fragment).commit();
+                                    }
+
+                                    HomeFragment homeFragment = new HomeFragment();
+                                    BottomNavigationViewHelper.replaceFragment(getActivity(), homeFragment, R.id.relLayout2, false);
+
+
+                                } catch (NullPointerException e) {
+                                    Log.d(TAG, e.getMessage());
                                 }
-
-                                HomeFragment homeFragment = new HomeFragment();
-                                BottomNavigationViewHelper.replaceFragment(getActivity(), homeFragment, R.id.relLayout2, false);
-
-
-                            } catch (NullPointerException e) {
-                                Log.d(TAG, e.getMessage());
-                            }
 
 //                for (Fragment fragment : getFragmentManager().getFragments()) {
 //                    getFragmentManager().beginTransaction().remove(fragment).commit();
 //                }
 
 
-                        }
+                            }
 
-                        @Override
-                        public void onFailure(Call<PlaceAddResponse> call, Throwable throwable) {
-                            Log.e(TAG, throwable.toString());
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<PlaceAddResponse> call, Throwable throwable) {
+                                Log.e(TAG, throwable.toString());
+                            }
+                        });
 
 
-                } catch (NullPointerException e) {
-                    Log.d(TAG, e.getMessage());
+                    } catch (NullPointerException e) {
+                        Log.d(TAG, e.getMessage());
+                    }
+
                 }
 
-            }
-
-            @Override
-            public void onFailure(Call<ImageUploadResponse> call, Throwable throwable) {
-                Log.e(TAG, throwable.toString());
-            }
-        });
-    }
+                @Override
+                public void onFailure(Call<ImageUploadResponse> call, Throwable throwable) {
+                    Log.e(TAG, throwable.toString());
+                }
+            });
+        }
 
 
 }
