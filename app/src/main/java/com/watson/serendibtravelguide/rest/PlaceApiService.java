@@ -20,6 +20,8 @@ import com.watson.serendibtravelguide.models.Place;
 import com.watson.serendibtravelguide.models.PlaceAddResponse;
 import com.watson.serendibtravelguide.models.PlaceResponse;
 
+import java.util.List;
+
 public interface PlaceApiService {
 
     //SAMPLE ENDPOINT https://api.themoviedb.org/3/movie/top_rated
@@ -42,7 +44,9 @@ public interface PlaceApiService {
             @Field("name") String name,
             @Field("location") String[] location,
             @Field("description") String description,
-            @Field("type") String[] type,
+            @Field("other_names") String otherNames,
+//            @Field("type") String[] type,
+            @Field("type_array") String type,
             @Field("user_id") String id,
             @Field("images") String imagePaths);
 

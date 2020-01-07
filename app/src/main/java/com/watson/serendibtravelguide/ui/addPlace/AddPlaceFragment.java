@@ -52,6 +52,7 @@ import com.watson.serendibtravelguide.rest.PlaceApiService;
 import com.watson.serendibtravelguide.ui.Utils.BottomNavigationViewHelper;
 import com.watson.serendibtravelguide.ui.Utils.LocationHandler;
 import com.watson.serendibtravelguide.ui.home.HomeActivity;
+import com.watson.serendibtravelguide.ui.home.HomeFragment;
 
 import java.io.File;
 import java.io.IOException;
@@ -245,7 +246,11 @@ public class AddPlaceFragment extends Fragment {
                     newPlace.setOtherNames(null);
                 }
                 ArrayList<String> selectedPlaceTypes = new ArrayList<>();
+//                selectedPlaceTypes.add("Other");
                 selectedPlaceTypes.add(placeTypes.getSelectedItem().toString());
+//                newPlace.setType(selectedPlaceTypes);
+//                String[] array = new String[1];
+//                array[0] = placeTypes.getSelectedItem().toString();
                 newPlace.setType(selectedPlaceTypes);
                 newPlace.setLocation(Point.fromLngLat(current_location_long, current_location_lat));
 
@@ -337,7 +342,9 @@ public class AddPlaceFragment extends Fragment {
                                     newPlace.getLocation().coordinates().get(0).toString(),
                                     newPlace.getLocation().coordinates().get(1).toString()},
                             newPlace.getDescription(),
-                            new String[]{newPlace.getType().get(0)},
+                            newPlace.getOtherNames().get(0),
+//                            new String[]{newPlace.getType().get(0)},
+                            newPlace.getType().get(0),
                             newPlace.getId(), data[0]);
                     callPlace.enqueue(new Callback<PlaceAddResponse>() {
                         @Override
@@ -346,8 +353,13 @@ public class AddPlaceFragment extends Fragment {
                                 Log.d("message", "Incoming:" + response.body().getMessage());
 //                                String[] data = response.body().getData();
                                 Log.d(TAG, "Place add response received: " + response.body().getMessage());
-                                AddPlaceFragment addPlaceFragment = new AddPlaceFragment();
-                                BottomNavigationViewHelper.replaceFragment(getActivity(), addPlaceFragment, R.id.relLayout2, false);
+
+                                for (Fragment fragment : getFragmentManager().getFragments()) {
+                                    getFragmentManager().beginTransaction().remove(fragment).commit();
+                                }
+
+                                HomeFragment homeFragment = new HomeFragment();
+                                BottomNavigationViewHelper.replaceFragment(getActivity(), homeFragment, R.id.relLayout2, false);
 
 
                             } catch (NullPointerException e) {
