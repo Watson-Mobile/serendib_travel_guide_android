@@ -22,6 +22,7 @@ import com.watson.serendibtravelguide.models.Place;
 import com.watson.serendibtravelguide.models.PlaceAddResponse;
 import com.watson.serendibtravelguide.models.PlaceResponse;
 import com.watson.serendibtravelguide.rest.PlaceApiService;
+import com.watson.serendibtravelguide.ui.Utils.LocationHandler;
 import com.watson.serendibtravelguide.ui.search.SearchViewModel;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class NotificationsFragment extends Fragment {
     private static double latitude;
     private static double longitude;
 
-    private static final String TAG = "SearchListFragment";
+    private static final String TAG = "Notification";
     private static Retrofit retrofit = null;
     private String userId;
     private static List<Place> notificationList = new ArrayList<>();
@@ -54,11 +55,20 @@ public class NotificationsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SharedPreferences userPrefs = this.getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        Log.d("userpref", userPrefs.getString("name", "") + "=========");
-        Log.d("lllllll", "pppppppppppppp");
-//        notificationsViewModel =
-//                ViewModelProviders.of(this).get(NotificationsViewModel.class);
+
+        longitude = LocationHandler.currentLocation.longitude();
+        latitude = LocationHandler.currentLocation.latitude();
+
+        if (LoginDataSource.loggedUser.getGuide_locations() != null) {
+            longitude = LoginDataSource.loggedUser.getGuide_locations().longitude();
+            latitude = LoginDataSource.loggedUser.getGuide_locations().latitude();
+            Log.d("Notification", "GPS changed");
+        } else {
+            Log.d("Notification", "logged user not set properly");
+        }
+
+        Log.d("Notification",longitude+" "+latitude);
+
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -66,8 +76,8 @@ public class NotificationsFragment extends Fragment {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        Log.d(TAG, "From search fragment, query received: " + userId);
-        this.queryNotVerifiedPlaces(userId);
+        Log.d(TAG, "From Notification Fragment (" + longitude + " " + latitude + ")");
+        this.queryNotVerifiedPlaces();
 
 
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
@@ -75,14 +85,6 @@ public class NotificationsFragment extends Fragment {
 
         Log.d("Notification", LoginDataSource.loggedUser.getGuide_locations() + ",----locations");
 
-        longitude = 79.899963;
-        latitude = 6.797072;
-        latitude = LoginDataSource.loggedUser.getGuide_locations().latitude();
-
-//        Log.d("Nofification", "latitude: " + latitude);
-//        Log.d("Notification", "longitude: " + longitude);
-
-//        notificationsViewModel.getText().observe(this, new Observer<String>() {
         notificationResultsTextView = root.findViewById(R.id.notification_title);
         recyclerView = root.findViewById(R.id.notification_list);
         notificationAdapter = new RecycleViewAdapterNotification(notificationViewList, this.getContext());
@@ -93,12 +95,11 @@ public class NotificationsFragment extends Fragment {
         return root;
     }
 
-    public void queryNotVerifiedPlaces(String query) {
+    public void queryNotVerifiedPlaces() {
         PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
 
         Call<PlaceResponse> notificationCall = placeApiService.getNotVerifiedPlaces(
-//                Double.toString(longitude), Double.toString(latitude)
-                "79.899","6.7969"
+                Double.toString(longitude), Double.toString(latitude)
         );
 
         notificationCall.enqueue(new Callback<PlaceResponse>() {
@@ -128,11 +129,11 @@ public class NotificationsFragment extends Fragment {
 
                 }
                 if (notificationViewList.isEmpty()) {
-                    notificationResultsTextView.setText("No results found for \'" + query + "\'");
+                    notificationResultsTextView.setText("Notifications not found");
                     Log.d(TAG, "No results");
                 } else {
-                    Log.d(TAG, "Search results found");
-                    notificationResultsTextView.setText("Search Results...");
+                    Log.d(TAG, "Notifications found");
+                    notificationResultsTextView.setText("Notifications");
                 }
 
                 notificationAdapter.notifyDataSetChanged();
@@ -146,20 +147,28 @@ public class NotificationsFragment extends Fragment {
         });
     }
 
-    public static void verifyPlace(String placeId,int position) {
+    public static void verifyPlace(String placeId, int position) {
         PlaceApiService placeApiService = retrofit.create(PlaceApiService.class);
         Call<PlaceAddResponse> notificationVerifyCall = placeApiService.verifyPlace(placeId);
         notificationVerifyCall.enqueue(new Callback<PlaceAddResponse>() {
             @Override
             public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
                 Place updatedPlace = response.body().getData();
-                if(updatedPlace!=null){
-                    Log.d("Notification","Place verified...");
-                    notificationList.remove(notificationList.indexOf(updatedPlace));
-//                    notificationList.remove(position);
-                    notificationAdapter.notifyDataSetChanged();
-                }else{
-                    Log.d("Notification","Place verification place...");
+                if (updatedPlace != null) {
+                    Log.d("Notification", "Place verified...");
+                    int listSize = notificationList.size();
+                    for (int i = 0; i <= listSize; i++) {
+                       if( notificationList.get(i).getId().equals(updatedPlace.getId())){
+                           notificationList.remove(i);
+                           notificationAdapter.notifyDataSetChanged();
+                           Log.d("Notification",notificationList.get(i).getId()+" removed");
+                           break;
+
+                       }
+                    }
+
+                } else {
+                    Log.d("Notification", "Place verification place...");
                 }
 
             }
