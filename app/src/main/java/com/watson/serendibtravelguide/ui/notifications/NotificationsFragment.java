@@ -77,16 +77,14 @@ public class NotificationsFragment extends Fragment {
                     .build();
         }
         Log.d(TAG, "From Notification Fragment (" + longitude + " " + latitude + ")");
-        this.queryNotVerifiedPlaces();
-
 
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.notification_title);
 
         Log.d("Notification", LoginDataSource.loggedUser.getGuide_locations() + ",----locations");
 
         notificationResultsTextView = root.findViewById(R.id.notification_title);
         recyclerView = root.findViewById(R.id.notification_list);
+        this.queryNotVerifiedPlaces();
         notificationAdapter = new RecycleViewAdapterNotification(notificationViewList, this.getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -101,50 +99,53 @@ public class NotificationsFragment extends Fragment {
         Call<PlaceResponse> notificationCall = placeApiService.getNotVerifiedPlaces(
                 Double.toString(longitude), Double.toString(latitude)
         );
+        if(LoginDataSource.loggedUser.getUserType().equals("Local_Assistent")){
+            notificationCall.enqueue(new Callback<PlaceResponse>() {
+                @Override
+                public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
+                    List<Place> notVerifiedPlaces = response.body().getData();
+                    Log.d("notification", response.body().getMessage());
 
-        notificationCall.enqueue(new Callback<PlaceResponse>() {
-            @Override
-            public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
-                List<Place> notVerifiedPlaces = response.body().getData();
-                Log.d("notification", response.body().getMessage());
+                    for (Place place : notVerifiedPlaces) {
+                        notificationList.add(place);
+                        String secondaryTitle = "";
+                        for (String name : place.getOtherNames()) {
+                            secondaryTitle = secondaryTitle.concat(name).concat(" ");
+                        }
 
-                for (Place place : notVerifiedPlaces) {
-                    notificationList.add(place);
-                    String secondaryTitle = "";
-                    for (String name : place.getOtherNames()) {
-                        secondaryTitle = secondaryTitle.concat(name).concat(" ");
+                        String notificationMessage = "User has posed a new travel destination(" + place.getName() +
+                                ") in your area. Please verify if you now this place.";
+
+                        NotificationsViewModel searchViewModel = new NotificationsViewModel(
+                                notificationMessage,
+                                "",
+                                place.getType().get(0),
+                                place.getImagePaths().get(0),
+                                place.getId()
+                        );
+                        notificationViewList.add(searchViewModel);
+
+                    }
+                    if (notificationViewList.isEmpty()) {
+                        notificationResultsTextView.setText("Notifications not found");
+                        Log.d(TAG, "No results");
+                    } else {
+                        Log.d(TAG, "Notifications found");
+                        notificationResultsTextView.setText("Notifications");
                     }
 
-                    String notificationMessage = "User has posed a new travel destination(" + place.getName() +
-                            ") in your area. Please verify if you now this place.";
-
-                    NotificationsViewModel searchViewModel = new NotificationsViewModel(
-                            notificationMessage,
-                            "",
-                            place.getType().get(0),
-                            place.getImagePaths().get(0),
-                            place.getId()
-                    );
-                    notificationViewList.add(searchViewModel);
+                    notificationAdapter.notifyDataSetChanged();
 
                 }
-                if (notificationViewList.isEmpty()) {
-                    notificationResultsTextView.setText("Notifications not found");
-                    Log.d(TAG, "No results");
-                } else {
-                    Log.d(TAG, "Notifications found");
-                    notificationResultsTextView.setText("Notifications");
+
+                @Override
+                public void onFailure(Call<PlaceResponse> call, Throwable t) {
+
                 }
-
-                notificationAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onFailure(Call<PlaceResponse> call, Throwable t) {
-
-            }
-        });
+            });
+        }else{
+            notificationResultsTextView.setText("Notifications not found");
+        }
     }
 
     public static void verifyPlace(String placeId, int position) {
@@ -163,7 +164,6 @@ public class NotificationsFragment extends Fragment {
                            notificationAdapter.notifyDataSetChanged();
                            Log.d("Notification",notificationList.get(i).getId()+" removed");
                            break;
-
                        }
                     }
 

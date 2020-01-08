@@ -203,8 +203,14 @@ public class HomeFragment extends Fragment {
 
                     for (Place place : places) {
                         double distanceFromCurrentPlace = calculateDistance(currentLocation, place.getLocation());
+                        String distanceString = "";
+                        if(distanceFromCurrentPlace<1000){
+                            distanceString=Math.round(distanceFromCurrentPlace * 100) / 100+"m";
+                        }else{
+                            distanceString=Math.round(distanceFromCurrentPlace / 10) / 100+"km";
+                        }
                         Log.d(TAG, distanceFromCurrentPlace + "km <-----distance");
-                        placeList.add(new CardViewModel(place.getName(), place.getImagePaths().get(0), distanceFromCurrentPlace + "km",
+                        placeList.add(new CardViewModel(place.getName(), place.getImagePaths().get(0), distanceString,
                                 place.getType().get(0)));
                     }
 
@@ -252,7 +258,8 @@ public class HomeFragment extends Fragment {
 
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
-        double distanceToPlace = Math.sqrt(distance) / 1000;
-        return Math.round(distanceToPlace * 100) / 100;
+        double distanceToPlace = Math.sqrt(distance);
+//        return Math.round(distanceToPlace * 100) / 100;
+        return distance;
     }
 }
