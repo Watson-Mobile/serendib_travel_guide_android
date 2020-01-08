@@ -58,25 +58,36 @@ public class UserProfileFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EditText fullname = getActivity().findViewById(R.id.txt_full_name);
-       // fullname.setText(LoginDataSource.loggedUser.getFirstname() + " " + LoginDataSource.loggedUser.getLastname());
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-        }
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+//
+//        }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_profile, container, false);
+        View root = inflater.inflate(R.layout.fragment_user_profile, container, false);
+
+        TextView fullname = root.findViewById(R.id.txt_full_name);
+        EditText userName = root.findViewById(R.id.editT1);
+        EditText email = root.findViewById(R.id.editT3);
+        EditText nic = root.findViewById(R.id.editT2);
+        EditText tel = root.findViewById(R.id.editT4);
+        fullname.setText(LoginDataSource.loggedUser.getFirstname() + " " + LoginDataSource.loggedUser.getLastname());
+        userName.setText(LoginDataSource.loggedUser.getUsername());
+        email.setText(LoginDataSource.loggedUser.getEmail());
+        nic.setText(LoginDataSource.loggedUser.getNic_num());
+        tel.setText(LoginDataSource.loggedUser.getTelephone_number()[0]);
+
+        return root;
 
 
     }

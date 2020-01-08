@@ -54,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height= "30dp"
                 android:text=" Username"
+                android:id="@+id/profile_username"
                 android:gravity="left">
             </TextView>
 
@@ -86,6 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height= "30dp"
                 android:text=" Email"
+
                 android:gravity="left">
             </TextView>
 
