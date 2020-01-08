@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.userprofile.UserProfileFragment"
+    android:id="@+id/user_profile"
+    >
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageview_account_profile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/man" />
+    <TextView
+        android:id="@+id/txt_full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Narmada Liyanagama"
+        android:selectAllOnFocus="true"
+        android:padding="15dp"
+        android:fontFamily="sans-serif"
+        android:textSize="20sp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="300dp"
+        android:layout_below="@+id/imageview_account_profile">
+    </TextView>
+    <TableLayout
+        android:id="@+id/mainTable"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="345dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:shrinkColumns="1"
+        android:stretchColumns="*"
+        >
+        <TableRow>
+            <TextView
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edit_text_drawable"
+                android:layout_width="wrap_content"
+                android:layout_height= "30dp"
+                android:text=" Username"
+                android:gravity="left">
+            </TextView>
+
+            <EditText
+                android:editable="false"
+                android:fontFamily="sans-serif"
+                android:id="@+id/editT1"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/et_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="narmada"
+                android:gravity="left">
+
+            </EditText>
+
+
+
+
+
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edit_text_drawable"
+                android:layout_width="wrap_content"
+                android:layout_height= "30dp"
+                android:text=" Email"
+                android:gravity="left">
+            </TextView>
+
+            <EditText
+                android:editable="false"
+                android:fontFamily="sans-serif"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/editT3"
+                android:background="@drawable/et_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="narmada@gmail.com"
+                android:gravity="left">
+
+            </EditText>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/white"
+                android:background="@drawable/edit_text_drawable"
+                android:layout_width="wrap_content"
+                android:layout_height= "30dp"
+                android:text=" NIC Number"
+                android:gravity="left">
+            </TextView>
+
+            <EditText
+                android:editable="false"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/editT2"
+                android:fontFamily="sans-serif"
+                android:background="@drawable/et_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="left"
+                android:text="956731267v"
+                >
+            </EditText>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/white"
+                android:background="@drawable/edit_text_drawable"
+                android:layout_width="wrap_content"
+                android:layout_height= "30dp"
+                android:text="Telephone"
+                android:gravity="left">
+            </TextView>
+
+            <EditText
+                android:editable="false"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/editT4"
+                android:fontFamily="sans-serif"
+                android:background="@drawable/et_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="left"
+                android:text="0717872513"
+                >
+            </EditText>
+        </TableRow>
+
+<!--        <TableRow>-->
+
+<!--            <TextView-->
+<!--                android:background="@drawable/edit_text_drawable"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text=" Username" >-->
+<!--            </TextView>-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editT2"-->
+<!--                android:background="@drawable/et_custom"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="right"-->
+<!--                android:editable="false"-->
+<!--                android:text="piyumi">-->
+<!--            </EditText>-->
+<!--        </TableRow>-->
+
+<!--        <TableRow>-->
+
+<!--            <TextView-->
+<!--                android:background="@drawable/edit_text_drawable"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text=" Email" >-->
+<!--            </TextView>-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editT3"-->
+<!--                android:background="@drawable/et_custom"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="right"-->
+<!--                android:editable="false"-->
+<!--                android:text="piyumi@gmail.com">-->
+<!--            </EditText>-->
+<!--        </TableRow>-->
+
+<!--        <TableRow>-->
+
+<!--            <TextView-->
+<!--                android:background="@drawable/edit_text_drawable"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height= "wrap_content"-->
+<!--                android:text=" NIC Number" >-->
+<!--            </TextView>-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editT4"-->
+<!--                android:background="@drawable/et_custom"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="right"-->
+<!--                android:editable="false"-->
+<!--                android:text="956731267v">-->
+<!--            </EditText>-->
+<!--        </TableRow>-->
+<!--        <TableRow>-->
+
+<!--            <TextView-->
+<!--                android:background="@drawable/edit_text_drawable"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height= "wrap_content"-->
+<!--                android:text=" Telephone Number" >-->
+<!--            </TextView>-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editT5"-->
+<!--                android:background="@drawable/et_custom"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="right"-->
+<!--                android:editable="false"-->
+<!--                android:text="0711676337">-->
+<!--            </EditText>-->
+<!--        </TableRow>-->
+    </TableLayout>
+
+
+
+</FrameLayout>

@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.mapbox.geojson.Point;
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.data.LoginDataSource;
 import com.watson.serendibtravelguide.data.model.User;
 import com.watson.serendibtravelguide.data.model.UserResponse;
 import com.watson.serendibtravelguide.rest.UserApiService;
@@ -61,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
-    public static User loggedUser;
+    //public static User loggedUser;
     private LocationManager mLocationManager;
     private Point currentLocation;
 
@@ -222,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         editor.commit();
 
-                        loggedUser = userLoggedIn;
+                        LoginDataSource.loggedUser = userLoggedIn;
                         Intent intent = new Intent(loginActivity, HomeActivity.class);
                         intent.putExtra("location_point",currentLocation);
                         //killing all other activities
