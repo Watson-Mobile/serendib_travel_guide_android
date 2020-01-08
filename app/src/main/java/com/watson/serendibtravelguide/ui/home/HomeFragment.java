@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.item_chip_distance);
 //        currentLocation = LocationHandler.getCurrentLocation();
-        Log.d(TAG,"Centralized Location"+ currentLocation.toJson());
+        Log.d(TAG, "Centralized Location" + currentLocation.toJson());
 
         placeList = new ArrayList<>();
         placeList1 = new ArrayList<>();
@@ -204,10 +204,12 @@ public class HomeFragment extends Fragment {
                     for (Place place : places) {
                         double distanceFromCurrentPlace = calculateDistance(currentLocation, place.getLocation());
                         String distanceString = "";
-                        if(distanceFromCurrentPlace<1000){
-                            distanceString=Math.round(distanceFromCurrentPlace * 100) / 100+"m";
-                        }else{
-                            distanceString=Math.round(distanceFromCurrentPlace / 10) / 100+"km";
+                        if (distanceFromCurrentPlace < 1000) {
+                            distanceFromCurrentPlace = Math.round(distanceFromCurrentPlace * 100) / 100;
+                            distanceString = distanceString + String.valueOf(distanceFromCurrentPlace) + "m";
+                        } else {
+                            distanceFromCurrentPlace = Math.round(distanceFromCurrentPlace / 10) / 100;
+                            distanceString = distanceString + String.valueOf(distanceFromCurrentPlace) + "km";
                         }
                         Log.d(TAG, distanceFromCurrentPlace + "km <-----distance");
                         placeList.add(new CardViewModel(place.getName(), place.getImagePaths().get(0), distanceString,
@@ -220,7 +222,7 @@ public class HomeFragment extends Fragment {
 
                     recyclerViewAdapter.notifyDataSetChanged();
 
-                }else{
+                } else {
                     Log.d(TAG, "Empty Response: " + response);
                 }
 
@@ -260,6 +262,6 @@ public class HomeFragment extends Fragment {
 
         double distanceToPlace = Math.sqrt(distance);
 //        return Math.round(distanceToPlace * 100) / 100;
-        return distance;
+        return distanceToPlace;
     }
 }
