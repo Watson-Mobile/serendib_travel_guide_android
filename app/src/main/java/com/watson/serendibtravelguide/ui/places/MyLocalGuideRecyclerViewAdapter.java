@@ -74,6 +74,7 @@ public class MyLocalGuideRecyclerViewAdapter extends RecyclerView.Adapter<MyLoca
                         return;
                     }
                     v.getContext().startActivity(i);
+
                 }
             }
         });

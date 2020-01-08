@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.watson.serendibtravelguide.R;
+import com.watson.serendibtravelguide.ui.userprofile.UserProfileFragment;
 import com.watson.serendibtravelguide.ui.addPlace.AddPlaceFragment;
-import com.watson.serendibtravelguide.ui.dashboard.ProfileFragment;
 import com.watson.serendibtravelguide.ui.home.HomeFragment;
 import com.watson.serendibtravelguide.ui.notifications.NotificationsFragment;
 
@@ -85,9 +85,11 @@ public class BottomNavigationViewHelper {
                                 break;
                             case R.id.nav_search:
                                 // add place activity
-                                Log.d(TAG, "Case Search");
-                                ProfileFragment dashboardFrag = new ProfileFragment();
-                                replaceFragment(activity, dashboardFrag, R.id.relLayout2, false);
+                                 Log.d(TAG, "Case Search");
+//                               ProfileFragment dashboardFrag = new ProfileFragment();
+//                                replaceFragment(activity, dashboardFrag, R.id.relLayout2, false);
+                                UserProfileFragment user_profile = new UserProfileFragment();
+                                replaceFragment(activity,user_profile,R.id.relLayout2,false);
 
 
                                 break;

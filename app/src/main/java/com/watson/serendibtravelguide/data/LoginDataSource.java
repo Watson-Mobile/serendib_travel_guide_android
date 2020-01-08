@@ -38,7 +38,7 @@ public class LoginDataSource {
        connectAndGetApiDataAWS(email, password);
 
 
-       if(loggedUser==null){
+       if(LoginDataSource.loggedUser==null){
 
            return new Result.Error(new Exception("Error in login"));
        }else{
@@ -68,7 +68,7 @@ public class LoginDataSource {
 
         Call<UserResponse> call = userApiService.getUserByEmailAndPassword(email, password);
         try {
-            loggedUser = call.execute().body().getData();
+            LoginDataSource.loggedUser = call.execute().body().getData();
         }catch (NullPointerException e){
             Log.e(TAG, "Login Failed"+e);
         }
